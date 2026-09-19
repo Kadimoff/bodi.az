@@ -199,11 +199,45 @@
     }));
   }
 
+  function updateCategorySEO(name) {
+    document.title = `${name} — Körpə Geyimləri | Bodi.az`;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.name = 'description'; document.head.appendChild(metaDesc); }
+    metaDesc.content = `${name} kolleksiyası — Bodi.az-da 100% orqanik pambıqdan hazırlanmış körpə geyimləri. Bakı daxili 24 saat çatdırılma.`;
+
+    let scriptTag = document.getElementById('category-schema-ld');
+    if (!scriptTag) {
+      scriptTag = document.createElement('script');
+      scriptTag.id = 'category-schema-ld';
+      scriptTag.type = 'application/ld+json';
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Ana səhifə",
+          "item": "https://bodi.az/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": name,
+          "item": window.location.href
+        }
+      ]
+    });
+  }
+
   function updateBase() {
     if (filter === "new") { base = BODI.getNew(); titleEl.textContent = crumb.textContent = "Yeni Kolleksiya"; }
     else if (filter === "sale") { base = BODI.getSale(); titleEl.textContent = crumb.textContent = "Endirim"; }
     else if (query) { base = BODI.PRODUCTS.filter(p => (p.name + " " + (p.material || "")).toLowerCase().includes(query.toLowerCase())); titleEl.textContent = crumb.textContent = "Axtarış: " + query; }
     else { base = cat ? BODI.getByCat(cat) : BODI.PRODUCTS.slice(); titleEl.textContent = crumb.textContent = cat ? (BODI.CAT_NAMES[cat] || cat) : "Bütün Məhsullar"; }
+    updateCategorySEO(crumb.textContent);
   }
 
   window.addEventListener("bodi:products-updated", function () {
