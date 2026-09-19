@@ -89,6 +89,23 @@
     <a href="#" onclick="return STORE.toast('Link kopyalandı','link')" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-fixed/30 transition-colors"><span class="material-symbols-outlined">share</span></a>
     <a href="#" onclick="return STORE.toast('Link kopyalandı','link')" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-fixed/30 transition-colors"><span class="material-symbols-outlined">mail</span></a>
     <a href="#" onclick="return STORE.toast('Link kopyalandı','link')" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-fixed/30 transition-colors"><span class="material-symbols-outlined">link</span></a>`;
+  if (window.BODI_API) {
+    BODI_API.fetchPosts().then(posts => {
+      const match = posts.find(x => x.slug === slug);
+      if (match) {
+        document.title = match.title + " - Bodi.az";
+        const root = document.getElementById("post-root");
+        if (root) {
+          const prose = root.querySelector(".prose");
+          if (prose && match.content) {
+            prose.innerHTML = match.content;
+          }
+          const h1 = root.querySelector("h1");
+          if (h1) h1.textContent = match.title;
+        }
+      }
+    });
+  }
 })();
 </script>
 </body>

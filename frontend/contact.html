@@ -122,12 +122,32 @@
   document.querySelector("[data-store='2']").src = BODI.phWide("sage", "Gənclik Mall");
 
   const btn = document.getElementById("contact-submit");
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", async () => {
     const form = document.getElementById("contact-form");
     if (!form.checkValidity()) { form.reportValidity(); return; }
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Göndərilir...';
     btn.disabled = true;
-    setTimeout(() => { btn.innerHTML = 'Təşəkkür edirik! <span class="material-symbols-outlined" style="font-size:18px">check</span>'; STORE.toast("Mesaj göndərildi!", "check"); }, 1400);
+
+    const inputs = form.querySelectorAll("input, textarea");
+    const payload = {
+      name: inputs[0]?.value || "",
+      phone: inputs[1]?.value || "",
+      email: inputs[2]?.value || "",
+      message: inputs[3]?.value || ""
+    };
+
+    try {
+      if (window.BODI_API) {
+        await BODI_API.submitContact(payload);
+      }
+      btn.innerHTML = 'Təşəkkür edirik! <span class="material-symbols-outlined" style="font-size:18px">check</span>';
+      STORE.toast("Mesajınız qəbul edildi!", "check");
+      form.reset();
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = 'Mesaj Göndər <span class="material-symbols-outlined" style="font-size:18px">send</span>';
+      STORE.toast(err.message || "Xəta baş verdi", "error");
+    }
   });
 </script>
 </body>

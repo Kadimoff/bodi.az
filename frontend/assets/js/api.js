@@ -1,5 +1,5 @@
-/* Bodi.az — WooCommerce Store API Client
-   Connects modern frontend to WordPress / WooCommerce Store API with seamless fallback. */
+/* Bodi.az — Real WooCommerce & WordPress Headless API Client
+   Full integration for real products, checkout, coupons, order tracking, blog, and WhatsApp direct buy. */
 (function (global) {
   "use strict";
 
@@ -7,29 +7,13 @@
   const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
   const DEFAULT_API_URL = isLocal ? 'http://localhost:8085' : 'https://api.bodi.az';
   const API_BASE = (window.BODI_CONFIG && window.BODI_CONFIG.apiUrl) || DEFAULT_API_URL;
-
-  const TOKEN_KEY = "bodi_cart_token_v1";
-  const NONCE_KEY = "bodi_cart_nonce_v1";
-
-  function getCartToken() { return localStorage.getItem(TOKEN_KEY) || ""; }
-  function setCartToken(t) { if (t) localStorage.setItem(TOKEN_KEY, t); }
-  function getNonce() { return localStorage.getItem(NONCE_KEY) || ""; }
-  function setNonce(n) { if (n) localStorage.setItem(NONCE_KEY, n); }
+  const WHATSAPP_NUMBER = (window.BODI_CONFIG && window.BODI_CONFIG.whatsapp) || "994501234567";
 
   function getHeaders() {
-    const h = { "Content-Type": "application/json" };
-    const token = getCartToken();
-    const nonce = getNonce();
-    if (token) h["Cart-Token"] = token;
-    if (nonce) h["Nonce"] = nonce;
-    return h;
-  }
-
-  function handleHeaders(res) {
-    const token = res.headers.get("Cart-Token") || res.headers.get("cart-token");
-    const nonce = res.headers.get("Nonce") || res.headers.get("nonce");
-    if (token) setCartToken(token);
-    if (nonce) setNonce(nonce);
+    return {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    };
   }
 
   // Transform WooCommerce Store API product to Bodi frontend product format
@@ -51,6 +35,14 @@
     const cleanDesc = (p.description || p.short_description || "")
       .replace(/<[^>]*>?/gm, "").trim();
 
+    // Real image handling: WP media upload or local high-res product photo
+    let imgSrc = "";
+    if (p.images && p.images.length > 0 && p.images[0].src) {
+      imgSrc = p.images[0].src;
+    } else {
+      imgSrc = `assets/images/products/${p.slug}.jpg`;
+    }
+
     return {
       id: p.id,
       slug: p.slug,
@@ -60,8 +52,9 @@
       price: rawPrice,
       old: isSale ? rawRegular : null,
       color: colorKey,
+      image: imgSrc,
       rating: Math.round(Number(p.average_rating) || 5),
-      reviews: Number(p.review_count) || (Math.floor(Math.random() * 50) + 20),
+      reviews: Number(p.review_count) || 24,
       badge: isSale ? `-${Math.round((1 - rawPrice / rawRegular) * 100)}%` : (p.on_sale ? "Endirim" : ""),
       isNew: !isSale,
       desc: cleanDesc,
@@ -71,14 +64,13 @@
 
   /* ---------- API METHODS ---------- */
 
-  // Load products from WooCommerce Store API
+  // Load real products from WooCommerce Store API
   async function fetchProducts() {
     try {
       const res = await fetch(`${API_BASE}/wp-json/wc/store/v1/products?per_page=100`, {
         headers: getHeaders()
       });
       if (!res.ok) throw new Error("WP API returned HTTP " + res.status);
-      handleHeaders(res);
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         const mapped = data.map(transformProduct);
@@ -89,78 +81,128 @@
         return mapped;
       }
     } catch (err) {
-      console.warn("[Bodi API] WordPress API not reachable, using offline fallback data:", err.message);
+      console.warn("[Bodi API] WordPress API unreachable, using offline fallback:", err.message);
     }
     return global.BODI ? global.BODI.PRODUCTS : [];
   }
 
-  // Add item to WooCommerce Cart
-  async function addToCart(productId, qty, variation) {
-    try {
-      const res = await fetch(`${API_BASE}/wp-json/wc/store/v1/cart/add-item`, {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify({
-          id: productId,
-          quantity: qty || 1,
-          variation: variation || []
-        })
-      });
-      handleHeaders(res);
-      if (res.ok) {
-        return await res.json();
-      }
-    } catch (err) {
-      console.warn("[Bodi API] Cart sync failed, staying with local storage:", err.message);
+  // Real Order Creation in WooCommerce
+  async function submitCheckout(payload) {
+    const res = await fetch(`${API_BASE}/wp-json/bodi/v1/checkout`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok || data.code) {
+      throw new Error(data.message || "Sifariş zamanı xəta baş verdi.");
     }
-    return null;
+    return data;
   }
 
-  // Get current WooCommerce Cart
-  async function getCart() {
+  // Real Order Tracking from WooCommerce
+  async function trackOrder(orderId) {
+    const res = await fetch(`${API_BASE}/wp-json/bodi/v1/track-order?order_id=${encodeURIComponent(orderId)}`, {
+      headers: getHeaders()
+    });
+    const data = await res.json();
+    if (!res.ok || data.code) {
+      throw new Error(data.message || "Sifariş tapılmadı.");
+    }
+    return data;
+  }
+
+  // Real Blog Posts from WordPress
+  async function fetchPosts() {
     try {
-      const res = await fetch(`${API_BASE}/wp-json/wc/store/v1/cart`, {
+      const res = await fetch(`${API_BASE}/wp-json/wp/v2/posts?_embed&per_page=20`, {
         headers: getHeaders()
       });
-      handleHeaders(res);
-      if (res.ok) {
-        return await res.json();
-      }
+      if (!res.ok) throw new Error("WP Posts API error");
+      const data = await res.json();
+      return data.map(post => {
+        let catName = "Geyim";
+        if (post._embedded && post._embedded['wp:term'] && post._embedded['wp:term'][0] && post._embedded['wp:term'][0][0]) {
+          catName = post._embedded['wp:term'][0][0].name;
+        }
+        let featuredImg = "";
+        if (post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0]) {
+          featuredImg = post._embedded['wp:featuredmedia'][0].source_url;
+        }
+        return {
+          id: post.id,
+          slug: post.slug,
+          title: post.title.rendered,
+          cat: catName,
+          excerpt: post.excerpt.rendered.replace(/<[^>]*>?/gm, "").trim(),
+          content: post.content.rendered,
+          date: new Date(post.date).toLocaleDateString("az-AZ", { day: 'numeric', month: 'short', year: 'numeric' }),
+          image: featuredImg,
+          read: 5
+        };
+      });
     } catch (err) {
-      console.warn("[Bodi API] Fetch cart failed:", err.message);
+      console.warn("[Bodi API] Error fetching posts:", err.message);
+      return [];
     }
-    return null;
   }
 
-  // Checkout submission
-  async function checkout(orderData) {
-    try {
-      const res = await fetch(`${API_BASE}/wp-json/wc/store/v1/checkout`, {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify(orderData)
-      });
-      handleHeaders(res);
-      return await res.json();
-    } catch (err) {
-      console.error("[Bodi API] Checkout failed:", err);
-      throw err;
+  // Real Contact Form submission
+  async function submitContact(payload) {
+    const res = await fetch(`${API_BASE}/wp-json/bodi/v1/contact`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok || data.code) {
+      throw new Error(data.message || "Mesaj göndərilə bilmədi.");
     }
+    return data;
+  }
+
+  // WhatsApp 1-Click Buy Link Generator
+  function getWhatsAppBuyUrl(product, size, color, qty) {
+    const count = qty || 1;
+    const pageUrl = window.location.href;
+    const priceText = product.price ? product.price + " ₼" : "";
+    
+    let msg = `Salam, Bodi.az saytından bu məhsulu sifariş etmək istəyirəm:\n\n`;
+    msg += `🛍️ Məhsul: ${product.name}\n`;
+    if (color) msg += `🎨 Rəng: ${color}\n`;
+    if (size) msg += `📏 Ölçü: ${size}\n`;
+    msg += `🔢 Say: ${count} ədəd\n`;
+    if (priceText) msg += `💰 Qiymət: ${priceText}\n`;
+    msg += `🔗 Link: ${pageUrl}\n\n`;
+    msg += `Zəhmət olmasa çatdırılma üçün qeydə alasınız.`;
+
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  }
+
+  // WhatsApp Cart Order Link Generator
+  function getWhatsAppCartUrl(cartItems, total) {
+    let msg = `Salam, Bodi.az saytından səbətimdəki məhsulları sifariş etmək istəyirəm:\n\n`;
+    cartItems.forEach((it, idx) => {
+      msg += `${idx + 1}. ${it.product.name} — ${it.item.qty} ədəd (${it.item.size || ''} / ${it.item.color || ''}) — ${it.line.toFixed(2)} ₼\n`;
+    });
+    msg += `\n💰 Yekun Məbləğ: ${total.toFixed(2)} ₼\n`;
+    msg += `Zəhmət olmasa çatdırılma üçün qeydə alasınız.`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   }
 
   global.BODI_API = {
     API_BASE,
+    WHATSAPP_NUMBER,
     fetchProducts,
-    addToCart,
-    getCart,
-    checkout,
+    submitCheckout,
+    trackOrder,
+    fetchPosts,
+    submitContact,
+    getWhatsAppBuyUrl,
+    getWhatsAppCartUrl,
     transformProduct
   };
 
-  // Auto-initialize products on DOM ready
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", fetchProducts);
-  } else {
-    fetchProducts();
-  }
+  // Auto-fetch products on script load
+  fetchProducts();
 })(window);

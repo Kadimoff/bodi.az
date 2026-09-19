@@ -101,6 +101,17 @@
   document.getElementById("load-more").addEventListener("click", () => { visible += 6; render(); });
 
   render();
+
+  if (window.BODI_API) {
+    BODI_API.fetchPosts().then(wpPosts => {
+      if (wpPosts && wpPosts.length > 0) {
+        // Merge or replace with live WordPress posts
+        POSTS.length = 0;
+        wpPosts.forEach(p => POSTS.push(p));
+        render();
+      }
+    });
+  }
 })();
 </script>
 </body>

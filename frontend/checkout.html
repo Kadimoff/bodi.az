@@ -48,10 +48,10 @@
       <section id="shipping-section" class="bg-surface-container-lowest rounded-2xl p-lg card-ambient">
         <h2 class="font-headline-md text-headline-md text-on-surface mb-md">Çatdırılma Məlumatları</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-          <div class="md:col-span-2"><label class="font-label-md text-label-md text-on-surface block mb-2">Ad və Soyad</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Məsələn: Leyla Əliyeva" required></div>
-          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Telefon Nömrəsi</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="+994 -- --- -- --" required></div>
-          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Şəhər</label><select class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none"><option>Bakı</option><option>Sumqayıt</option><option>Gəncə</option></select></div>
-          <div class="md:col-span-2"><label class="font-label-md text-label-md text-on-surface block mb-2">Ünvan</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Küçə adı, bina, mənzil..." required></div>
+          <div class="md:col-span-2"><label class="font-label-md text-label-md text-on-surface block mb-2">Ad və Soyad</label><input id="ship-name" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Məsələn: Leyla Əliyeva" required value="Leyla Əliyeva"></div>
+          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Telefon Nömrəsi</label><input id="ship-phone" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="+994 50 123 45 67" required value="+994 50 123 45 67"></div>
+          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Şəhər</label><select id="ship-city" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none"><option>Bakı</option><option>Sumqayıt</option><option>Gəncə</option></select></div>
+          <div class="md:col-span-2"><label class="font-label-md text-label-md text-on-surface block mb-2">Ünvan</label><input id="ship-address" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Küçə adı, bina, mənzil..." required value="Nizami küçəsi 45, mənzil 12"></div>
           <div><label class="font-label-md text-label-md text-on-surface block mb-2">Poçt İndeksi</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="AZ1000"></div>
         </div>
       </section>
@@ -128,7 +128,7 @@
   const t = STORE.cartTotals();
   document.getElementById("summary-items").innerHTML = rows.map(r => `
     <div class="flex gap-3 items-center">
-      <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-lowest flex-shrink-0"><img src="${BODI.ph(r.product.color, r.product.name)}" class="w-full h-full object-cover"></div>
+      <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-lowest flex-shrink-0"><img src="${BODI.getProductImage(r.product)}" class="w-full h-full object-cover"></div>
       <div class="flex-grow min-w-0">
         <div class="font-body-sm text-body-sm text-on-surface clamp-2">${r.product.name}</div>
         <div class="font-body-sm text-body-sm text-on-surface-variant">${r.item.qty} × ${BODI.money(r.product.price)}</div>
@@ -160,15 +160,82 @@
     });
     document.querySelectorAll(".step-line").forEach((l, i) => { l.classList.toggle("bg-primary", i < step - 1); l.classList.toggle("bg-surface-variant", i >= step - 1); });
   }
-  next.addEventListener("click", () => {
-    if (step < 3) { setStep(step + 1); next.innerHTML = step === 3 ? 'Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>' : 'Ödənişə keç <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>'; window.scrollTo({ top: 0, behavior: "smooth" }); }
-    else {
-      next.disabled = true; next.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> İşlənilir...';
-      setTimeout(() => {
+  next.addEventListener("click", async () => {
+    if (step < 3) {
+      // Validate step 1 fields
+      if (step === 1) {
+        const nameVal = (document.getElementById("ship-name")?.value || "").trim();
+        const phoneVal = (document.getElementById("ship-phone")?.value || "").trim();
+        const addrVal = (document.getElementById("ship-address")?.value || "").trim();
+        if (!nameVal || !phoneVal || !addrVal) {
+          STORE.toast("Zəhmət olmasa çatdırılma xanalarını doldurun!", "warning");
+          return;
+        }
+      }
+      setStep(step + 1);
+      next.innerHTML = step === 3 ? 'Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>' : 'Yoxlamağa keç <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>';
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const cartItems = STORE.getCart();
+      if (!cartItems.length) {
+        STORE.toast("Səbət boşdur!", "shopping_bag");
+        location.href = "category.html";
+        return;
+      }
+
+      next.disabled = true;
+      next.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Sifariş qeydə alınır...';
+
+      const fullName = (document.getElementById("ship-name")?.value || "Müştəri").trim();
+      const parts = fullName.split(" ");
+      const firstName = parts[0] || "Müştəri";
+      const lastName = parts.slice(1).join(" ") || "";
+      const phone = (document.getElementById("ship-phone")?.value || "").trim();
+      const city = (document.getElementById("ship-city")?.value || "Bakı").trim();
+      const address = (document.getElementById("ship-address")?.value || "").trim();
+
+      const activePay = document.querySelector(".pay-opt.border-primary");
+      const payMethod = activePay?.getAttribute("data-pay") || "cod";
+      const coupon = localStorage.getItem("bodi_coupon") || "";
+
+      const orderPayload = {
+        billing: {
+          first_name: firstName,
+          last_name: lastName,
+          phone: phone,
+          email: "alici@bodi.az",
+          city: city,
+          address_1: address,
+          note: "Bodi.az veb saytından onlayn sifariş"
+        },
+        payment_method: payMethod,
+        coupon: coupon,
+        items: cartItems.map(i => {
+          const prod = BODI.getById(i.id);
+          return {
+            id: i.id,
+            slug: prod ? prod.slug : "",
+            qty: i.qty,
+            size: i.size || "",
+            color: i.color || ""
+          };
+        })
+      };
+
+      try {
+        const result = await BODI_API.submitCheckout(orderPayload);
         STORE.clearCart();
-        STORE.toast("Sifarişiniz qəbul edildi!", "check_circle");
-        setTimeout(() => location.href = "track-order.html?ok=1", 1200);
-      }, 1600);
+        localStorage.removeItem("bodi_coupon");
+        STORE.toast("Sifarişiniz qəbul edildi! #" + result.order_id, "check_circle");
+        setTimeout(() => {
+          location.href = "track-order.html?id=" + result.order_id + "&new=1";
+        }, 1000);
+      } catch (err) {
+        console.error("Checkout error:", err);
+        STORE.toast(err.message || "Xəta baş verdi, yenidən cəhd edin.", "error");
+        next.disabled = false;
+        next.innerHTML = 'Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>';
+      }
     }
   });
 })();

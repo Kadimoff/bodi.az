@@ -82,11 +82,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
           <div class="bg-surface-container-low rounded-xl p-md">
             <div class="font-label-sm text-label-sm text-on-surface-variant mb-2 flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">location_on</span>Çatdırılma ünvanı</div>
-            <p class="font-body-md text-body-md text-on-surface">Bakı ş., Nərimanov r., Atatürk pr. 45, mənzil 12</p>
+            <p id="r-address" class="font-body-md text-body-md text-on-surface">—</p>
           </div>
           <div class="bg-surface-container-low rounded-xl p-md">
             <div class="font-label-sm text-label-sm text-on-surface-variant mb-2 flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">inventory_2</span>Sifariş daxili</div>
-            <p class="font-body-md text-body-md text-on-surface">2× Üzvi Pambıq Bodi (Ağ)<br>1× Körpə Papağı</p>
+            <p id="r-items" class="font-body-md text-body-md text-on-surface">—</p>
           </div>
         </div>
       </div>
@@ -116,31 +116,82 @@
 <script src="assets/js/layout.js"></script>
 <script>
 (function () {
-  if (typeof BODI === "undefined") return;
   const btn = document.getElementById("track-btn");
-  // Auto-show result if checkout redirected with success
-  if (new URLSearchParams(location.search).get("ok")) {
-    setTimeout(() => run(true), 400);
+  const queryId = new URLSearchParams(location.search).get("id");
+  if (queryId) {
+    const input = document.getElementById("track-id");
+    if (input) input.value = queryId;
+    setTimeout(() => runTrack(queryId), 300);
   }
-  function run(force) {
-    const id = document.getElementById("track-id").value.trim();
-    const email = document.getElementById("track-email").value.trim();
-    if (!force && (!id || !email)) { document.getElementById("track-form").reportValidity(); return; }
+
+  async function runTrack(targetId) {
+    const id = (targetId || document.getElementById("track-id").value).trim();
+    if (!id) {
+      document.getElementById("track-form").reportValidity();
+      return;
+    }
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Yoxlanılır...';
     btn.disabled = true;
-    setTimeout(() => {
+
+    try {
+      const data = await BODI_API.trackOrder(id);
       btn.innerHTML = 'İzlə <span class="material-symbols-outlined" style="font-size:18px">my_location</span>';
       btn.disabled = false;
+
       document.getElementById("track-default").classList.add("hidden");
       const r = document.getElementById("track-result");
       r.classList.remove("hidden");
       r.classList.add("fade-in-up");
-      if (id) document.getElementById("r-id").textContent = id;
+
+      document.getElementById("r-id").textContent = "#" + data.order_number;
+      
+      const badge = r.querySelector(".rounded-full.bg-primary-fixed\\/40, [class*='rounded-full']");
+      const badgeText = document.getElementById("r-status-badge") || r.querySelector(".font-label-md.text-label-md.text-primary");
+      if (badgeText) badgeText.textContent = data.status_label;
+
+      const addrEl = document.getElementById("r-address");
+      if (addrEl) addrEl.textContent = (data.city ? data.city + ", " : "") + (data.address || "Ünvan qeyd olunmayıb") + " (" + (data.customer_name || "") + ")";
+
+      const itemsEl = document.getElementById("r-items");
+      if (itemsEl && data.items) {
+        itemsEl.innerHTML = data.items.map(it => `${it.qty}× ${it.name} ${it.size ? "(" + it.size + ")" : ""} — ${it.total} ₼`).join("<br>") + `<br><strong>Cəmi: ${data.total} ₼</strong>`;
+      }
+
+      // Update stepper rings opacity based on data.step (1..4)
+      const steps = document.querySelectorAll("#track-stepper > div.relative");
+      steps.forEach((st, idx) => {
+        const stepNum = idx + 1;
+        if (stepNum <= data.step) {
+          st.classList.remove("opacity-40");
+          st.classList.add("opacity-100");
+          const ring = st.querySelector(".rounded-full");
+          if (ring) {
+            ring.className = "w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center";
+          }
+        } else {
+          st.classList.add("opacity-40");
+          st.classList.remove("opacity-100");
+          const ring = st.querySelector(".rounded-full");
+          if (ring) {
+            ring.className = "w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center";
+          }
+        }
+      });
+
       r.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      STORE.toast("Sifariş tapıldı", "check_circle");
-    }, 1200);
+      STORE.toast("Sifariş tapıldı: #" + data.order_number, "check_circle");
+    } catch (err) {
+      console.error(err);
+      btn.innerHTML = 'İzlə <span class="material-symbols-outlined" style="font-size:18px">my_location</span>';
+      btn.disabled = false;
+      STORE.toast(err.message || "Sifariş tapılmadı", "error");
+    }
   }
-  btn.addEventListener("click", () => run(false));
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    runTrack();
+  });
 })();
 </script>
 </body>

@@ -68,6 +68,10 @@
         </form>
 
         <a id="checkout-link" href="checkout.html" class="mt-md block text-center bg-primary text-on-primary font-label-md text-label-md py-4 rounded-lg hover:bg-primary-container transition-colors shadow-sm">Ödənişə keç</a>
+        <button id="cart-whatsapp" class="w-full mt-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-label-md text-label-md py-3 rounded-lg flex items-center justify-center gap-2 transition-all shadow-sm">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.155.57 4.178 1.564 5.929l-1.564 5.903 6.077-1.595c1.701.928 3.65 1.763 5.923 1.763 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg>
+          WhatsApp ilə sifariş et
+        </button>
         <p class="font-body-sm text-body-sm text-on-surface-variant text-center mt-3">Ödənişi tamamlayaraq bizim Şərtlər və Qaydalarımızı qəbul etmiş olursunuz.</p>
 
         <div class="flex justify-around mt-md pt-md border-t border-surface-variant">
@@ -109,7 +113,7 @@
     document.getElementById("cart-items").innerHTML = rows.map(r => `
       <div class="bg-surface-container-lowest rounded-2xl p-md card-ambient flex gap-md items-center">
         <a href="product.html?p=${r.product.slug}" class="w-24 h-28 sm:w-28 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container-low">
-          <img src="${BODI.ph(r.product.color, r.product.name)}" class="w-full h-full object-cover" alt="${r.product.name}">
+          <img src="${BODI.getProductImage(r.product)}" class="w-full h-full object-cover" alt="${r.product.name}">
         </a>
         <div class="flex-grow min-w-0">
           <div class="flex justify-between gap-2">
@@ -141,18 +145,56 @@
     document.querySelectorAll("[data-plus]").forEach(b => b.addEventListener("click", () => { const i = Number(b.getAttribute("data-plus")); const c = STORE.getCart()[i]; STORE.updateQty(i, c.qty + 1); render(); }));
 
     const t = STORE.cartTotals();
+    let discount = 0;
+    if (appliedCoupon === "BODI10") {
+      discount = t.subtotal * 0.10;
+    } else if (appliedCoupon === "BODI5") {
+      discount = Math.min(5, t.subtotal);
+    }
+    const finalTotal = Math.max(0, t.subtotal - discount + t.shipping);
     document.getElementById("sum-subtotal").textContent = BODI.money(t.subtotal);
     document.getElementById("sum-ship").textContent = t.shipping === 0 ? "Pulsuz" : BODI.money(t.shipping);
-    document.getElementById("sum-total").textContent = BODI.money(t.total);
+    document.getElementById("sum-total").textContent = BODI.money(finalTotal);
     document.getElementById("free-ship-note").classList.toggle("hidden", t.freeShipRemaining === 0 || t.shipping === 0);
     if (t.freeShipRemaining > 0) document.getElementById("free-ship-note").textContent = `Pulsuz çatdırılma üçün ${BODI.money(t.freeShipRemaining)} daha əlavə edin.`;
   }
 
+  let appliedCoupon = localStorage.getItem("bodi_coupon") || "";
+  if (appliedCoupon) {
+    const input = document.getElementById("promo");
+    if (input) input.value = appliedCoupon;
+  }
+
   document.getElementById("promo-btn").addEventListener("click", () => {
     const v = document.getElementById("promo").value.trim().toUpperCase();
-    if (v === "BODI10") STORE.toast("Promokod tətbiq edildi: -10%", "local_activity");
-    else STORE.toast("Yanlış promokod", "error");
+    if (v === "BODI10" || v === "BODI5") {
+      appliedCoupon = v;
+      localStorage.setItem("bodi_coupon", v);
+      STORE.toast("Promokod tətbiq edildi: " + v, "local_activity");
+      render();
+    } else if (!v) {
+      appliedCoupon = "";
+      localStorage.removeItem("bodi_coupon");
+      STORE.toast("Promokod silindi", "info");
+      render();
+    } else {
+      STORE.toast("Yanlış və ya bitmiş promokod", "error");
+    }
   });
+
+  const waCartBtn = document.getElementById("cart-whatsapp");
+  if (waCartBtn && window.BODI_API) {
+    waCartBtn.addEventListener("click", () => {
+      const rows = STORE.cartDetailed();
+      const t = STORE.cartTotals();
+      if (!rows.length) {
+        STORE.toast("Səbət boşdur!", "shopping_bag");
+        return;
+      }
+      const url = BODI_API.getWhatsAppCartUrl(rows, t.total);
+      window.open(url, "_blank");
+    });
+  }
 
   render();
 })();

@@ -107,9 +107,15 @@
   }
 
   // Renders a product card. `wished` toggles heart fill.
+  function getProductImage(p) {
+    if (p && p.image) return p.image;
+    if (p && p.slug) return "assets/images/products/" + p.slug + ".jpg";
+    return ph(p ? p.color : "cream", p ? p.name : "");
+  }
+
   function card(p, opts) {
     opts = opts || {};
-    const img = ph(p.color, p.name);
+    const img = getProductImage(p);
     const wished = opts.wished ? "ms-fill text-secondary" : "";
     const tag = p.badge
       ? `<span class="${p.badge.includes('%') ? 'bg-error-container text-on-error-container' : 'bg-primary/10 text-primary'} font-label-sm text-[10px] px-2 py-1 rounded-full uppercase tracking-wider">${p.badge}</span>`
@@ -199,6 +205,7 @@
   }
 
   global.BODI = {
+    getProductImage,
     COLORS, SIZES, PRODUCTS, CAT_NAMES, REVIEWS,
     ph, phWide, money, stars, card,
     getBySlug, getById, getByCat, getNew, getSale, related,
