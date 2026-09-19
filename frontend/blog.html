@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bodi.az - Bloq</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=73ee4108">
+<script src="assets/js/tw-config.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
+
+<div id="site-header"></div>
+
+<main class="flex-grow w-full max-w-container-max mx-auto px-4 md:px-gutter py-md md:py-xl">
+  <nav aria-label="Breadcrumb" class="mb-lg">
+    <ol class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+      <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
+      <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
+      <li aria-current="page" class="text-primary font-medium">Bloq</li>
+    </ol>
+  </nav>
+
+  <div class="max-w-2xl mb-lg">
+    <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Valideynlər üçün faydalı məsləhətlər</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Körpənizin sağlamlığı, geyimi və inkişafı üçün mütəxəssis tövsiyələri və gündəlik həyatınızı asanlaşdıracaq məqalələr.</p>
+  </div>
+
+  <!-- Category chips -->
+  <div class="flex flex-wrap gap-2 mb-xl" id="chips">
+    <button class="chip bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md" data-cat="all">Hamısı</button>
+    <button class="chip bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest px-4 py-2 rounded-full font-label-md text-label-md" data-cat="Qulluq">Qulluq</button>
+    <button class="chip bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest px-4 py-2 rounded-full font-label-md text-label-md" data-cat="Geyim">Geyim seçimi</button>
+    <button class="chip bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest px-4 py-2 rounded-full font-label-md text-label-md" data-cat="Yeni doğulanlar">Yeni doğulanlar</button>
+    <button class="chip bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest px-4 py-2 rounded-full font-label-md text-label-md" data-cat="Qidalanma">Qidalanma</button>
+  </div>
+
+  <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md"></div>
+  <div class="text-center mt-xl">
+    <button id="load-more" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-full font-label-md text-label-md hover:bg-primary-fixed/20 transition-colors">
+      Daha çox yüklə <span class="material-symbols-outlined" style="font-size:18px">expand_more</span>
+    </button>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<div id="mobile-nav"></div>
+
+<script src="assets/js/products.js?v=7dccd3e5"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/layout.js"></script>
+<script>
+(function () {
+  const POSTS = [
+    { id: 1, slug: "korp-ilk-gunler", cat: "Yeni doğulanlar", title: "Körpə üçün ilk günlərdə necə qulluq etməli?", read: 5, date: "15 Okt 2024", color: "cream", excerpt: "Yeni doğulan körpənizlə evə qayıtdığınız ilk günlər həm həyəcanlı, həm də çətin ola bilər. Bu dövrdə nələrə diqqət etməli olduğunuzu sadə dildə izah edirik." },
+    { id: 2, slug: "niye-org-pambiq", cat: "Geyim", title: "Niyə orqanik pambıq seçməlisiniz?", read: 4, date: "10 Okt 2024", color: "sage", excerpt: "Körpə dərisi yetkin insandan daha incə və həssasdır. Orqanik pambığın üstünlükləri və nə üçün vacib olduğunu birlikdə araşdırırıq." },
+    { id: 3, slug: "cimmek-rutini", cat: "Qulluq", title: "Rahatladıcı çimmək rutini necə yaradılmalı?", read: 6, date: "05 Okt 2024", color: "sky", excerpt: "Çimmək vaxtı körpə üçün sakitləşdirici bir ritual ola bilər. Doğru temperatur, məhsullar və yanaşma ilə bu prosesi hər ikiniz üçün də xoş edin." },
+    { id: 4, slug: "emzirme-yararli-maslahetler", cat: "Qidalanma", title: "Emzirmə zamanı faydalı məsləhətlər", read: 7, date: "28 Sentyabr 2024", color: "peach", excerpt: "Emzirmə ana və körpə üçün xüsusi bir bağdır. Bu prosesi asanlaşdıran praktik tövsiyələri və çətinliklərin öhdəsindən gəlmə yollarını bölüşürük." },
+    { id: 5, slug: "uyku-duzeni", cat: "Qulluq", title: "Körpədə sağlam yuxu düzeni qurmaq", read: 5, date: "20 Sentyabr 2024", color: "lavender", excerpt: "Yaxşı yuxu körpənin inkişafı üçün vacibdir. Yuxu düzenini tədricən qurmaq və gece oyanmalarını azaltmaq üçün işə yarayan üsullar." },
+    { id: 6, slug: "geyim-olcu-secimi", cat: "Geyim", title: "Doğru geyim ölçüsünü necə seçməli?", read: 4, date: "12 Sentyabr 2024", color: "beige", excerpt: "Körpələr sürətlə böyüyür və doğru ölçü seçimi rahatlıq üçün açar rol oynayır. Yaş aralıqlarına görə ölçü seçim bələdçisi." },
+    { id: 7, slug: "ilk-beden-mexsusiyetleri", cat: "Yeni doğulanlar", title: "Yeni doğulanın bədən xüsusiyyətləri", read: 6, date: "04 Sentyabr 2024", color: "rose", excerpt: "İlk həftələrdə körpədə gördüyünüz bir çox vəziyyət tamamilə normaldır. Nə vaxt həkimə müraciət etməli olduğunuzu öyrənin." },
+    { id: 8, slug: "ekoloji-bebek-giyim", cat: "Geyim", title: "Ekoloji və davamlı körpə geyimi", read: 5, date: "28 Avqust 2024", color: "mustard", excerpt: "Gələcək nəsillər üçün planeti qorumaq bugündən başlayır. Davamlı materiallar və etik istehsalın əhəmiyyəti." },
+    { id: 9, slug: "dovshe-qudasinda-dikkat", cat: "Qidalanma", title: "Əlavə qidalara keçiddə diqqət edilməli olanlar", read: 7, date: "15 Avqust 2024", color: "terracotta", excerpt: "6-cı aydan başlayan əlavə qidalar körpənin dad dünyasını genişləndirir. Hansı qidalarla başlamalı və necə tədricən tətbiq etməli?" }
+  ];
+
+  let visible = 6;
+  let activeCat = "all";
+
+  function render() {
+    const list = (activeCat === "all" ? POSTS : POSTS.filter(p => p.cat === activeCat)).slice(0, visible);
+    document.getElementById("blog-grid").innerHTML = list.map(p => `
+      <article class="bg-surface-container-lowest rounded-2xl overflow-hidden card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal">
+        <a href="blog-post.html?b=${p.slug}" class="relative aspect-[16/10] overflow-hidden block">
+          <img src="${BODI.ph(p.color, p.cat)}" class="w-full h-full object-cover" alt="${p.title}">
+          <span class="absolute top-3 left-3 bg-surface/90 backdrop-blur-sm text-primary font-label-sm text-label-sm px-3 py-1 rounded-full">${p.cat}</span>
+        </a>
+        <div class="p-md flex-grow flex flex-col">
+          <div class="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant mb-2">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">schedule</span>${p.read} dəq</span>
+            <span>•</span><span>${p.date}</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface mb-2 clamp-2">${p.title}</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant clamp-3 mb-md">${p.excerpt}</p>
+          <a href="blog-post.html?b=${p.slug}" class="mt-auto inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all">Oxu <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span></a>
+        </div>
+      </article>`).join("");
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
+    document.getElementById("load-more").style.display = visible >= (activeCat === "all" ? POSTS.length : POSTS.filter(p => p.cat === activeCat).length) ? "none" : "inline-flex";
+  }
+
+  document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach(x => { x.className = "chip bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest px-4 py-2 rounded-full font-label-md text-label-md"; });
+    c.className = "chip bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md";
+    activeCat = c.getAttribute("data-cat"); visible = 6; render();
+  }));
+  document.getElementById("load-more").addEventListener("click", () => { visible += 6; render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>

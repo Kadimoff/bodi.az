@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kateqoriya - Bodi.az</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=73ee4108">
+<script src="assets/js/tw-config.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
+
+<div id="site-header"></div>
+
+<main class="flex-grow w-full max-w-container-max mx-auto px-4 md:px-gutter py-md md:py-xl">
+  <!-- Breadcrumbs -->
+  <nav aria-label="Breadcrumb" class="mb-lg">
+    <ol class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant flex-wrap">
+      <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
+      <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
+      <li id="crumb-current" aria-current="page" class="text-primary font-medium">Bodilər</li>
+    </ol>
+  </nav>
+
+  <!-- Header + sort -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-lg gap-4">
+    <div>
+      <h1 id="cat-title" class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Bodilər</h1>
+      <p id="cat-count" class="font-body-md text-body-md text-on-surface-variant">—</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <button id="filter-toggle" class="md:hidden flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-full font-label-md text-label-md text-on-surface bg-surface-container-lowest">
+        <span class="material-symbols-outlined" style="font-size:18px">tune</span> Filtrlər
+      </button>
+      <div class="relative">
+        <button id="sort-btn" class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-full font-label-md text-label-md text-on-surface bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
+          <span id="sort-label">Ən yenilər</span> <span class="material-symbols-outlined" style="font-size:18px">keyboard_arrow_down</span>
+        </button>
+        <div id="sort-menu" class="absolute right-0 top-full mt-2 w-56 bg-surface-container-lowest border border-surface-variant rounded-lg shadow-ambient-md z-20 hidden">
+          <ul class="py-2">
+            <li><a data-sort="new" class="sort-opt block px-4 py-2 font-body-sm text-body-sm hover:bg-surface-container-low transition-colors" href="#">Ən yenilər</a></li>
+            <li><a data-sort="popular" class="sort-opt block px-4 py-2 font-body-sm text-body-sm hover:bg-surface-container-low transition-colors" href="#">Ən çox satılanlar</a></li>
+            <li><a data-sort="price-asc" class="sort-opt block px-4 py-2 font-body-sm text-body-sm hover:bg-surface-container-low transition-colors" href="#">Qiymət: aşağıdan yuxarı</a></li>
+            <li><a data-sort="price-desc" class="sort-opt block px-4 py-2 font-body-sm text-body-sm hover:bg-surface-container-low transition-colors" href="#">Qiymət: yuxarıdan aşağı</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-xl">
+    <!-- Filters -->
+    <aside id="filters" class="hidden md:block w-64 flex-shrink-0">
+      <div class="space-y-lg md:sticky md:top-24">
+        <div class="border-b border-surface-variant pb-6">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Yaş (Ay)</h3>
+          <div class="space-y-3" id="filter-age">
+            <label class="flex items-center gap-3 cursor-pointer group"><input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary" type="checkbox" value="0-3"><span class="font-body-md text-body-md text-on-surface group-hover:text-primary">0-3 ay</span></label>
+            <label class="flex items-center gap-3 cursor-pointer group"><input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary" type="checkbox" value="3-6"><span class="font-body-md text-body-md text-on-surface group-hover:text-primary">3-6 ay</span></label>
+            <label class="flex items-center gap-3 cursor-pointer group"><input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary" type="checkbox" value="6-9"><span class="font-body-md text-body-md text-on-surface group-hover:text-primary">6-9 ay</span></label>
+            <label class="flex items-center gap-3 cursor-pointer group"><input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary" type="checkbox" value="9-12"><span class="font-body-md text-body-md text-on-surface group-hover:text-primary">9-12 ay</span></label>
+          </div>
+        </div>
+        <div class="border-b border-surface-variant pb-6">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Material</h3>
+          <div class="space-y-3" id="filter-mat">
+            <label class="flex items-center gap-3 cursor-pointer group"><input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary" type="checkbox" value="100% Pambıq"><span class="font-body-md text-body-md text-on-surface group-hover:text-primary">100% Pambıq</span></label>
+            <label class="flex items-center gap-3 cursor-pointer group"><input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary" type="checkbox" value="Orqanik Pambıq"><span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Orqanik Pambıq</span></label>
+            <label class="flex items-center gap-3 cursor-pointer group"><input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary" type="checkbox" value="Kətan"><span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Kətan Qarışığı</span></label>
+          </div>
+        </div>
+        <div class="border-b border-surface-variant pb-6">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Rəng</h3>
+          <div class="flex flex-wrap gap-2" id="filter-color">
+            <button aria-label="Cream" data-color="cream" class="w-8 h-8 rounded-full border border-outline-variant shadow-sm hover:scale-110 transition-transform" style="background:#fdf9f3"></button>
+            <button aria-label="Beige" data-color="beige" class="w-8 h-8 rounded-full border border-outline-variant shadow-sm hover:scale-110 transition-transform" style="background:#ddd0ba"></button>
+            <button aria-label="Sage" data-color="sage" class="w-8 h-8 rounded-full border border-outline-variant shadow-sm hover:scale-110 transition-transform" style="background:#b8ccb5"></button>
+            <button aria-label="Peach" data-color="peach" class="w-8 h-8 rounded-full border border-outline-variant shadow-sm hover:scale-110 transition-transform" style="background:#f6c7b0"></button>
+            <button aria-label="Terracotta" data-color="terracotta" class="w-8 h-8 rounded-full border border-outline-variant shadow-sm hover:scale-110 transition-transform" style="background:#d99e80"></button>
+            <button aria-label="Lavender" data-color="lavender" class="w-8 h-8 rounded-full border border-outline-variant shadow-sm hover:scale-110 transition-transform" style="background:#c9bcdf"></button>
+          </div>
+        </div>
+        <div class="border-b border-surface-variant pb-6">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Qiymət (₼)</h3>
+          <div class="flex items-center gap-2">
+            <input id="price-min" class="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Min" type="number" min="0">
+            <span class="text-on-surface-variant">-</span>
+            <input id="price-max" class="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Max" type="number" min="0">
+          </div>
+        </div>
+        <div>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="font-body-md text-body-md text-on-surface font-medium">Yalnız endirimdəkilər</span>
+            <div class="relative">
+              <input id="filter-sale" class="sr-only peer" type="checkbox">
+              <div class="w-11 h-6 bg-surface-variant rounded-full peer peer-checked:bg-primary transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+            </div>
+          </label>
+        </div>
+        <button id="clear-filters" class="w-full px-4 py-2 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">Filtrləri təmizlə</button>
+      </div>
+    </aside>
+
+    <!-- Grid -->
+    <div class="flex-grow">
+      <div id="product-grid" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"></div>
+      <div id="empty-state" class="hidden text-center py-xl">
+        <span class="material-symbols-outlined text-[64px] text-outline-variant">search_off</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mt-md">Heç nə tapılmadı</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant mt-2">Filtrləri dəyişdirərək yenidən cəhd edin.</p>
+      </div>
+      <div id="pagination" class="mt-xl flex justify-center items-center gap-2"></div>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<div id="mobile-nav"></div>
+
+<script src="assets/js/products.js?v=7dccd3e5"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/layout.js"></script>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const cat = params.get("cat");
+  const filter = params.get("filter");
+  const query = params.get("q");
+
+  const titleEl = document.getElementById("cat-title");
+  const crumb = document.getElementById("crumb-current");
+
+  let base;
+  if (filter === "new") { base = BODI.getNew(); titleEl.textContent = crumb.textContent = "Yeni Kolleksiya"; }
+  else if (filter === "sale") { base = BODI.getSale(); titleEl.textContent = crumb.textContent = "Endirim"; }
+  else if (query) { base = BODI.PRODUCTS.filter(p => (p.name + " " + p.material).toLowerCase().includes(query.toLowerCase())); titleEl.textContent = crumb.textContent = "Axtarış: " + query; }
+  else { base = cat ? BODI.getByCat(cat) : BODI.PRODUCTS.slice(); titleEl.textContent = crumb.textContent = cat ? BODI.CAT_NAMES[cat] : "Bütün Məhsullar"; }
+
+  const state = { sort: "new", page: 1, perPage: 8 };
+
+  function applyFilters() {
+    let list = base.slice();
+    const ages = [...document.querySelectorAll("#filter-age input:checked")].map(i => i.value);
+    const mats = [...document.querySelectorAll("#filter-mat input:checked")].map(i => i.value);
+    const colors = [...document.querySelectorAll("#filter-color button.border-primary")].map(b => b.getAttribute("data-color"));
+    const min = parseFloat(document.getElementById("price-min").value) || 0;
+    const max = parseFloat(document.getElementById("price-max").value) || Infinity;
+    const saleOnly = document.getElementById("filter-sale").checked;
+
+    if (mats.length) list = list.filter(p => mats.some(m => p.material.includes(m)));
+    if (colors.length) list = list.filter(p => colors.includes(p.color));
+    if (saleOnly) list = list.filter(p => p.old);
+    list = list.filter(p => p.price >= min && p.price <= max);
+
+    if (state.sort === "popular") list.sort((a, b) => b.reviews - a.reviews);
+    else if (state.sort === "price-asc") list.sort((a, b) => a.price - b.price);
+    else if (state.sort === "price-desc") list.sort((a, b) => b.price - a.price);
+    else list.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+    return list;
+  }
+
+  function render() {
+    const all = applyFilters();
+    document.getElementById("cat-count").textContent = all.length + " məhsul tapıldı";
+    const pages = Math.max(1, Math.ceil(all.length / state.perPage));
+    if (state.page > pages) state.page = 1;
+    const slice = all.slice((state.page - 1) * state.perPage, state.page * state.perPage);
+    const grid = document.getElementById("product-grid");
+    const empty = document.getElementById("empty-state");
+    if (!slice.length) { grid.innerHTML = ""; empty.classList.remove("hidden"); document.getElementById("pagination").innerHTML = ""; return; }
+    empty.classList.add("hidden");
+    grid.innerHTML = slice.map(p => BODI.card(p)).join("");
+    renderPagination(pages);
+    // re-trigger reveal + wish state via layout observers
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
+    document.querySelectorAll("[data-wish]").forEach(btn => {
+      if (STORE.isWished(btn.getAttribute("data-wish"))) btn.querySelector("span").classList.add("ms-fill", "text-secondary");
+    });
+  }
+
+  function renderPagination(pages) {
+    const el = document.getElementById("pagination");
+    if (pages <= 1) { el.innerHTML = ""; return; }
+    let html = "";
+    html += `<button class="pg w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant ${state.page===1?'opacity-40':''}" data-p="${state.page-1}" ${state.page===1?'disabled':''}><span class="material-symbols-outlined" style="font-size:18px">chevron_left</span></button>`;
+    for (let i = 1; i <= pages; i++) {
+      html += `<button class="pg w-10 h-10 rounded-full flex items-center justify-center ${i===state.page?'bg-primary text-on-primary':'border border-outline-variant text-on-surface-variant hover:border-primary'} font-label-md text-label-md" data-p="${i}">${i}</button>`;
+    }
+    html += `<button class="pg w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant ${state.page===pages?'opacity-40':''}" data-p="${state.page+1}" ${state.page===pages?'disabled':''}><span class="material-symbols-outlined" style="font-size:18px">chevron_right</span></button>`;
+    el.innerHTML = html;
+    el.querySelectorAll(".pg").forEach(b => b.addEventListener("click", () => { state.page = Number(b.getAttribute("data-p")); render();
+  window.addEventListener("bodi:products-updated", function () {
+    if (filter === "new") { base = BODI.getNew(); }
+    else if (filter === "sale") { base = BODI.getSale(); }
+    else if (query) { base = BODI.PRODUCTS.filter(p => (p.name + " " + p.material).toLowerCase().includes(query.toLowerCase())); }
+    else { base = cat ? BODI.getByCat(cat) : BODI.PRODUCTS.slice(); }
+    render();
+  }); window.scrollTo({ top: 0, behavior: "smooth" }); }));
+  }
+
+  // Events
+  document.querySelectorAll("#filter-age input, #filter-mat input").forEach(i => i.addEventListener("change", () => { state.page = 1; render(); }));
+  document.querySelectorAll("#filter-color button").forEach(b => b.addEventListener("click", () => { b.classList.toggle("border-primary"); b.classList.toggle("border-2"); render(); }));
+  ["price-min", "price-max"].forEach(id => document.getElementById(id).addEventListener("input", () => { state.page = 1; render(); }));
+  document.getElementById("filter-sale").addEventListener("change", () => { state.page = 1; render(); });
+  document.getElementById("clear-filters").addEventListener("click", () => {
+    document.querySelectorAll("#filters input[type=checkbox]").forEach(i => i.checked = false);
+    document.querySelectorAll("#filter-color button").forEach(b => b.classList.remove("border-primary", "border-2"));
+    ["price-min", "price-max"].forEach(id => document.getElementById(id).value = "");
+    state.page = 1; render();
+  });
+  // Sort
+  document.getElementById("sort-btn").addEventListener("click", () => document.getElementById("sort-menu").classList.toggle("hidden"));
+  document.querySelectorAll(".sort-opt").forEach(o => o.addEventListener("click", (e) => {
+    e.preventDefault(); state.sort = o.getAttribute("data-sort"); document.getElementById("sort-label").textContent = o.textContent.trim();
+    document.getElementById("sort-menu").classList.add("hidden"); render();
+  }));
+  document.addEventListener("click", (e) => { if (!e.target.closest("#sort-btn") && !e.target.closest("#sort-menu")) document.getElementById("sort-menu").classList.add("hidden"); });
+  // Mobile filter toggle
+  document.getElementById("filter-toggle").addEventListener("click", () => {
+    const f = document.getElementById("filters");
+    f.classList.toggle("hidden");
+    f.classList.toggle("md:block");
+    f.classList.add("fixed", "inset-0", "z-50", "bg-surface", "overflow-auto", "p-gutter");
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

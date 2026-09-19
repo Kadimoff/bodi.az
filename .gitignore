@@ -1,0 +1,17 @@
+# Archives
+*.zip
+docker/*.zip
+docker/wp-cli.phar
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Keep directory structure
+!.gitkeep

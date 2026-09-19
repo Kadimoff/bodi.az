@@ -1,0 +1,220 @@
+/* Bodi.az — Serene Childhood custom styles */
+:root {
+  --primary: #4f614e;
+  --surface: #fdf9f3;
+  --on-surface: #1c1c18;
+  --on-surface-variant: #434842;
+  --outline-variant: #c4c8c0;
+}
+
+* { -webkit-font-smoothing: antialiased; }
+
+body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
+  user-select: none;
+}
+.ms-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+/* Soft product card shadow + lift */
+.card-ambient { box-shadow: 0px 10px 30px rgba(62, 61, 57, 0.05); }
+.card-ambient:hover { box-shadow: 0px 18px 44px rgba(62, 61, 57, 0.10); }
+
+/* Hide scrollbar (horizontal sliders) */
+.hide-scroll::-webkit-scrollbar { display: none; }
+.hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Line clamp helpers */
+.clamp-2 {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-3 {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Accordion */
+.acc-body { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+.acc-item.open .acc-body { max-height: 600px; }
+.acc-item.open .acc-arrow { transform: rotate(180deg); }
+.acc-arrow { transition: transform .3s ease; }
+
+/* Float + crawl animations (404 page) */
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-14px) rotate(2deg); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float:hover { animation-duration: 2s; }
+
+@keyframes crawl {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+.crawl-band span { display: inline-block; animation: crawl 14s linear infinite; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp .6s ease both; }
+
+@keyframes pulseDot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .4; transform: scale(.8); }
+}
+.pulse-dot { animation: pulseDot 1.4s ease-in-out infinite; }
+
+/* Smooth scroll for FAQ nav */
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+
+/* Toast */
+#toast-root { position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+@media (min-width: 768px) { #toast-root { bottom: 24px; } }
+.toast {
+  background: var(--on-surface); color: var(--surface);
+  padding: 12px 20px; border-radius: 9999px; font-size: 14px; font-weight: 600;
+  box-shadow: 0px 14px 40px rgba(62,61,57,.18);
+  display: flex; align-items: center; gap: 8px;
+  animation: fadeInUp .25s ease;
+}
+
+/* Reveal on scroll — degrades safe: content always visible */
+.reveal { transition: opacity .5s ease, transform .5s ease; }
+
+/* Page transition for account/faq active nav */
+.nav-active { background: #d4e8d0; color: #4f614e; border-left: 3px solid #4f614e; }
+
+/* ============================================================
+   Customer Reviews (123Presets-style section)
+   Progressive enhancement: hidden initial state only applies
+   when <html> has .rv-js (added by JS). No-JS → fully visible.
+   ============================================================ */
+:root { --star: #e3b04b; }
+
+.rv-section { width: 100%; padding: 80px 0; background: #f1ede7; overflow: hidden; }
+
+.rv-header {
+  width: min(720px, calc(100% - 40px));
+  margin: 0 auto 45px;
+  text-align: center;
+}
+.rv-header .eyebrow {
+  display: inline-block; margin-bottom: 8px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--primary);
+}
+.rv-header h2 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 56px); font-weight: 700;
+  line-height: 1.05; letter-spacing: -0.02em; color: var(--on-surface);
+}
+.rv-header p {
+  margin: 14px auto 0; max-width: 540px;
+  font-size: 17px; line-height: 1.6; color: var(--on-surface-variant);
+}
+
+/* Summary pill: ★ 4.9 · 1.240 rəy */
+.rv-summary {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px; padding: 8px 16px;
+  background: #ffffff; border: 1px solid var(--outline-variant);
+  border-radius: 9999px;
+  font-size: 14px; font-weight: 600; color: var(--on-surface);
+  box-shadow: 0 10px 30px rgba(62, 61, 57, 0.05);
+}
+.rv-summary .rv-summary-stars { display: inline-flex; gap: 1px; color: var(--star); }
+.rv-summary .rv-summary-stars .material-symbols-outlined { font-size: 17px; }
+.rv-summary .dot { color: var(--outline); }
+.rv-summary .count { color: var(--on-surface-variant); font-weight: 500; }
+
+.rv-all-link {
+  display: inline-block; margin-top: 18px;
+  padding-bottom: 3px; color: var(--primary);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: gap .2s ease;
+}
+.rv-all-link:hover { color: var(--on-surface); }
+
+/* Slider */
+.rv-slider-wrapper { position: relative; max-width: 1280px; margin: 0 auto; }
+.rv-slider {
+  display: grid; grid-auto-flow: column;
+  grid-auto-columns: minmax(290px, 360px); gap: 20px;
+  padding: 0 max(24px, calc((100vw - 1280px) / 2));
+  overflow-x: auto; overscroll-behavior-inline: contain;
+  scroll-snap-type: inline mandatory; scrollbar-width: none;
+}
+.rv-slider::-webkit-scrollbar { display: none; }
+
+.rv-card {
+  position: relative; scroll-snap-align: start;
+  display: flex; flex-direction: column;
+  background: #ffffff; border-radius: 1rem; overflow: hidden;
+  box-shadow: 0px 10px 30px rgba(62, 61, 57, 0.05);
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+.rv-card:hover { box-shadow: 0px 18px 44px rgba(62, 61, 57, 0.10); transform: translateY(-2px); }
+.rv-image { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: #f1ede7; }
+.rv-image img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 700ms ease; }
+.rv-card:hover .rv-image img { transform: scale(1.04); }
+.rv-body { padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
+.rv-product { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--primary); }
+.rv-quote {
+  margin: 0; font-size: 16px; font-weight: 500; line-height: 1.5;
+  color: var(--on-surface); display: -webkit-box;
+  -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.rv-author { margin-top: auto; display: flex; flex-direction: column; gap: 2px; }
+.rv-author strong { font-size: 14px; font-weight: 700; color: var(--on-surface); }
+.rv-author span { font-size: 13px; color: var(--on-surface-variant); }
+
+/* Star color + animated star stagger (50ms left-to-right, each rotates in). */
+.rv-star { color: var(--star); display: inline-block; }
+.rv-js .rv-stars .rv-star { opacity: 0; transform: rotate(-220deg) scale(0.2); }
+.rv-js .rv-stars.go .rv-star { animation: rvStar .45s cubic-bezier(.2, .8, .2, 1) forwards; }
+.rv-js .rv-stars.go .rv-star:nth-child(1) { animation-delay: 0ms; }
+.rv-js .rv-stars.go .rv-star:nth-child(2) { animation-delay: 50ms; }
+.rv-js .rv-stars.go .rv-star:nth-child(3) { animation-delay: 100ms; }
+.rv-js .rv-stars.go .rv-star:nth-child(4) { animation-delay: 150ms; }
+.rv-js .rv-stars.go .rv-star:nth-child(5) { animation-delay: 200ms; }
+@keyframes rvStar { to { opacity: 1; transform: rotate(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .rv-js .rv-stars .rv-star { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
+
+/* Slider buttons */
+.rv-btn {
+  position: absolute; z-index: 5; top: 50%;
+  width: 46px; height: 46px; border: 0; border-radius: 50%;
+  background: #ffffff; color: #1c1c18; font-size: 22px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0px 10px 30px rgba(62, 61, 57, 0.12);
+  transform: translateY(-50%);
+  transition: transform .2s ease, background .2s ease;
+}
+.rv-btn:hover { background: #ffffff; transform: translateY(-50%) scale(1.06); }
+.rv-btn--left { left: 14px; }
+.rv-btn--right { right: 14px; }
+
+/* Reviews.html full grid (not a slider) */
+.rv-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+}
+
+@media (max-width: 1024px) { .rv-grid { grid-template-columns: repeat(2, 1fr); } }
+
+@media (max-width: 768px) {
+  .rv-section { padding: 56px 0; }
+  .rv-header { margin-bottom: 28px; }
+  .rv-slider { grid-auto-columns: 84vw; gap: 14px; padding-inline: 18px; }
+  .rv-btn { display: none; }
+  .rv-grid { grid-template-columns: 1fr; }
+}

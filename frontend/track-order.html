@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sifarişin İzlənilməsi - Bodi.az</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=73ee4108">
+<script src="assets/js/tw-config.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
+
+<div id="site-header"></div>
+
+<main class="flex-grow w-full max-w-container-max mx-auto px-4 md:px-gutter py-md md:py-xl">
+  <nav aria-label="Breadcrumb" class="mb-lg">
+    <ol class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+      <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
+      <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
+      <li aria-current="page" class="text-primary font-medium">Sifarişi izlə</li>
+    </ol>
+  </nav>
+
+  <div class="max-w-2xl mb-lg">
+    <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Sifarişinizi İzləyin</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Sifariş nömrənizi və email ünvanınızı daxil edərək cari statusu öyrənin.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-xl">
+    <!-- Form -->
+    <div class="md:col-span-5">
+      <div class="bg-surface-container-lowest rounded-2xl p-lg card-ambient">
+        <h2 class="font-headline-md text-headline-md text-on-surface mb-md">Məlumatları daxil edin</h2>
+        <form id="track-form" class="space-y-md" onsubmit="return false">
+          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Sifariş Nömrəsi</label><input id="track-id" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Məs: #BDI12345" value="#BDI88241"></div>
+          <div><label class="font-label-md text-label-md text-on-surface block mb-2">E-poçt ünvanı</label><input id="track-email" type="email" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="nümunə@mail.com"></div>
+          <button id="track-btn" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg hover:bg-primary-container transition-colors shadow-sm">İzlə <span class="material-symbols-outlined" style="font-size:18px">my_location</span></button>
+        </form>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-md flex items-start gap-2"><span class="material-symbols-outlined" style="font-size:18px">info</span> Məlumatları tapmaqda çətinlik çəkirsiniz? Sifariş təsdiq mesajınızı yoxlayın.</p>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div class="md:col-span-7">
+      <div id="track-result" class="bg-surface-container-lowest rounded-2xl p-lg card-ambient hidden">
+        <div class="flex items-center justify-between mb-md">
+          <div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">SİFARİŞ NO</span>
+            <div class="font-headline-md text-headline-md text-on-surface" id="r-id">#BDI88241</div>
+          </div>
+          <span class="inline-flex items-center gap-2 bg-secondary/15 text-secondary font-label-sm text-label-sm px-3 py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-secondary pulse-dot"></span><span id="r-status">Transitdədir</span></span>
+        </div>
+        <div class="bg-primary-fixed/30 text-primary font-label-md text-label-sm px-4 py-2 rounded-full inline-flex items-center gap-2 mb-xl"><span class="material-symbols-outlined" style="font-size:18px">event</span> Gözlənilən çatdırılma: <strong>24 Dekabr</strong></div>
+
+        <!-- Stepper -->
+        <div class="relative flex justify-between mb-xl">
+          <div class="absolute top-5 left-0 right-0 h-1 bg-surface-variant mx-6"></div>
+          <div class="absolute top-5 left-0 h-1 bg-primary mx-6" id="step-progress" style="width:calc(66% - 48px)"></div>
+          <div class="relative flex flex-col items-center w-1/4 z-10">
+            <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            <div class="font-label-sm text-label-sm text-on-surface mt-2 text-center">Sifariş verildi</div><div class="font-body-sm text-body-sm text-on-surface-variant text-center">18 Dek, 14:20</div>
+          </div>
+          <div class="relative flex flex-col items-center w-1/4 z-10">
+            <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            <div class="font-label-sm text-label-sm text-on-surface mt-2 text-center">Hazırlanır</div><div class="font-body-sm text-body-sm text-on-surface-variant text-center">19 Dek, 09:15</div>
+          </div>
+          <div class="relative flex flex-col items-center w-1/4 z-10">
+            <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center"><span class="material-symbols-outlined ms-fill" style="font-size:20px">local_shipping</span></div>
+            <div class="font-label-sm text-label-sm text-primary mt-2 text-center font-bold">Yoldadır</div><div class="font-body-sm text-body-sm text-on-surface-variant text-center">21 Dek, 11:00</div>
+          </div>
+          <div class="relative flex flex-col items-center w-1/4 z-10 opacity-40">
+            <div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center"><span class="material-symbols-outlined" style="font-size:20px">home</span></div>
+            <div class="font-label-sm text-label-sm text-on-surface mt-2 text-center">Təslim edildi</div><div class="font-body-sm text-body-sm text-on-surface-variant text-center">—</div>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+          <div class="bg-surface-container-low rounded-xl p-md">
+            <div class="font-label-sm text-label-sm text-on-surface-variant mb-2 flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">location_on</span>Çatdırılma ünvanı</div>
+            <p class="font-body-md text-body-md text-on-surface">Bakı ş., Nərimanov r., Atatürk pr. 45, mənzil 12</p>
+          </div>
+          <div class="bg-surface-container-low rounded-xl p-md">
+            <div class="font-label-sm text-label-sm text-on-surface-variant mb-2 flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">inventory_2</span>Sifariş daxili</div>
+            <p class="font-body-md text-body-md text-on-surface">2× Üzvi Pambıq Bodi (Ağ)<br>1× Körpə Papağı</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Default state -->
+      <div id="track-default" class="bg-surface-container-low rounded-2xl p-xl text-center h-full flex flex-col items-center justify-center">
+        <div class="w-20 h-20 bg-surface rounded-full flex items-center justify-center text-primary mb-md"><span class="material-symbols-outlined text-[40px]">qrcode_2</span></div>
+        <h3 class="font-headline-md text-headline-md text-on-surface">İzləmə məlumatı</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-sm">Sifariş nömrənizi daxil edib "İzlə" düyməsə basın ki, sifarişinizin cari statusunu görəsiniz.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust banner -->
+  <div class="mt-xl bg-primary text-on-primary rounded-2xl p-md flex items-center justify-center gap-3 text-center">
+    <span class="material-symbols-outlined">shield_lock</span>
+    <span class="font-body-md text-body-md"><strong>Təhlükəsiz Çatdırılma</strong> — Sifarişləriniz "Bodi.az" zəmanəti ilə qorunur və hər addımda izlənilir.</span>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<div id="mobile-nav"></div>
+
+<script src="assets/js/products.js?v=7dccd3e5"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/layout.js"></script>
+<script>
+(function () {
+  if (typeof BODI === "undefined") return;
+  const btn = document.getElementById("track-btn");
+  // Auto-show result if checkout redirected with success
+  if (new URLSearchParams(location.search).get("ok")) {
+    setTimeout(() => run(true), 400);
+  }
+  function run(force) {
+    const id = document.getElementById("track-id").value.trim();
+    const email = document.getElementById("track-email").value.trim();
+    if (!force && (!id || !email)) { document.getElementById("track-form").reportValidity(); return; }
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Yoxlanılır...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = 'İzlə <span class="material-symbols-outlined" style="font-size:18px">my_location</span>';
+      btn.disabled = false;
+      document.getElementById("track-default").classList.add("hidden");
+      const r = document.getElementById("track-result");
+      r.classList.remove("hidden");
+      r.classList.add("fade-in-up");
+      if (id) document.getElementById("r-id").textContent = id;
+      r.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      STORE.toast("Sifariş tapıldı", "check_circle");
+    }, 1200);
+  }
+  btn.addEventListener("click", () => run(false));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Müştəri Rəyləri | Bodi.az</title>
+<meta name="description" content="Bodi.az müştərilərinin real rəyləri — yumşaq orqanik pambıq məhsullarımız haqqında tövsiyələr.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=73ee4108">
+<script src="assets/js/tw-config.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
+
+<div id="site-header"></div>
+
+<main class="flex-grow">
+  <section class="rv-section" style="background:transparent;padding-top:48px;padding-bottom:0;">
+    <nav aria-label="Breadcrumb" class="max-w-container-max mx-auto px-gutter mb-lg">
+      <ol class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+        <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
+        <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
+        <li aria-current="page" class="text-primary font-medium">Müştəri Rəyləri</li>
+      </ol>
+    </nav>
+
+    <div class="rv-header">
+      <span class="eyebrow">Rəylər</span>
+      <h1 style="margin:0;font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.02em;color:var(--on-surface);">Müştəri Rəyləri</h1>
+      <p>Bodi.az ailəsinin üzvlərinin real təcrübələri. Hər rəy bizim üçün vacibdir.</p>
+      <div class="rv-summary">
+        <span class="rv-summary-stars" id="rv-summary-stars"></span>
+        <strong id="rv-avg">5.0</strong>
+        <span class="dot">·</span>
+        <span class="count"><span id="rv-count">0</span> rəy</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="rv-section" style="background:transparent;padding-top:24px;">
+    <div class="rv-grid" id="rvGrid"></div>
+
+    <div style="max-width:1280px;margin:48px auto 0;padding:0 24px;text-align:center;">
+      <a href="category.html?cat=bodi" class="inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-primary-container transition-colors">
+        Məhsullara bax <span class="material-symbols-outlined" style="font-size:20px">arrow_forward</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<div id="mobile-nav"></div>
+
+<script src="assets/js/products.js?v=7dccd3e5"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/layout.js"></script>
+<script>
+  (function () {
+    if (typeof BODI === "undefined" || typeof BODI.reviewCard !== "function") return;
+    document.documentElement.classList.add("rv-js");
+
+    // Grid: all reviews
+    document.getElementById("rvGrid").innerHTML =
+      BODI.REVIEWS.map(BODI.reviewCard).join("");
+
+    // Summary
+    document.getElementById("rv-summary-stars").innerHTML = BODI.reviewStarsHTML(5);
+    document.getElementById("rv-avg").textContent = BODI.avgRating();
+    document.getElementById("rv-count").textContent = BODI.totalReviewsFormatted();
+
+    // Animate stars on scroll into view
+    const stars = document.querySelectorAll(".rv-stars");
+    if (!("IntersectionObserver" in window)) {
+      stars.forEach(s => s.classList.add("go"));
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add("go"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.2 });
+      stars.forEach(s => io.observe(s));
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tez-tez verilən suallar - Bodi.az</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=73ee4108">
+<script src="assets/js/tw-config.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
+
+<div id="site-header"></div>
+
+<main class="flex-grow w-full">
+  <!-- HERO -->
+  <section class="bg-surface-container py-xl">
+    <div class="max-w-container-max mx-auto px-gutter text-center">
+      <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Suallarınız var?</span>
+      <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight mt-2">Tez-tez verilən suallar</h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mt-md">Bodi.az təcrübənizi asanlaşdırmaq üçün ən çox verilən sualları bir araya topladıq. Aşağıda cavabını tapa bilməsəniz, bizimlə əlaqə saxlayın.</p>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <section class="max-w-container-max mx-auto px-gutter">
+    <div class="relative -mt-8 mb-lg bg-surface-container-lowest rounded-2xl p-sm shadow-ambient-md flex items-center gap-2 max-w-xl mx-auto">
+      <span class="material-symbols-outlined text-on-surface-variant ml-sm">search</span>
+      <input id="faq-search" class="flex-grow px-2 py-3 bg-transparent font-body-md text-body-md focus:outline-none" placeholder="Sualınızı axtarın...">
+      <button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-xl hover:bg-primary-container transition-colors">Axtar</button>
+    </div>
+  </section>
+
+  <div class="max-w-container-max mx-auto px-gutter pb-xl grid grid-cols-1 md:grid-cols-12 gap-xl">
+    <!-- Sidebar -->
+    <aside class="md:col-span-3">
+      <nav class="md:sticky md:top-24 space-y-1" id="faq-nav">
+        <a href="#cat-catdirilma" class="faq-nav block px-4 py-3 rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low transition-colors border-l-2 border-transparent">Çatdırılma</a>
+        <a href="#cat-odenis" class="faq-nav block px-4 py-3 rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low transition-colors border-l-2 border-transparent">Ödəniş</a>
+        <a href="#cat-qaytarma" class="faq-nav block px-4 py-3 rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low transition-colors border-l-2 border-transparent">Qaytarma</a>
+        <a href="#cat-olcu" class="faq-nav block px-4 py-3 rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low transition-colors border-l-2 border-transparent">Ölçü Bələdçisi</a>
+      </nav>
+    </aside>
+
+    <!-- Accordion -->
+    <div class="md:col-span-9 space-y-xl">
+
+      <section id="cat-catdirilma">
+        <div class="flex items-center gap-3 mb-md"><div class="w-11 h-11 bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center"><span class="material-symbols-outlined">local_shipping</span></div><h2 class="font-headline-md text-headline-md text-on-surface">Çatdırılma</h2></div>
+        <div class="space-y-2">
+          <div class="acc-item border border-surface-variant rounded-xl bg-surface-container-lowest"><button class="acc-head w-full flex justify-between items-center p-md text-left"><span class="font-label-md text-label-md text-on-surface">Çatdırılma nə qədər vaxt aparır?</span><span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span></button><div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant">Bakı daxili sifarişlər 24 saat ərzində, bölgələrə isə 2-3 iş günü ərzində çatdırılır.</div></div></div>
+          <div class="acc-item border border-surface-variant rounded-xl bg-surface-container-lowest"><button class="acc-head w-full flex justify-between items-center p-md text-left"><span class="font-label-md text-label-md text-on-surface">Çatdırılma haqqı nə qədərdir?</span><span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span></button><div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant">Bakı üzrə 5 ₼, bölgələrə 8 ₼ çatdırılma haqqı tətbiq olunur. 50 ₼ və yuxarı sifarişlərdə çatdırılma tam pulsuzdur.</div></div></div>
+        </div>
+      </section>
+
+      <section id="cat-odenis">
+        <div class="flex items-center gap-3 mb-md"><div class="w-11 h-11 bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center"><span class="material-symbols-outlined">credit_card</span></div><h2 class="font-headline-md text-headline-md text-on-surface">Ödəniş</h2></div>
+        <div class="space-y-2">
+          <div class="acc-item border border-surface-variant rounded-xl bg-surface-container-lowest"><button class="acc-head w-full flex justify-between items-center p-md text-left"><span class="font-label-md text-label-md text-on-surface">Hansı ödəniş üsullarını qəbul edirsiniz?</span><span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span></button><div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant">Visa, Mastercard, həmçinin qapıda nağd ödəniş qəbul edirik. Onlayn ödəniş SSL sertifikatı ilə tam qorunur.</div></div></div>
+          <div class="acc-item border border-surface-variant rounded-xl bg-surface-container-lowest"><button class="acc-head w-full flex justify-between items-center p-md text-left"><span class="font-label-md text-label-md text-on-surface">Hissə-hissə ödəniş mümkündürmü?</span><span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span></button><div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant">Bəli, Birkart və Tamkart ilə 3, 6 və ya 12 aylıq faizsiz taksit imkanı mövcuddur.</div></div></div>
+        </div>
+      </section>
+
+      <section id="cat-qaytarma">
+        <div class="flex items-center gap-3 mb-md"><div class="w-11 h-11 bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center"><span class="material-symbols-outlined">change_circle</span></div><h2 class="font-headline-md text-headline-md text-on-surface">Qaytarma</h2></div>
+        <div class="space-y-2">
+          <div class="acc-item border border-surface-variant rounded-xl bg-surface-container-lowest"><button class="acc-head w-full flex justify-between items-center p-md text-left"><span class="font-label-md text-label-md text-on-surface">Məhsulu neçə gün ərzində qaytara bilərəm?</span><span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span></button><div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant">Məhsulu qəbul etdiyiniz tarixdən 14 gün ərzində, istifadə olunmamış və orijinal qablaşdırmada qaytara bilərsiniz. Pul vəsaiti 5 iş günü ərzində geri qaytarılır.</div></div></div>
+        </div>
+      </section>
+
+      <section id="cat-olcu">
+        <div class="flex items-center gap-3 mb-md"><div class="w-11 h-11 bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center"><span class="material-symbols-outlined">straighten</span></div><h2 class="font-headline-md text-headline-md text-on-surface">Ölçü Bələdçisi</h2></div>
+        <div class="space-y-2">
+          <div class="acc-item border border-surface-variant rounded-xl bg-surface-container-lowest"><button class="acc-head w-full flex justify-between items-center p-md text-left"><span class="font-label-md text-label-md text-on-surface">Düzgün ölçünü necə seçməli?</span><span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span></button><div class="acc-body"><div class="px-md pb-md">
+            <p class="font-body-md text-body-md text-on-surface-variant mb-md">Körpənizin boyuna uyğun ölçünü aşağıdakı cədvəldən seçə bilərsiniz:</p>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-2" id="size-chart"></div>
+          </div></div></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="max-w-container-max mx-auto px-gutter pb-xl">
+    <div class="rounded-3xl bg-primary text-on-primary px-lg py-xl text-center space-y-md">
+      <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg tracking-tight">Hələ də sualınız qaldı?</h2>
+      <p class="font-body-lg text-body-lg opacity-90">Müştəri xidmətlərimiz həftənin 7 günü sizə kömək etməyə hazırdır.</p>
+      <div class="flex flex-wrap gap-3 justify-center pt-sm">
+        <a href="mailto:info@bodi.az" class="inline-flex items-center gap-2 bg-on-primary text-primary font-label-md text-label-md px-6 py-3 rounded-xl hover:bg-surface-container-lowest transition-colors"><span class="material-symbols-outlined" style="font-size:18px">mail</span>E-poçt vasitəsilə yazın</a>
+        <a href="https://wa.me/994501234567" class="inline-flex items-center gap-2 border-2 border-on-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-xl hover:bg-on-primary/10 transition-colors"><span class="material-symbols-outlined" style="font-size:18px">call</span>Zəng edin</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<div id="mobile-nav"></div>
+
+<script src="assets/js/products.js?v=7dccd3e5"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/layout.js"></script>
+<script>
+(function () {
+  // Size chart
+  const sizes = [["0-3 Ay","56-62 sm"],["3-6 Ay","62-68 sm"],["6-9 Ay","68-74 sm"],["9-12 Ay","74-80 sm"],["12-18 Ay","80-86 sm"]];
+  document.getElementById("size-chart").innerHTML = sizes.map(s => `
+    <div class="bg-surface-container-low rounded-xl p-md text-center">
+      <div class="font-label-md text-label-md text-primary">${s[0]}</div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">${s[1]}</div>
+    </div>`).join("");
+
+  // Accordion
+  document.querySelectorAll(".acc-head").forEach(h => h.addEventListener("click", () => h.parentElement.classList.toggle("open")));
+
+  // Nav active on scroll
+  const navLinks = document.querySelectorAll(".faq-nav");
+  const sections = ["cat-catdirilma","cat-odenis","cat-qaytarma","cat-olcu"].map(id => document.getElementById(id));
+  function onScroll() {
+    let active = sections[0];
+    sections.forEach(s => { if (s && window.scrollY + 140 >= s.offsetTop) active = s; });
+    navLinks.forEach(l => {
+      const on = l.getAttribute("href") === "#" + active.id;
+      l.classList.toggle("bg-primary-fixed", on); l.classList.toggle("text-primary", on); l.classList.toggle("border-primary", on);
+      l.classList.toggle("text-on-surface-variant", !on); l.classList.toggle("border-transparent", !on);
+    });
+  }
+  window.addEventListener("scroll", onScroll); onScroll();
+
+  // Search
+  document.getElementById("faq-search").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase().trim();
+    document.querySelectorAll(".acc-item").forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.style.display = q && !text.includes(q) ? "none" : "";
+      if (q && text.includes(q)) item.classList.add("open");
+    });
+  });
+})();
+</script>
+</body>
+</html>
