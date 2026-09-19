@@ -119,10 +119,19 @@
 <script src="assets/js/store.js"></script>
 <script src="assets/js/layout.js"></script>
 <script>
-  document.getElementById("about-portrait").src = BODI.ph("cream", "Bodi.az");
-  document.getElementById("about-portrait-2").src = BODI.ph("sage", "Detal");
-  const sus = ["sage","peach","cream","beige"];
-  document.querySelectorAll("[data-sus]").forEach((img,i) => img.src = BODI.ph(sus[i], "Davamlılıq"));
+  const realPhotos = [
+    "assets/images/products/ag-pambiq-bodi.jpg",
+    "assets/images/products/dest-sehrli-mevsumler.jpg",
+    "assets/images/products/yumshaq-yeni-dogan-tulumu.jpg",
+    "assets/images/products/bej-uzunqol-bodi.jpg"
+  ];
+  const p1 = document.getElementById("about-portrait");
+  if (p1) p1.src = realPhotos[0];
+  const p2 = document.getElementById("about-portrait-2");
+  if (p2) p2.src = realPhotos[1];
+  document.querySelectorAll("[data-sus]").forEach((img, i) => {
+    img.src = realPhotos[i % realPhotos.length];
+  });
 </script>
 </body>
 </html>

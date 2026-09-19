@@ -74,7 +74,7 @@
 
     { id: 11, slug: "ilkin-des-goyler", name: "İlkin Dəst — Göylər", cat: "dest", material: "100% Pambıq", price: 54.90, old: 69.00, color: "sky", rating: 5, reviews: 91, badge: "-20%", desc: "3 ədəd bodi + 1 tulumdan ibarət hədiyyəlik dəst. Yeni doğulanlar üçün ideal." },
     { id: 12, slug: "dest-sehrli-mevsumler", name: "Dəst — Sehrli Mövsümlər", cat: "dest", material: "Orqanik Pambıq", price: 59.90, color: "mustard", rating: 5, reviews: 44, badge: "Yeni", isNew: true, desc: "Hər fəsil üçün uyğun, 4 parçalı uniseks dəst." },
-    { id: 13, slug: "dest-tebrik-nvaziş", name: "Dəst — Təbrik & Nəvaziş", cat: "dest", material: "Orqanik Pambıq", price: 49.90, color: "rose", rating: 5, reviews: 28, desc: "Zərif çəhrayı tonlarda, xüsusi günlər üçün 3 parçalı dəst." },
+    { id: 13, slug: "dest-tebrik-nvazis", name: "Dəst — Təbrik & Nəvaziş", cat: "dest", material: "Orqanik Pambıq", price: 49.90, color: "rose", rating: 5, reviews: 28, desc: "Zərif çəhrayı tonlarda, xüsusi günlər üçün 3 parçalı dəst." },
 
     { id: 14, slug: "org-pambiq-sapqa", name: "Orqanik Pambıq Şapqa", cat: "bodi", material: "100% Orqanik Pambıq", price: 12.90, color: "cream", rating: 5, reviews: 60, desc: "Yumşaq, qulaqları qoruyan nəfəs alan şapqa." },
     { id: 15, slug: "yum-alt-paltar", name: "Yumşaq Alt Paltar", cat: "bodi", material: "100% Pambıq", price: 18.90, old: 24.00, color: "sage", rating: 4, reviews: 33, badge: "-21%", desc: "Həssas dəri üçün yumşaq alt paltarı. Təmiz və təbii material." },
@@ -90,7 +90,10 @@
   function money(n) { return (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, "") + " ₼"; }
 
   function getBySlug(slug) { return PRODUCTS.find(p => p.slug === slug); }
-  function getById(id) { return PRODUCTS.find(p => p.id === Number(id)); }
+  function getById(id) {
+    if (id == null) return null;
+    return PRODUCTS.find(p => p.id === Number(id)) || PRODUCTS.find(p => p.slug === String(id)) || PRODUCTS.find(p => String(p.id) === String(id));
+  }
   function getByCat(cat) { return PRODUCTS.filter(p => p.cat === cat); }
   function getNew() { return PRODUCTS.filter(p => p.isNew); }
   function getSale() { return PRODUCTS.filter(p => p.old); }
@@ -189,17 +192,22 @@
 
   // Review card: product image + animated stars + quote + author.
   function reviewCard(r) {
-    const p = getById(r.productId);
-    const img = p ? ph(p.color, p.name) : ph("cream", "Bodi.az");
-    const alt = p ? p.name : "Bodi.az";
-    const pname = p ? `<span class="rv-product">${p.name}</span>` : "";
+    const p = getById(r.productId) || (r.productSlug ? getBySlug(r.productSlug) : null);
+    const img = r.productImage || (p ? getProductImage(p) : "assets/images/products/ag-pambiq-bodi.jpg");
+    const pName = r.productName || (p ? p.name : "Bodi.az");
+    const pSlug = r.productSlug || (p ? p.slug : "");
+    const productLink = pSlug ? `product.html?p=${pSlug}` : "#";
+    const pname = pSlug
+      ? `<a href="${productLink}" class="rv-product hover:text-primary font-medium transition-colors">${pName}</a>`
+      : `<span class="rv-product">${pName}</span>`;
+
     return `<article class="rv-card reveal">
-      <div class="rv-image"><img src="${img}" alt="${alt}" loading="lazy"></div>
+      <div class="rv-image"><a href="${productLink}"><img src="${img}" alt="${pName}" loading="lazy" class="w-full h-full object-cover"></a></div>
       <div class="rv-body">
         ${reviewStarsHTML(r.rating)}
         ${pname}
         <blockquote class="rv-quote">“${r.quote}”</blockquote>
-        <div class="rv-author"><strong>— ${r.author}</strong><span>${r.city}</span></div>
+        <div class="rv-author"><strong>— ${r.author}</strong><span>${r.city || "Bakı"}</span></div>
       </div>
     </article>`;
   }

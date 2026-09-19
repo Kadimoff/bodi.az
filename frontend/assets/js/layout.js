@@ -3,19 +3,27 @@
   "use strict";
 
   const path = location.pathname.split("/").pop() || "index.html";
+  const currentFull = path + location.search;
 
   const NAV = [
-    { href: "category.html?cat=bodi", label: "Bodilər", match: ["category.html"] },
-    { href: "category.html?cat=tulum", label: "Tulumlar", match: [] },
-    { href: "category.html?cat=dest", label: "Dəstlər", match: [] },
-    { href: "category.html?filter=new", label: "Yeni kolleksiya", match: [] },
-    { href: "category.html?filter=sale", label: "Endirim", match: [] },
-    { href: "blog.html", label: "Bloq", match: ["blog.html", "blog-post.html"] }
+    { href: "category.html?cat=bodi", label: "Bodilər" },
+    { href: "category.html?cat=tulum", label: "Tulumlar" },
+    { href: "category.html?cat=dest", label: "Dəstlər" },
+    { href: "category.html?filter=new", label: "Yeni kolleksiya" },
+    { href: "category.html?filter=sale", label: "Endirim" },
+    { href: "reviews.html", label: "Rəylər" },
+    { href: "blog.html", label: "Bloq" }
   ];
 
   function navLink(n) {
-    const active = n.match.includes(path) ? "text-primary font-bold border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary";
-    return `<a class="${active} transition-colors font-body-md text-body-md" href="${n.href}">${n.label}</a>`;
+    let active = false;
+    if (n.href === currentFull) {
+      active = true;
+    } else if (!n.href.includes("?") && (path === n.href || (n.href === "blog.html" && path === "blog-post.html"))) {
+      active = true;
+    }
+    const activeClass = active ? "text-primary font-bold border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary";
+    return `<a class="${activeClass} transition-colors font-body-md text-body-md" href="${n.href}">${n.label}</a>`;
   }
 
   const header = `
@@ -55,6 +63,7 @@
         <h4 class="font-headline-sm text-headline-sm text-primary mb-4">Şirkət</h4>
         <ul class="space-y-2">
           <li><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="about.html">Haqqımızda</a></li>
+          <li><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="reviews.html">Müştəri Rəyləri</a></li>
           <li><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="contact.html">Əlaqə</a></li>
           <li><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="contact.html#stores">Mağazalar</a></li>
           <li><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="blog.html">Bloq</a></li>

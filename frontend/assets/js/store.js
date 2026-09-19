@@ -73,6 +73,16 @@
     return i < 0;
   }
 
+  /* ---------- ORDERS ---------- */
+  const ORDERS_KEY = "bodi_orders_v1";
+  function getOrders() { return read(ORDERS_KEY); }
+  function saveOrder(order) {
+    const orders = getOrders();
+    // Prepend new order
+    orders.unshift(order);
+    write(ORDERS_KEY, orders);
+  }
+
   /* ---------- BADGE ---------- */
   function badge() {
     const n = cartCount();
@@ -96,6 +106,8 @@
 
   global.STORE = {
     getCart, addToCart, updateQty, removeItem, clearCart, cartCount, cartDetailed, cartTotals,
-    getWish, isWished, toggleWish, badge, toast
+    getWish, isWished, toggleWish,
+    getOrders, saveOrder,
+    badge, toast
   };
 })(window);

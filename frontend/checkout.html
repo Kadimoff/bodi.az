@@ -224,6 +224,15 @@
 
       try {
         const result = await BODI_API.submitCheckout(orderPayload);
+        STORE.saveOrder({
+          id: result.order_id,
+          date: new Date().toLocaleDateString("az-AZ", { day: 'numeric', month: 'long', year: 'numeric' }),
+          total: Number(result.total) || 0,
+          count: cartItems.reduce((s, i) => s + (i.qty || 1), 0),
+          status: "Hazırlanır",
+          dot: "bg-secondary",
+          items: orderPayload.items
+        });
         STORE.clearCart();
         localStorage.removeItem("bodi_coupon");
         STORE.toast("Sifarişiniz qəbul edildi! #" + result.order_id, "check_circle");

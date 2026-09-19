@@ -215,37 +215,73 @@
 <script src="assets/js/store.js"></script>
 <script src="assets/js/layout.js"></script>
 <script>
-  // Populate dynamic images + product grids
+  // Populate real images + product grids + customer reviews
   (function () {
-    document.getElementById("hero-bg").src = BODI.phWide("cream", "Bodi.az");
-    document.getElementById("promo-img").src = BODI.ph("sage", "Yeni Kolleksiya");
-    document.querySelectorAll("[data-cat-img]").forEach(img => {
-      const cat = img.getAttribute("data-cat-img");
-      const color = { bodi: "white", tulum: "sage", dest: "peach" }[cat];
-      img.src = BODI.ph(color, BODI.CAT_NAMES[cat]);
-    });
-function renderGrids() {
+    const heroBg = document.getElementById("hero-bg");
+    if (heroBg) heroBg.src = "assets/images/products/ag-pambiq-bodi.jpg";
+    const promoImg = document.getElementById("promo-img");
+    if (promoImg) promoImg.src = "assets/images/products/bej-uzunqol-bodi.jpg";
+
+    function updateCategoryImages() {
+      document.querySelectorAll("[data-cat-img]").forEach(img => {
+        const cat = img.getAttribute("data-cat-img");
+        const list = BODI.getByCat(cat);
+        if (list && list.length > 0) {
+          img.src = BODI.getProductImage(list[0]);
+        } else {
+          const fallbackMap = {
+            bodi: "assets/images/products/ag-pambiq-bodi.jpg",
+            tulum: "assets/images/products/yumshaq-yeni-dogan-tulumu.jpg",
+            dest: "assets/images/products/dest-sehrli-mevsumler.jpg"
+          };
+          img.src = fallbackMap[cat] || "assets/images/products/ag-pambiq-bodi.jpg";
+        }
+      });
+    }
+    updateCategoryImages();
+
+    function renderGrids() {
       const feat = document.getElementById("featured-grid");
       const nw = document.getElementById("new-grid");
       if (feat) feat.innerHTML = [...BODI.PRODUCTS].sort((a, b) => b.reviews - a.reviews).slice(0, 4).map(p => BODI.card(p)).join("");
       if (nw) nw.innerHTML = BODI.getNew().slice(0, 4).map(p => BODI.card(p)).join("");
+      updateCategoryImages();
     }
     renderGrids();
     window.addEventListener("bodi:products-updated", renderGrids);
 
     // ---- Customer reviews section ----
-    document.documentElement.classList.add("rv-js"); // enable progressive-enhancement
+    document.documentElement.classList.add("rv-js");
 
-    const slider = document.getElementById("rvSlider");
-    if (slider && typeof BODI.reviewCard === "function") {
-      slider.innerHTML = BODI.REVIEWS.slice(0, 6).map(BODI.reviewCard).join("");
+    function renderReviewsSlider() {
+      const slider = document.getElementById("rvSlider");
+      if (!slider || typeof BODI.reviewCard !== "function") return;
+      const reviews = BODI.REVIEWS || [];
+      slider.innerHTML = reviews.slice(0, 8).map(BODI.reviewCard).join("");
 
       // Summary: avg rating + total count
-      document.getElementById("rv-summary-stars").innerHTML = BODI.reviewStarsHTML(5);
-      document.getElementById("rv-avg").textContent = BODI.avgRating();
-      document.getElementById("rv-count").textContent = BODI.totalReviewsFormatted();
+      const count = reviews.length;
+      let avg = "5.0";
+      if (count > 0) {
+        const sum = reviews.reduce((s, r) => s + (Number(r.rating) || 5), 0);
+        avg = (sum / count).toFixed(1);
+      }
+      const starsEl = document.getElementById("rv-summary-stars");
+      if (starsEl) starsEl.innerHTML = BODI.reviewStarsHTML(Math.round(Number(avg)));
+      const avgEl = document.getElementById("rv-avg");
+      if (avgEl) avgEl.textContent = avg;
+      const countEl = document.getElementById("rv-count");
+      if (countEl) countEl.textContent = count;
 
-      // Slider buttons
+      armStarObserver();
+    }
+
+    renderReviewsSlider();
+    window.addEventListener("bodi:reviews-updated", renderReviewsSlider);
+
+    // Slider navigation buttons
+    const slider = document.getElementById("rvSlider");
+    if (slider) {
       const card = slider.querySelector(".rv-card");
       const gap = 20;
       const step = () => (card ? card.offsetWidth + gap : 360);
@@ -253,9 +289,6 @@ function renderGrids() {
       const next = document.querySelector(".rv-btn--right");
       if (prev) prev.addEventListener("click", () => slider.scrollBy({ left: -step(), behavior: "smooth" }));
       if (next) next.addEventListener("click", () => slider.scrollBy({ left:  step(), behavior: "smooth" }));
-
-      // Animate stars (50ms left-to-right rotate-in) when they enter viewport
-      armStarObserver();
     }
 
     function armStarObserver() {

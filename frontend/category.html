@@ -192,16 +192,24 @@
       html += `<button class="pg w-10 h-10 rounded-full flex items-center justify-center ${i===state.page?'bg-primary text-on-primary':'border border-outline-variant text-on-surface-variant hover:border-primary'} font-label-md text-label-md" data-p="${i}">${i}</button>`;
     }
     html += `<button class="pg w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant ${state.page===pages?'opacity-40':''}" data-p="${state.page+1}" ${state.page===pages?'disabled':''}><span class="material-symbols-outlined" style="font-size:18px">chevron_right</span></button>`;
-    el.innerHTML = html;
-    el.querySelectorAll(".pg").forEach(b => b.addEventListener("click", () => { state.page = Number(b.getAttribute("data-p")); render();
-  window.addEventListener("bodi:products-updated", function () {
-    if (filter === "new") { base = BODI.getNew(); }
-    else if (filter === "sale") { base = BODI.getSale(); }
-    else if (query) { base = BODI.PRODUCTS.filter(p => (p.name + " " + p.material).toLowerCase().includes(query.toLowerCase())); }
-    else { base = cat ? BODI.getByCat(cat) : BODI.PRODUCTS.slice(); }
-    render();
-  }); window.scrollTo({ top: 0, behavior: "smooth" }); }));
+    el.querySelectorAll(".pg").forEach(b => b.addEventListener("click", () => {
+      state.page = Number(b.getAttribute("data-p"));
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }));
   }
+
+  function updateBase() {
+    if (filter === "new") { base = BODI.getNew(); titleEl.textContent = crumb.textContent = "Yeni Kolleksiya"; }
+    else if (filter === "sale") { base = BODI.getSale(); titleEl.textContent = crumb.textContent = "Endirim"; }
+    else if (query) { base = BODI.PRODUCTS.filter(p => (p.name + " " + (p.material || "")).toLowerCase().includes(query.toLowerCase())); titleEl.textContent = crumb.textContent = "Axtarış: " + query; }
+    else { base = cat ? BODI.getByCat(cat) : BODI.PRODUCTS.slice(); titleEl.textContent = crumb.textContent = cat ? (BODI.CAT_NAMES[cat] || cat) : "Bütün Məhsullar"; }
+  }
+
+  window.addEventListener("bodi:products-updated", function () {
+    updateBase();
+    render();
+  });
 
   // Events
   document.querySelectorAll("#filter-age input, #filter-mat input").forEach(i => i.addEventListener("change", () => { state.page = 1; render(); }));

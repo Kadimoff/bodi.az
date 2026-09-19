@@ -190,6 +190,40 @@
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   }
 
+  // Fetch real reviews from WordPress / WooCommerce
+  async function fetchReviews(productId) {
+    try {
+      const url = `${API_BASE}/wp-json/bodi/v1/reviews${productId ? '?product_id=' + encodeURIComponent(productId) : ''}`;
+      const res = await fetch(url, { headers: getHeaders() });
+      if (!res.ok) throw new Error("API error " + res.status);
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        if (!productId && global.BODI) {
+          global.BODI.REVIEWS = data;
+          window.dispatchEvent(new CustomEvent("bodi:reviews-updated", { detail: data }));
+        }
+        return data;
+      }
+    } catch (err) {
+      console.warn("[Bodi API] Error fetching reviews:", err.message);
+    }
+    return global.BODI ? global.BODI.REVIEWS : [];
+  }
+
+  // Submit real review to WordPress / WooCommerce
+  async function submitReview(payload) {
+    const res = await fetch(`${API_BASE}/wp-json/bodi/v1/reviews`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok || data.code) {
+      throw new Error(data.message || "Rəy göndərilə bilmədi.");
+    }
+    return data;
+  }
+
   global.BODI_API = {
     API_BASE,
     WHATSAPP_NUMBER,
@@ -198,11 +232,14 @@
     trackOrder,
     fetchPosts,
     submitContact,
+    fetchReviews,
+    submitReview,
     getWhatsAppBuyUrl,
     getWhatsAppCartUrl,
     transformProduct
   };
 
-  // Auto-fetch products on script load
+  // Auto-fetch products and reviews on script load
   fetchProducts();
+  fetchReviews();
 })(window);

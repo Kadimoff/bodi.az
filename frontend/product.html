@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Məhsul - Bodi.az</title>
+<title>Məhsul Detalı | Bodi.az</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,12 +23,73 @@
 
   <section id="product-root" class="grid grid-cols-1 md:grid-cols-2 gap-xl"></section>
 
-  <!-- Related -->
+  <!-- Product Reviews Section -->
+  <section class="mt-2xl border-t border-surface-variant/40 pt-xl" id="product-reviews-section">
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-lg gap-4">
+      <div>
+        <h2 class="font-headline-md text-headline-md text-on-surface">Müştəri Rəyləri</h2>
+        <div class="flex items-center gap-2 mt-1" id="prod-review-summary"></div>
+      </div>
+      <button id="open-prod-review-btn" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors font-label-md">
+        <span class="material-symbols-outlined" style="font-size:20px">rate_review</span> Rəy bildir
+      </button>
+    </div>
+    <div id="product-reviews-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+  </section>
+
+  <!-- Related Products -->
   <section class="mt-2xl">
     <h2 class="font-headline-md text-headline-md text-on-surface mb-lg">Oxşar məhsullar</h2>
     <div id="related-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"></div>
   </section>
 </main>
+
+<!-- Review Submission Modal -->
+<div id="prod-review-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+  <div class="bg-surface rounded-2xl max-w-lg w-full p-6 shadow-ambient-lg relative max-h-[90vh] overflow-y-auto">
+    <button id="close-prod-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface p-1">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Rəy bildir</h3>
+      <p id="modal-prod-title" class="font-body-sm text-body-sm text-primary font-medium"></p>
+    </div>
+
+    <form id="prod-review-form" class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-label-md text-label-md text-on-surface mb-1">Adınız</label>
+          <input id="prod-rev-author" type="text" placeholder="Məsələn: Günel R." class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" required>
+        </div>
+        <div>
+          <label class="block font-label-md text-label-md text-on-surface mb-1">Şəhər</label>
+          <input id="prod-rev-city" type="text" placeholder="Bakı" value="Bakı" class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="block font-label-md text-label-md text-on-surface mb-1">Qiymətləndirmə</label>
+        <div class="flex items-center gap-2" id="prod-star-picker">
+          <button type="button" data-star="1" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="2" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="3" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="4" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="5" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <span id="prod-star-label" class="ml-2 font-label-sm text-on-surface-variant">5 ulduz (Əla)</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block font-label-md text-label-md text-on-surface mb-1">Rəyiniz</label>
+        <textarea id="prod-rev-content" rows="4" placeholder="Bu məhsul haqqında fikirlərinizi bölüşün..." class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" required></textarea>
+      </div>
+
+      <button id="prod-rev-submit" type="submit" class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-xl hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined" style="font-size:20px">send</span> Rəyi göndər
+      </button>
+    </form>
+  </div>
+</div>
 
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
@@ -39,178 +100,326 @@
 <script src="assets/js/layout.js"></script>
 <script>
 (function () {
-  const slug = new URLSearchParams(location.search).get("p");
+  const params = new URLSearchParams(location.search);
+  const slugParam = params.get("p") || params.get("id");
+  
+  let p = (slugParam ? (BODI.getBySlug(slugParam) || BODI.getById(slugParam)) : null) || BODI.PRODUCTS[0];
+
   window.addEventListener("bodi:products-updated", function () {
-    const updatedP = BODI.getBySlug(slug);
-    if (updatedP && updatedP.name !== p.name) {
-      location.reload();
+    const updatedP = (slugParam ? (BODI.getBySlug(slugParam) || BODI.getById(slugParam)) : null);
+    if (updatedP && (updatedP.name !== p.name || updatedP.image !== p.image)) {
+      p = updatedP;
+      renderProduct();
     }
   });
-  const p = BODI.getBySlug(slug) || BODI.PRODUCTS[0];
 
-  document.title = p.name + " - Bodi.az";
+  function renderProduct() {
+    document.title = p.name + " - Bodi.az";
 
-  // Breadcrumbs
-  document.getElementById("crumbs").innerHTML = `
-    <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
-    <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
-    <li><a class="hover:text-primary transition-colors" href="category.html?cat=${p.cat}">${BODI.CAT_NAMES[p.cat]}</a></li>
-    <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
-    <li aria-current="page" class="text-primary font-medium">${p.name}</li>`;
+    // Breadcrumbs
+    document.getElementById("crumbs").innerHTML = `
+      <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
+      <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
+      <li><a class="hover:text-primary transition-colors" href="category.html?cat=${p.cat}">${BODI.CAT_NAMES[p.cat] || p.cat}</a></li>
+      <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
+      <li aria-current="page" class="text-primary font-medium">${p.name}</li>`;
 
-  const img = BODI.getProductImage(p);
-  const img2 = img;
-  const img3 = img;
-  const colorHex = BODI.COLORS[p.color] ? BODI.COLORS[p.color].b : "#ddd0ba";
+    const img = BODI.getProductImage(p);
+    const colorHex = BODI.COLORS[p.color] ? BODI.COLORS[p.color].b : "#ddd0ba";
+    const wished = STORE.isWished(p.id);
+    const starsHtml = BODI.stars(p.rating);
 
-  const wished = STORE.isWished(p.id);
-  const starsHtml = BODI.stars(p.rating);
+    const price = p.old
+      ? `<span class="font-headline-sm text-headline-sm text-primary">${BODI.money(p.price)}</span>
+         <span class="font-body-lg text-body-lg text-outline line-through">${BODI.money(p.old)}</span>
+         <span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-1 rounded-md">-${Math.round((1 - p.price / p.old) * 100)}%</span>`
+      : `<span class="font-headline-sm text-headline-sm text-primary">${BODI.money(p.price)}</span>`;
 
-  const price = p.old
-    ? `<span class="font-headline-sm text-headline-sm text-primary">${BODI.money(p.price)}</span>
-       <span class="font-body-lg text-body-lg text-outline line-through">${BODI.money(p.old)}</span>
-       <span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-1 rounded-md">-${Math.round((1 - p.price / p.old) * 100)}%</span>`
-    : `<span class="font-headline-sm text-headline-sm text-primary">${BODI.money(p.price)}</span>`;
-
-  document.getElementById("product-root").innerHTML = `
-    <!-- Gallery -->
-    <div class="space-y-4">
-      <div class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface-container-lowest shadow-ambient">
-        <img id="main-img" src="${img}" class="w-full h-full object-cover" alt="${p.name}">
-        <div class="absolute top-4 left-4 bg-primary/10 text-primary font-label-md text-label-md px-4 py-1 rounded-full">${p.material}</div>
-      </div>
-      <div class="flex gap-4">
-        <div class="w-1/4 rounded-lg p-2 card-ambient cursor-pointer border-2 border-primary" data-thumb="${img}"><img src="${img}" class="w-full h-auto object-cover rounded"></div>
-        <div class="w-1/4 rounded-lg p-2 card-ambient cursor-pointer border-2 border-transparent hover:border-outline-variant transition-colors" data-thumb="${img2}"><img src="${img2}" class="w-full h-auto object-cover rounded"></div>
-        <div class="w-1/4 rounded-lg p-2 card-ambient cursor-pointer border-2 border-transparent hover:border-outline-variant transition-colors" data-thumb="${img3}"><img src="${img3}" class="w-full h-auto object-cover rounded"></div>
-      </div>
-    </div>
-    <!-- Details -->
-    <div class="flex flex-col">
-      <div class="flex justify-between items-start mb-2">
-        <h1 class="font-headline-md text-headline-md text-on-surface">${p.name}</h1>
-        <button id="wish-btn" class="text-on-surface-variant ${wished ? 'text-secondary' : ''} hover:text-secondary transition-colors">
-          <span class="material-symbols-outlined ${wished ? 'ms-fill' : ''}">favorite</span>
-        </button>
-      </div>
-      <div class="flex items-center gap-2 mb-6">
-        <div class="flex text-primary">${starsHtml}</div>
-        <span class="font-body-sm text-body-sm text-on-surface-variant">(${p.reviews} rəy)</span>
-      </div>
-      <div class="flex items-center gap-4 mb-8">${price}</div>
-
-      <div class="mb-6">
-        <h3 class="font-label-md text-label-md text-on-surface mb-3">Rəng</h3>
-        <div class="flex gap-3">
-          <button data-colorsel="${p.color}" class="color-sel w-8 h-8 rounded-full border-2 border-primary shadow-sm" style="background:${colorHex}"></button>
-          <button data-colorsel="cream" class="color-sel w-8 h-8 rounded-full border-2 border-transparent hover:border-outline-variant transition-colors shadow-sm" style="background:#fdf9f3"></button>
-          <button data-colorsel="beige" class="color-sel w-8 h-8 rounded-full border-2 border-transparent hover:border-outline-variant transition-colors shadow-sm" style="background:#ddd0ba"></button>
-          <button data-colorsel="sage" class="color-sel w-8 h-8 rounded-full border-2 border-transparent hover:border-outline-variant transition-colors shadow-sm" style="background:#b8ccb5"></button>
+    document.getElementById("product-root").innerHTML = `
+      <!-- Gallery -->
+      <div class="space-y-4">
+        <div class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface-container-low">
+          <img id="main-img" src="${img}" alt="${p.name}" class="w-full h-full object-cover">
+          <button id="wish-btn" aria-label="İstək siyahısına əlavə et" class="absolute top-4 right-4 w-10 h-10 bg-surface/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[22px] ${wished ? 'ms-fill text-secondary' : ''}">favorite</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-4 gap-3">
+          <button data-thumb="${img}" class="aspect-square rounded-lg overflow-hidden border-2 border-primary"><img src="${img}" class="w-full h-full object-cover"></button>
+          <button data-thumb="${img}" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-colors"><img src="${img}" class="w-full h-full object-cover"></button>
+          <button data-thumb="${img}" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-colors"><img src="${img}" class="w-full h-full object-cover"></button>
         </div>
       </div>
 
-      <div class="mb-8">
-        <div class="flex justify-between items-center mb-3">
-          <h3 class="font-label-md text-label-md text-on-surface">Ölçü</h3>
-          <a class="font-body-sm text-body-sm text-primary underline" href="faq.html#cat-olcu">Ölçü cədvəli</a>
-        </div>
-        <div class="flex flex-wrap gap-3" id="size-row">
-          ${BODI.SIZES.map((s, i) => `<button data-sizesel="${s}" class="size-sel px-4 py-2 rounded-xl ${i===1?'border-2 border-primary bg-primary-fixed/20 text-primary':'border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary'} transition-colors font-label-md text-label-md">${s}</button>`).join("")}
-        </div>
-      </div>
+      <!-- Info -->
+      <div class="flex flex-col">
+        <div class="text-xs font-label-sm text-tertiary mb-1 uppercase tracking-widest">${p.material}</div>
+        <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">${p.name}</h1>
+        <a href="#product-reviews-section" class="flex items-center gap-1 text-primary mb-4 hover:opacity-80 transition-opacity">
+          ${starsHtml}
+          <span class="font-body-sm text-body-sm text-on-surface-variant ml-1">(${p.reviews} rəy)</span>
+        </a>
 
-      <div class="flex flex-col gap-4">
-        <div class="flex gap-4 items-center">
-          <div class="flex items-center border border-outline-variant rounded-lg bg-surface-container-lowest">
-            <button id="qty-minus" class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">remove</span></button>
-            <span id="qty" class="w-8 text-center font-body-md text-body-md">1</span>
-            <button id="qty-plus" class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">add</span></button>
+        <div class="flex items-baseline gap-3 mb-6">${price}</div>
+
+        <!-- Color -->
+        <div class="mb-6">
+          <label class="font-label-md text-label-md text-on-surface block mb-2">Rəng: <span id="color-name" class="font-body-md text-body-md text-on-surface-variant">${BODI.COLORS[p.color] ? BODI.COLORS[p.color].n : p.color}</span></label>
+          <div class="flex items-center gap-2">
+            ${Object.entries(BODI.COLORS).map(([k, c]) => `
+              <button data-colorsel="${k}" class="color-sel w-8 h-8 rounded-full border-2 ${k === p.color ? 'border-primary' : 'border-transparent'} p-0.5 hover:scale-110 transition-transform">
+                <span class="block w-full h-full rounded-full border border-outline-variant shadow-sm" style="background:${c.b}"></span>
+              </button>`).join("")}
           </div>
-          <button id="add-cart" class="flex-grow bg-primary text-on-primary font-label-md text-label-md py-4 rounded-lg hover:bg-primary-container transition-colors shadow-sm">Səbətə əlavə et</button>
         </div>
-        <button id="buy-now" class="w-full border-2 border-primary text-primary font-label-md text-label-md py-4 rounded-lg hover:bg-primary-fixed/10 transition-colors">İndi al</button>
-        <button id="buy-whatsapp" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-label-md text-label-md py-4 rounded-lg flex items-center justify-center gap-2 transition-all shadow-md">
-          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.155.57 4.178 1.564 5.929l-1.564 5.903 6.077-1.595c1.701.928 3.65 1.763 5.923 1.763 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg>
-          WhatsApp ilə al
-        </button>
-      </div>
 
-      <!-- Trust row -->
-      <div class="mt-lg grid grid-cols-3 gap-sm text-center">
-        <div class="p-md bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-primary">local_shipping</span><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Sürətli çatdırılma</p></div>
-        <div class="p-md bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-primary">change_circle</span><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">14 gün qaytarma</p></div>
-        <div class="p-md bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-primary">verified_user</span><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Təhlükəsiz ödəniş</p></div>
-      </div>
+        <!-- Size -->
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <label class="font-label-md text-label-md text-on-surface">Ölçü</label>
+            <a href="faq.html#cat-olcu" class="font-label-sm text-label-sm text-primary hover:underline">Ölçü bələdçisi</a>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            ${BODI.SIZES.map((s, i) => `
+              <button data-sizesel="${s}" class="size-sel px-4 py-2 rounded-xl font-label-md text-label-md transition-colors ${i === 1 ? 'border-2 border-primary bg-primary-fixed/20 text-primary' : 'border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary'}">${s}</button>`).join("")}
+          </div>
+        </div>
 
-      <!-- Accordion -->
-      <div class="mt-xl border-t border-tertiary-fixed-dim pt-6 space-y-2">
-        <div class="acc-item open border border-surface-variant rounded-xl">
-          <button class="acc-head w-full flex justify-between items-center p-md text-left">
-            <h4 class="font-headline-sm text-headline-sm text-on-surface">Məhsul haqqında</h4>
-            <span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span>
+        <!-- Actions -->
+        <div class="space-y-3 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center border border-outline-variant rounded-xl bg-surface-container-lowest">
+              <button id="qty-minus" class="p-3 text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined" style="font-size:18px">remove</span></button>
+              <span id="qty" class="px-4 font-label-md text-label-md">1</span>
+              <button id="qty-plus" class="p-3 text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined" style="font-size:18px">add</span></button>
+            </div>
+            <button id="add-cart" class="flex-grow bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined" style="font-size:20px">shopping_bag</span> Səbətə əlavə et
+            </button>
+          </div>
+          <button id="buy-now" class="w-full border-2 border-primary text-primary font-label-md text-label-md py-4 rounded-xl hover:bg-primary-fixed/10 transition-colors">İndi al</button>
+          <button id="buy-whatsapp" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-label-md text-label-md py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.155.57 4.178 1.564 5.929l-1.564 5.903 6.077-1.595c1.701.928 3.65 1.763 5.923 1.763 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg>
+            WhatsApp ilə al
           </button>
-          <div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant space-y-2">
-            <p><strong>Material:</strong> ${p.material}</p>
-            <p><strong>Mövsüm:</strong> Dörd fəsil</p>
-            <p><strong>Baxım:</strong> 30 dərəcədə yuyun. Ağardıcı istifadə etməyin.</p>
-            <p class="pt-2">${p.desc}</p>
-          </div></div>
         </div>
-        <div class="acc-item border border-surface-variant rounded-xl">
-          <button class="acc-head w-full flex justify-between items-center p-md text-left">
-            <h4 class="font-headline-sm text-headline-sm text-on-surface">Çatdırılma və Qaytarma</h4>
-            <span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span>
-          </button>
-          <div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant space-y-2">
-            <p>Bakı daxili 24 saat, bölgələrə 2-3 iş günü ərzində çatdırılma.</p>
-            <p>50 ₼ və yuxarı sifarişlərdə çatdırılma pulsuzdur.</p>
-            <p>Məhsulu qəbul etdiyiniz tarixdən 14 gün ərzində qaytara bilərsiniz.</p>
-          </div></div>
+
+        <!-- Trust row -->
+        <div class="mt-lg grid grid-cols-3 gap-sm text-center">
+          <div class="p-md bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-primary">local_shipping</span><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Sürətli çatdırılma</p></div>
+          <div class="p-md bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-primary">change_circle</span><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">14 gün qaytarma</p></div>
+          <div class="p-md bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-primary">verified_user</span><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Təhlükəsiz ödəniş</p></div>
         </div>
-      </div>
-    </div>`;
 
-  // Related
-  document.getElementById("related-grid").innerHTML = BODI.related(p, 4).map(r => BODI.card(r)).join("");
+        <!-- Accordion -->
+        <div class="mt-xl border-t border-tertiary-fixed-dim pt-6 space-y-2">
+          <div class="acc-item open border border-surface-variant rounded-xl">
+            <button class="acc-head w-full flex justify-between items-center p-md text-left">
+              <h4 class="font-headline-sm text-headline-sm text-on-surface">Məhsul haqqında</h4>
+              <span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant space-y-2">
+              <p><strong>Material:</strong> ${p.material}</p>
+              <p><strong>Mövsüm:</strong> Dörd fəsil</p>
+              <p><strong>Baxım:</strong> 30 dərəcədə yuyun. Ağardıcı istifadə etməyin.</p>
+              <p class="pt-2">${p.desc}</p>
+            </div></div>
+          </div>
+          <div class="acc-item border border-surface-variant rounded-xl">
+            <button class="acc-head w-full flex justify-between items-center p-md text-left">
+              <h4 class="font-headline-sm text-headline-sm text-on-surface">Çatdırılma və Qaytarma</h4>
+              <span class="material-symbols-outlined acc-arrow text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant space-y-2">
+              <p>Bakı daxili 24 saat, bölgələrə 2-3 iş günü ərzində çatdırılma.</p>
+              <p>50 ₼ və yuxarı sifarişlərdə çatdırılma pulsuzdur.</p>
+              <p>Məhsulu qəbul etdiyiniz tarixdən 14 gün ərzində qaytara bilərsiniz.</p>
+            </div></div>
+          </div>
+        </div>
+      </div>`;
 
-  // --- Interactions ---
-  let qty = 1, size = BODI.SIZES[1], color = p.color;
+    // Related
+    document.getElementById("related-grid").innerHTML = BODI.related(p, 4).map(r => BODI.card(r)).join("");
 
-  document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
-    document.getElementById("main-img").src = t.getAttribute("data-thumb");
-    document.querySelectorAll("[data-thumb]").forEach(x => { x.classList.remove("border-primary"); x.classList.add("border-transparent"); });
-    t.classList.add("border-primary"); t.classList.remove("border-transparent");
-  }));
+    // Interactions
+    let qty = 1, size = BODI.SIZES[1], color = p.color;
 
-  document.querySelectorAll(".color-sel").forEach(b => b.addEventListener("click", () => {
-    document.querySelectorAll(".color-sel").forEach(x => { x.classList.remove("border-primary"); x.classList.add("border-transparent"); });
-    b.classList.add("border-primary"); b.classList.remove("border-transparent");
-    color = b.getAttribute("data-colorsel");
-  }));
+    document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
+      document.getElementById("main-img").src = t.getAttribute("data-thumb");
+      document.querySelectorAll("[data-thumb]").forEach(x => { x.classList.remove("border-primary"); x.classList.add("border-transparent"); });
+      t.classList.add("border-primary"); t.classList.remove("border-transparent");
+    }));
 
-  document.querySelectorAll(".size-sel").forEach(b => b.addEventListener("click", () => {
-    document.querySelectorAll(".size-sel").forEach(x => { x.className = "size-sel px-4 py-2 rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors font-label-md text-label-md"; });
-    b.className = "size-sel px-4 py-2 rounded-xl border-2 border-primary bg-primary-fixed/20 text-primary font-label-md text-label-md";
-    size = b.getAttribute("data-sizesel");
-  }));
+    document.querySelectorAll(".color-sel").forEach(b => b.addEventListener("click", () => {
+      document.querySelectorAll(".color-sel").forEach(x => { x.classList.remove("border-primary"); x.classList.add("border-transparent"); });
+      b.classList.add("border-primary"); b.classList.remove("border-transparent");
+      color = b.getAttribute("data-colorsel");
+      const cObj = BODI.COLORS[color];
+      if (cObj) document.getElementById("color-name").textContent = cObj.n;
+    }));
 
-  document.getElementById("qty-minus").addEventListener("click", () => { qty = Math.max(1, qty - 1); document.getElementById("qty").textContent = qty; });
-  document.getElementById("qty-plus").addEventListener("click", () => { qty++; document.getElementById("qty").textContent = qty; });
+    document.querySelectorAll(".size-sel").forEach(b => b.addEventListener("click", () => {
+      document.querySelectorAll(".size-sel").forEach(x => { x.className = "size-sel px-4 py-2 rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors font-label-md text-label-md"; });
+      b.className = "size-sel px-4 py-2 rounded-xl border-2 border-primary bg-primary-fixed/20 text-primary font-label-md text-label-md";
+      size = b.getAttribute("data-sizesel");
+    }));
 
-  document.getElementById("wish-btn").addEventListener("click", () => {
-    const on = STORE.toggleWish(p.id);
-    const sp = document.querySelector("#wish-btn span");
-    sp.classList.toggle("ms-fill", on); document.getElementById("wish-btn").classList.toggle("text-secondary", on);
+    document.getElementById("qty-minus").addEventListener("click", () => { qty = Math.max(1, qty - 1); document.getElementById("qty").textContent = qty; });
+    document.getElementById("qty-plus").addEventListener("click", () => { qty++; document.getElementById("qty").textContent = qty; });
+
+    document.getElementById("wish-btn").addEventListener("click", () => {
+      const on = STORE.toggleWish(p.id);
+      const sp = document.querySelector("#wish-btn span");
+      sp.classList.toggle("ms-fill", on); document.getElementById("wish-btn").classList.toggle("text-secondary", on);
+    });
+
+    document.getElementById("add-cart").addEventListener("click", () => STORE.addToCart(p.id, qty, size, color));
+    document.getElementById("buy-now").addEventListener("click", () => { STORE.addToCart(p.id, qty, size, color); setTimeout(() => location.href = "checkout.html", 300); });
+    
+    // WhatsApp Buy
+    const waBtn = document.getElementById("buy-whatsapp");
+    if (waBtn) {
+      waBtn.addEventListener("click", () => {
+        const url = BODI_API.getWhatsAppBuyUrl(p, size, color, qty);
+        window.open(url, "_blank");
+      });
+    }
+
+    // Accordions
+    document.querySelectorAll(".acc-head").forEach(h => h.addEventListener("click", () => h.parentElement.classList.toggle("open")));
+
+    // Wish state for related cards
+    document.querySelectorAll("[data-wish]").forEach(btn => {
+      if (STORE.isWished(btn.getAttribute("data-wish"))) btn.querySelector("span").classList.add("ms-fill", "text-secondary");
+    });
+
+    // Render product reviews
+    renderProductReviews();
+  }
+
+  function renderProductReviews() {
+    const revList = (BODI.REVIEWS || []).filter(r => r.productId === p.id || r.productSlug === p.slug);
+    const count = revList.length;
+    const avg = count ? (revList.reduce((s, r) => s + (Number(r.rating) || 5), 0) / count).toFixed(1) : "5.0";
+
+    document.getElementById("prod-review-summary").innerHTML = `
+      <div class="flex items-center text-primary">${BODI.stars(Number(avg))}</div>
+      <span class="font-body-md text-body-md font-semibold text-on-surface ml-1">${avg}</span>
+      <span class="text-on-surface-variant text-body-sm">(${count} rəy)</span>`;
+
+    const container = document.getElementById("product-reviews-list");
+    if (!count) {
+      container.innerHTML = `
+        <div class="col-span-full py-8 text-center bg-surface-container-low rounded-2xl">
+          <span class="material-symbols-outlined text-[40px] text-outline-variant">rate_review</span>
+          <p class="font-body-md text-body-md text-on-surface-variant mt-2">Bu məhsul üçün hələ rəy yazılmayıb. İlk rəyi siz yazın!</p>
+        </div>`;
+    } else {
+      container.innerHTML = revList.map(r => `
+        <div class="bg-surface-container-lowest rounded-2xl p-5 card-ambient border border-surface-variant/30 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center text-primary">${BODI.stars(r.rating)}</div>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">${r.date || "Bu yaxınlarda"}</span>
+            </div>
+            <blockquote class="font-body-md text-body-md text-on-surface italic mb-4">“${r.quote}”</blockquote>
+          </div>
+          <div class="flex items-center justify-between border-t border-surface-variant/30 pt-3 text-xs text-on-surface-variant">
+            <span class="font-medium text-on-surface">— ${r.author}</span>
+            <span>${r.city || "Bakı"} · <strong class="text-primary">Təsdiqlənmiş alıcı</strong></span>
+          </div>
+        </div>`).join("");
+    }
+  }
+
+  // Review Modal for this product
+  const modal = document.getElementById("prod-review-modal");
+  const openBtn = document.getElementById("open-prod-review-btn");
+  const closeBtn = document.getElementById("close-prod-modal-btn");
+  if (openBtn) {
+    openBtn.addEventListener("click", () => {
+      document.getElementById("modal-prod-title").textContent = p.name;
+      modal.classList.remove("hidden");
+    });
+  }
+  if (closeBtn) closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+  if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.add("hidden"); });
+
+  // Star Rating Selector
+  let selectedRating = 5;
+  const starLabels = { 1: "1 ulduz (Qənaətbəxş deyil)", 2: "2 ulduz (Orta)", 3: "3 ulduz (Yaxşı)", 4: "4 ulduz (Çox yaxşı)", 5: "5 ulduz (Əla)" };
+  const starBtns = document.querySelectorAll("#prod-star-picker button");
+  starBtns.forEach(b => {
+    b.addEventListener("click", () => {
+      selectedRating = Number(b.getAttribute("data-star"));
+      document.getElementById("prod-star-label").textContent = starLabels[selectedRating];
+      starBtns.forEach((s, idx) => {
+        const icon = s.querySelector("span");
+        if (idx < selectedRating) {
+          icon.classList.add("ms-fill");
+          s.classList.remove("opacity-40");
+        } else {
+          icon.classList.remove("ms-fill");
+          s.classList.add("opacity-40");
+        }
+      });
+    });
   });
 
-  document.getElementById("add-cart").addEventListener("click", () => STORE.addToCart(p.id, qty, size, color));
-  document.getElementById("buy-now").addEventListener("click", () => { STORE.addToCart(p.id, qty, size, color); setTimeout(() => location.href = "checkout.html", 300); });
+  // Submit Review Form
+  document.getElementById("prod-review-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("prod-rev-submit");
+    const author = document.getElementById("prod-rev-author").value.trim();
+    const city = document.getElementById("prod-rev-city").value.trim();
+    const content = document.getElementById("prod-rev-content").value.trim();
 
-  // Accordion
-  document.querySelectorAll(".acc-head").forEach(h => h.addEventListener("click", () => h.parentElement.classList.toggle("open")));
+    if (!author || !content) {
+      STORE.toast("Zəhmət olmasa bütün xanaları doldurun", "warning");
+      return;
+    }
 
-  // wish state for related cards
-  document.querySelectorAll("[data-wish]").forEach(btn => { if (STORE.isWished(btn.getAttribute("data-wish"))) btn.querySelector("span").classList.add("ms-fill", "text-secondary"); });
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Göndərilir...';
+
+    try {
+      const payload = {
+        product_id: p.slug,
+        author: author,
+        city: city,
+        rating: selectedRating,
+        content: content
+      };
+      const res = await BODI_API.submitReview(payload);
+      STORE.toast(res.message || "Rəyiniz uğurla qeydə alındı!", "check_circle");
+      modal.classList.add("hidden");
+      document.getElementById("prod-review-form").reset();
+
+      // Add to local list and re-render
+      BODI.REVIEWS.unshift({
+        id: Date.now(),
+        productId: p.id,
+        productName: p.name,
+        productSlug: p.slug,
+        productImage: BODI.getProductImage(p),
+        author: author,
+        city: city,
+        rating: selectedRating,
+        quote: content,
+        date: "İndi"
+      });
+      renderProductReviews();
+    } catch (err) {
+      STORE.toast(err.message || "Xəta baş verdi, yenidən cəhd edin.", "error");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:20px">send</span> Rəyi göndər';
+    }
+  });
+
+  renderProduct();
+  window.addEventListener("bodi:reviews-updated", renderProductReviews);
 })();
 </script>
 </body>

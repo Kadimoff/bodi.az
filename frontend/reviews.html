@@ -31,11 +31,22 @@
       <span class="eyebrow">Rəylər</span>
       <h1 style="margin:0;font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.02em;color:var(--on-surface);">Müştəri Rəyləri</h1>
       <p>Bodi.az ailəsinin üzvlərinin real təcrübələri. Hər rəy bizim üçün vacibdir.</p>
-      <div class="rv-summary">
+      
+      <div class="rv-summary flex-wrap">
         <span class="rv-summary-stars" id="rv-summary-stars"></span>
         <strong id="rv-avg">5.0</strong>
         <span class="dot">·</span>
         <span class="count"><span id="rv-count">0</span> rəy</span>
+        <button id="open-write-modal" class="ml-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm">
+          <span class="material-symbols-outlined" style="font-size:18px">rate_review</span> Rəy bildir
+        </button>
+      </div>
+
+      <!-- Filter chips -->
+      <div class="flex items-center justify-center gap-2 mt-6" id="rv-filter-chips">
+        <button class="rv-filter active px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-primary text-on-primary" data-star="all">Hamısı</button>
+        <button class="rv-filter px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest" data-star="5">5 Ulduz ★★★★★</button>
+        <button class="rv-filter px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest" data-star="4">4 Ulduz ★★★★</button>
       </div>
     </div>
   </section>
@@ -44,12 +55,65 @@
     <div class="rv-grid" id="rvGrid"></div>
 
     <div style="max-width:1280px;margin:48px auto 0;padding:0 24px;text-align:center;">
-      <a href="category.html?cat=bodi" class="inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-primary-container transition-colors">
+      <a href="category.html?cat=bodi" class="inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-primary-container transition-colors shadow-sm">
         Məhsullara bax <span class="material-symbols-outlined" style="font-size:20px">arrow_forward</span>
       </a>
     </div>
   </section>
 </main>
+
+<!-- Review Submission Modal -->
+<div id="review-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+  <div class="bg-surface rounded-2xl max-w-lg w-full p-6 shadow-ambient-lg relative max-h-[90vh] overflow-y-auto">
+    <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface p-1">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Təcrübənizi bölüşün</h3>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Bodi.az məhsulları haqqında fikriniz digər analara kömək edir.</p>
+    </div>
+
+    <form id="new-review-form" class="space-y-4">
+      <div>
+        <label class="block font-label-md text-label-md text-on-surface mb-1">Məhsul</label>
+        <select id="rev-product" class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" required>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-label-md text-label-md text-on-surface mb-1">Adınız</label>
+          <input id="rev-author" type="text" placeholder="Məsələn: Leyla Əliyeva" class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" required>
+        </div>
+        <div>
+          <label class="block font-label-md text-label-md text-on-surface mb-1">Şəhər</label>
+          <input id="rev-city" type="text" placeholder="Məsələn: Bakı" value="Bakı" class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="block font-label-md text-label-md text-on-surface mb-1">Qiymətləndirmə</label>
+        <div class="flex items-center gap-2" id="star-picker">
+          <button type="button" data-star="1" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="2" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="3" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="4" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <button type="button" data-star="5" class="text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined ms-fill text-[28px]">star</span></button>
+          <span id="star-picker-label" class="ml-2 font-label-sm text-on-surface-variant">5 ulduz (Əla)</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block font-label-md text-label-md text-on-surface mb-1">Rəyiniz</label>
+        <textarea id="rev-content" rows="4" placeholder="Məhsulun parçası, tikişi, yumşaqlığı və çatdırılma haqqında fikirlərinizi yazın..." class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" required></textarea>
+      </div>
+
+      <button id="rev-submit-btn" type="submit" class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-xl hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined" style="font-size:20px">send</span> Rəyi göndər
+      </button>
+    </form>
+  </div>
+</div>
 
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
@@ -63,27 +127,160 @@
     if (typeof BODI === "undefined" || typeof BODI.reviewCard !== "function") return;
     document.documentElement.classList.add("rv-js");
 
-    // Grid: all reviews
-    document.getElementById("rvGrid").innerHTML =
-      BODI.REVIEWS.map(BODI.reviewCard).join("");
+    let activeFilter = "all";
 
-    // Summary
-    document.getElementById("rv-summary-stars").innerHTML = BODI.reviewStarsHTML(5);
-    document.getElementById("rv-avg").textContent = BODI.avgRating();
-    document.getElementById("rv-count").textContent = BODI.totalReviewsFormatted();
-
-    // Animate stars on scroll into view
-    const stars = document.querySelectorAll(".rv-stars");
-    if (!("IntersectionObserver" in window)) {
-      stars.forEach(s => s.classList.add("go"));
-    } else {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) { e.target.classList.add("go"); io.unobserve(e.target); }
-        });
-      }, { threshold: 0.2 });
-      stars.forEach(s => io.observe(s));
+    function getFilteredReviews() {
+      const all = BODI.REVIEWS || [];
+      if (activeFilter === "all") return all;
+      return all.filter(r => Number(r.rating) === Number(activeFilter));
     }
+
+    function renderReviews() {
+      const list = getFilteredReviews();
+      const grid = document.getElementById("rvGrid");
+      if (!list.length) {
+        grid.innerHTML = `<p class="col-span-full text-center py-12 text-on-surface-variant font-body-md">Bu kateqoriyada rəy tapılmadı.</p>`;
+      } else {
+        grid.innerHTML = list.map(BODI.reviewCard).join("");
+      }
+
+      // Summary
+      const all = BODI.REVIEWS || [];
+      const totalCount = all.length;
+      let avg = 5.0;
+      if (totalCount > 0) {
+        const sum = all.reduce((s, r) => s + (Number(r.rating) || 5), 0);
+        avg = (sum / totalCount).toFixed(1);
+      }
+      document.getElementById("rv-summary-stars").innerHTML = BODI.reviewStarsHTML(Math.round(avg));
+      document.getElementById("rv-avg").textContent = avg;
+      document.getElementById("rv-count").textContent = totalCount;
+
+      // Animate stars
+      armStarObserver();
+    }
+
+    function armStarObserver() {
+      const stars = document.querySelectorAll(".rv-stars");
+      if (!("IntersectionObserver" in window)) {
+        stars.forEach(s => s.classList.add("go"));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add("go"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.2 });
+        stars.forEach(s => io.observe(s));
+      }
+    }
+
+    // Populate product select in modal
+    function populateProducts() {
+      const sel = document.getElementById("rev-product");
+      if (!sel) return;
+      sel.innerHTML = (BODI.PRODUCTS || []).map(p => `<option value="${p.slug}">${p.name} (${BODI.CAT_NAMES[p.cat] || p.cat})</option>`).join("");
+    }
+
+    // Filter clicks
+    document.querySelectorAll(".rv-filter").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".rv-filter").forEach(b => {
+          b.className = "rv-filter px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest";
+        });
+        btn.className = "rv-filter active px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-primary text-on-primary";
+        activeFilter = btn.getAttribute("data-star");
+        renderReviews();
+      });
+    });
+
+    // Initial render & listen for API updates
+    renderReviews();
+    populateProducts();
+    window.addEventListener("bodi:reviews-updated", renderReviews);
+    window.addEventListener("bodi:products-updated", populateProducts);
+
+    // Modal interaction
+    const modal = document.getElementById("review-modal");
+    document.getElementById("open-write-modal").addEventListener("click", () => {
+      populateProducts();
+      modal.classList.remove("hidden");
+    });
+    document.getElementById("close-modal-btn").addEventListener("click", () => modal.classList.add("hidden"));
+    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.add("hidden"); });
+
+    // Star rating picker
+    let selectedRating = 5;
+    const starLabels = { 1: "1 ulduz (Qənaətbəxş deyil)", 2: "2 ulduz (Orta)", 3: "3 ulduz (Yaxşı)", 4: "4 ulduz (Çox yaxşı)", 5: "5 ulduz (Əla)" };
+    const starBtns = document.querySelectorAll("#star-picker button");
+    starBtns.forEach(b => {
+      b.addEventListener("click", () => {
+        selectedRating = Number(b.getAttribute("data-star"));
+        document.getElementById("star-picker-label").textContent = starLabels[selectedRating];
+        starBtns.forEach((s, idx) => {
+          const icon = s.querySelector("span");
+          if (idx < selectedRating) {
+            icon.classList.add("ms-fill");
+            s.classList.remove("opacity-40");
+          } else {
+            icon.classList.remove("ms-fill");
+            s.classList.add("opacity-40");
+          }
+        });
+      });
+    });
+
+    // Handle Review Form Submit
+    document.getElementById("new-review-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById("rev-submit-btn");
+      const prodSlug = document.getElementById("rev-product").value;
+      const author = document.getElementById("rev-author").value.trim();
+      const city = document.getElementById("rev-city").value.trim();
+      const content = document.getElementById("rev-content").value.trim();
+
+      if (!author || !content) {
+        STORE.toast("Zəhmət olmasa bütün xanaları doldurun", "warning");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Göndərilir...';
+
+      try {
+        const payload = {
+          product_id: prodSlug,
+          author: author,
+          city: city,
+          rating: selectedRating,
+          content: content
+        };
+        const res = await BODI_API.submitReview(payload);
+        STORE.toast(res.message || "Rəyiniz uğurla əlavə edildi!", "check_circle");
+        modal.classList.add("hidden");
+        document.getElementById("new-review-form").reset();
+
+        // Add to local display immediately
+        const prod = BODI.getBySlug(prodSlug);
+        BODI.REVIEWS.unshift({
+          id: Date.now(),
+          productId: prod ? prod.id : 1,
+          productName: prod ? prod.name : "Bodi.az Məhsulu",
+          productSlug: prodSlug,
+          productImage: prod ? BODI.getProductImage(prod) : "",
+          author: author,
+          city: city,
+          rating: selectedRating,
+          quote: content
+        });
+        renderReviews();
+      } catch (err) {
+        STORE.toast(err.message || "Xəta baş verdi, yenidən cəhd edin.", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:20px">send</span> Rəyi göndər';
+      }
+    });
+
   })();
 </script>
 </body>
