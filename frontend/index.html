@@ -111,7 +111,7 @@
 
   <!-- TRUST BAR -->
   <section id="trust-section" class="w-full bg-surface-container py-4 md:py-md border-y border-surface-dim/20 overflow-hidden">
-    <div class="max-w-container-max mx-auto px-gutter flex overflow-x-auto snap-x hide-scroll gap-3 pb-1 md:pb-0 md:grid md:grid-cols-4 md:gap-lg md:divide-x md:divide-outline-variant/30">
+    <div class="max-w-container-max mx-auto px-gutter flex overflow-x-auto snap-x hide-scroll gap-3 pb-1 md:pb-0 md:grid md:grid-cols-4 md:gap-lg md:divide-x md:divide-outline-variant/30 drag-scroll-track">
       <div class="trust-card flex-shrink-0 w-[230px] sm:w-[260px] md:w-auto snap-start flex flex-col items-center text-center p-3 sm:p-4 bg-surface/60 md:bg-transparent rounded-2xl border border-white/50 md:border-none shadow-xs md:shadow-none gap-2">
         <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-1"><span class="material-symbols-outlined text-[28px]">local_shipping</span></div>
         <h3 class="font-label-md text-label-md text-on-surface font-semibold">Bakı üzrə sürətli çatdırılma</h3>
@@ -156,29 +156,29 @@
         </a>
       </div>
     </div>
-    <div id="catTrack" class="flex md:grid md:grid-cols-3 gap-4 md:gap-md overflow-x-auto snap-x snap-mandatory hide-scroll pb-2">
-      <a href="category.html?cat=bodi" class="cat-card flex-shrink-0 w-[82vw] sm:w-[320px] md:w-auto snap-center relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm">
-        <img src="" data-cat-img="bodi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Bodilər">
-        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white">
+    <div id="catTrack" class="flex md:grid md:grid-cols-3 gap-4 md:gap-5 overflow-x-auto snap-x snap-mandatory hide-scroll pb-2 drag-scroll-track">
+      <a href="category.html?cat=bodi" draggable="false" class="cat-card flex-shrink-0 w-[78vw] sm:w-[320px] md:w-auto snap-start relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm select-none">
+        <img src="" data-cat-img="bodi" draggable="false" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" alt="Bodilər">
+        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white pointer-events-none">
           <span class="text-xs uppercase tracking-widest text-primary-fixed bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full mb-2 inline-block font-semibold">100% Pambıq</span>
           <h3 class="font-headline-md text-2xl md:text-headline-md font-bold">Bodilər</h3>
           <p class="font-body-sm text-body-sm opacity-90">Gündəlik rahatlıq və zəriflik</p>
         </div>
       </a>
-      <a href="category.html?cat=tulum" class="cat-card flex-shrink-0 w-[82vw] sm:w-[320px] md:w-auto snap-center relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm">
-        <img src="" data-cat-img="tulum" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Tulumlar">
-        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white">
+      <a href="category.html?cat=tulum" draggable="false" class="cat-card flex-shrink-0 w-[78vw] sm:w-[320px] md:w-auto snap-start relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm select-none">
+        <img src="" data-cat-img="tulum" draggable="false" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" alt="Tulumlar">
+        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white pointer-events-none">
           <span class="text-xs uppercase tracking-widest text-primary-fixed bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full mb-2 inline-block font-semibold">Yumşaq Qoruma</span>
           <h3 class="font-headline-md text-2xl md:text-headline-md font-bold">Tulumlar</h3>
           <p class="font-body-sm text-body-sm opacity-90">Bütün bədən qorunması və isti yuxu</p>
         </div>
       </a>
-      <a href="category.html?cat=dest" class="cat-card flex-shrink-0 w-[82vw] sm:w-[320px] md:w-auto snap-center relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm">
-        <img src="" data-cat-img="dest" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Dəstlər">
-        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white">
+      <a href="category.html?cat=dest" draggable="false" class="cat-card flex-shrink-0 w-[78vw] sm:w-[320px] md:w-auto snap-start relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm select-none">
+        <img src="" data-cat-img="dest" draggable="false" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" alt="Dəstlər">
+        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white pointer-events-none">
           <span class="text-xs uppercase tracking-widest text-primary-fixed bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full mb-2 inline-block font-semibold">Hədiyyəlik</span>
           <h3 class="font-headline-md text-2xl md:text-headline-md font-bold">Dəstlər</h3>
           <p class="font-body-sm text-body-sm opacity-90">Hədiyyəlik zərif kolleksiyalar</p>
@@ -210,7 +210,7 @@
         </a>
       </div>
     </div>
-    <div id="featured-track" class="flex overflow-x-auto snap-x snap-mandatory hide-scroll gap-4 pb-3 scroll-smooth"></div>
+    <div id="featured-track" class="flex overflow-x-auto snap-x snap-mandatory hide-scroll gap-5 pb-4 scroll-smooth drag-scroll-track"></div>
     <div id="featDots" class="flex items-center justify-center gap-1.5 mt-3"></div>
   </section>
 
@@ -261,7 +261,7 @@
         </a>
       </div>
     </div>
-    <div id="new-track" class="flex overflow-x-auto snap-x snap-mandatory hide-scroll gap-4 pb-3 scroll-smooth"></div>
+    <div id="new-track" class="flex overflow-x-auto snap-x snap-mandatory hide-scroll gap-5 pb-4 scroll-smooth drag-scroll-track"></div>
     <div id="newDots" class="flex items-center justify-center gap-1.5 mt-3"></div>
   </section>
 
@@ -312,7 +312,7 @@
       <button class="rv-btn rv-btn--left" type="button" aria-label="Əvvəlki rəylər">
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
-      <div class="rv-slider" id="rvSlider"></div>
+      <div class="rv-slider drag-scroll-track" id="rvSlider"></div>
       <button class="rv-btn rv-btn--right" type="button" aria-label="Növbəti rəylər">
         <span class="material-symbols-outlined">chevron_right</span>
       </button>
@@ -368,7 +368,7 @@
     function renderGrids() {
       const feat = document.getElementById("featured-track");
       const nw = document.getElementById("new-track");
-      const cardOpts = { extraClass: "w-[240px] sm:w-[270px] lg:w-[calc(25%-12px)] flex-shrink-0 snap-start" };
+      const cardOpts = { extraClass: "w-[78vw] sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)] flex-shrink-0 snap-start" };
       if (feat) {
         const featList = [...BODI.PRODUCTS].sort((a, b) => b.reviews - a.reviews).slice(0, 8);
         feat.innerHTML = featList.map(p => BODI.card(p, cardOpts)).join("");

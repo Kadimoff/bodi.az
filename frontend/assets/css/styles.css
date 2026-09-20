@@ -228,6 +228,24 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
   scroll-snap-align: start;
 }
 
+/* Drag to scroll (mouse & touch) */
+.drag-scroll-track {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+.drag-scroll-track.is-dragging {
+  cursor: grabbing !important;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+}
+.drag-scroll-track.is-dragging * {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
 /* Mobile navigation safe area inset support */
 #mobile-nav nav {
   padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));

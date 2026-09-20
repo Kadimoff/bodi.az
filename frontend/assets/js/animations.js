@@ -9,7 +9,125 @@
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* --------------------------------------------------------------------------
-     1. CAROUSEL CONTROLLERS (Touch swipe, arrows, progress dots)
+     1. DRAG-TO-SCROLL CONTROLLER (Mouse drag + Touch momentum + Click guard)
+     -------------------------------------------------------------------------- */
+  function enableDragScroll(track) {
+    if (!track || track.dataset.dragScrollArmed === "true") return;
+    track.dataset.dragScrollArmed = "true";
+    track.classList.add("drag-scroll-track");
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let hasDragged = false;
+    let velocity = 0;
+    let lastX = 0;
+    let lastTime = 0;
+    let momentumId = null;
+
+    function stopMomentum() {
+      if (momentumId) {
+        cancelAnimationFrame(momentumId);
+        momentumId = null;
+      }
+    }
+
+    track.addEventListener("mousedown", function (e) {
+      if (e.button !== 0) return; // Left mouse button only
+      stopMomentum();
+      isDown = true;
+      hasDragged = false;
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+      lastX = e.pageX;
+      lastTime = performance.now();
+      velocity = 0;
+      track.classList.add("is-dragging");
+    });
+
+    window.addEventListener("mousemove", function (e) {
+      if (!isDown) return;
+      const x = e.pageX - track.offsetLeft;
+      const walk = x - startX;
+
+      if (Math.abs(walk) > 6) {
+        hasDragged = true;
+      }
+
+      if (hasDragged) {
+        e.preventDefault();
+        track.scrollLeft = scrollLeft - walk;
+
+        const now = performance.now();
+        const dt = now - lastTime;
+        if (dt > 8) {
+          velocity = (e.pageX - lastX) / dt;
+          lastX = e.pageX;
+          lastTime = now;
+        }
+      }
+    }, { passive: false });
+
+    function onMouseUpOrLeave() {
+      if (!isDown) return;
+      isDown = false;
+      track.classList.remove("is-dragging");
+
+      // Decay velocity if held stationary before releasing
+      if (performance.now() - lastTime > 70) {
+        velocity = 0;
+      }
+
+      if (hasDragged) {
+        setTimeout(function () {
+          hasDragged = false;
+        }, 60);
+
+        // Inertia momentum glide
+        if (Math.abs(velocity) > 0.15) {
+          let currentStep = -velocity * 16;
+          const friction = 0.92;
+
+          function glide() {
+            if (Math.abs(currentStep) < 0.4) {
+              stopMomentum();
+              return;
+            }
+            track.scrollLeft += currentStep;
+            currentStep *= friction;
+            momentumId = requestAnimationFrame(glide);
+          }
+          momentumId = requestAnimationFrame(glide);
+        }
+      }
+    }
+
+    window.addEventListener("mouseup", onMouseUpOrLeave);
+    window.addEventListener("blur", function () {
+      if (isDown) {
+        isDown = false;
+        track.classList.remove("is-dragging");
+        stopMomentum();
+      }
+    });
+
+    // Suppress accidental link clicks or button triggers if user dragged
+    track.addEventListener("click", function (e) {
+      if (hasDragged) {
+        e.preventDefault();
+        e.stopPropagation();
+        hasDragged = false;
+      }
+    }, true);
+
+    // Stop native image/link drag ghost
+    track.addEventListener("dragstart", function (e) {
+      e.preventDefault();
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     2. CAROUSEL CONTROLLERS (Touch swipe, arrows, progress dots)
      -------------------------------------------------------------------------- */
   function initCarousels() {
     setupTrackCarousel({
@@ -17,8 +135,7 @@
       prevBtnId: "catPrev",
       nextBtnId: "catNext",
       dotsId: "catDots",
-      itemSelector: ".cat-card",
-      stepRatio: 0.85
+      itemSelector: ".cat-card"
     });
 
     setupTrackCarousel({
@@ -26,8 +143,7 @@
       prevBtnId: "featPrev",
       nextBtnId: "featNext",
       dotsId: "featDots",
-      itemSelector: ".group",
-      stepRatio: 0.85
+      itemSelector: ".group"
     });
 
     setupTrackCarousel({
@@ -35,16 +151,21 @@
       prevBtnId: "newPrev",
       nextBtnId: "newNext",
       dotsId: "newDots",
-      itemSelector: ".group",
-      stepRatio: 0.85
+      itemSelector: ".group"
     });
 
     setupReviewsDots();
+
+    // Trust section mobile scrollable track
+    const trustTrack = document.querySelector("#trust-section > div");
+    if (trustTrack) enableDragScroll(trustTrack);
   }
 
   function setupTrackCarousel(config) {
     const track = document.getElementById(config.trackId);
     if (!track) return;
+
+    enableDragScroll(track);
 
     const prevBtn = document.getElementById(config.prevBtnId);
     const nextBtn = document.getElementById(config.nextBtnId);
@@ -52,8 +173,8 @@
 
     function getStep() {
       const item = track.querySelector(config.itemSelector);
-      if (!item) return 300;
-      return (item.offsetWidth + 16) * (config.stepRatio || 1);
+      if (!item) return 320;
+      return item.offsetWidth + 20; // 1 full item plus gap
     }
 
     if (prevBtn) {
@@ -83,7 +204,7 @@
         return;
       }
 
-      const numDots = Math.min(items.length, 5);
+      const numDots = Math.min(items.length, 6);
       if (dotsContainer.children.length !== numDots) {
         dotsContainer.innerHTML = "";
         for (let i = 0; i < numDots; i++) {
@@ -105,7 +226,7 @@
       const activeIdx = Math.min(Math.round(progress * (numDots - 1)), numDots - 1);
       Array.from(dotsContainer.children).forEach(function (dot, idx) {
         if (idx === activeIdx) {
-          dot.className = "h-2 w-6 rounded-full bg-primary transition-all duration-300";
+          dot.className = "h-2 w-6 rounded-full bg-primary transition-all duration-300 shadow-xs";
         } else {
           dot.className = "h-2 w-2 rounded-full bg-outline-variant/60 hover:bg-outline-variant transition-all duration-300";
         }
@@ -115,7 +236,7 @@
     let scrollTimeout;
     track.addEventListener("scroll", function () {
       clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(updateDots, 60);
+      scrollTimeout = setTimeout(updateDots, 50);
     }, { passive: true });
 
     setTimeout(updateDots, 150);
@@ -125,7 +246,10 @@
   function setupReviewsDots() {
     const slider = document.getElementById("rvSlider");
     const dotsContainer = document.getElementById("rvDots");
-    if (!slider || !dotsContainer) return;
+    if (!slider) return;
+
+    enableDragScroll(slider);
+    if (!dotsContainer) return;
 
     function renderDots() {
       const cards = slider.querySelectorAll(".rv-card");
@@ -154,7 +278,7 @@
         const active = Math.min(Math.round(p * (numDots - 1)), numDots - 1);
         Array.from(dotsContainer.children).forEach(function (dot, idx) {
           if (idx === active) {
-            dot.className = "h-2 w-6 rounded-full bg-primary transition-all duration-300";
+            dot.className = "h-2 w-6 rounded-full bg-primary transition-all duration-300 shadow-xs";
           } else {
             dot.className = "h-2 w-2 rounded-full bg-outline-variant/60 hover:bg-outline-variant transition-all duration-300";
           }

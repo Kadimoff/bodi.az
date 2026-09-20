@@ -180,21 +180,21 @@
       ? `<div class="flex items-baseline gap-2"><span class="font-headline-sm text-headline-sm text-error">${money(p.price)}</span><span class="font-body-sm text-body-sm text-on-surface-variant line-through">${money(p.old)}</span></div>`
       : `<div class="font-headline-sm text-headline-sm text-primary">${money(p.price)}</div>`;
     return `
-    <div class="group relative bg-surface-container-lowest rounded-xl p-3 md:p-4 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${opts.extraClass || ''}">
-      <a href="product.html?p=${p.slug}" class="relative aspect-[4/5] rounded-lg overflow-hidden bg-surface-container-low mb-4 block">
-        <img src="${img}" alt="${p.name}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy">
-        <div class="absolute top-2 left-2 flex flex-col gap-1">${tag}</div>
+    <div class="group relative bg-surface-container-lowest rounded-2xl p-3.5 md:p-4 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${opts.extraClass || ''}">
+      <a href="product.html?p=${p.slug}" draggable="false" class="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-container-low mb-3.5 md:mb-4 block select-none">
+        <img src="${img}" alt="${p.name}" draggable="false" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" loading="lazy">
+        <div class="absolute top-2.5 left-2.5 flex flex-col gap-1">${tag}</div>
       </a>
-      <button data-wish="${p.id}" aria-label="İstək siyahısına əlavə et" class="absolute top-5 right-5 w-8 h-8 bg-surface/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface transition-colors shadow-sm">
+      <button data-wish="${p.id}" aria-label="İstək siyahısına əlavə et" class="absolute top-5 right-5 w-8 h-8 bg-surface/85 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface transition-colors shadow-sm">
         <span class="material-symbols-outlined text-[18px] ${wished}">favorite</span>
       </button>
       <div class="flex-grow flex flex-col">
-        <div class="text-xs font-label-sm text-tertiary mb-1 uppercase tracking-widest">${p.material}</div>
-        <a href="product.html?p=${p.slug}" class="font-body-md text-body-md text-on-surface font-medium mb-1 clamp-2 hover:text-primary transition-colors">${p.name}</a>
-        <div class="flex items-center gap-1 text-primary mb-2">${stars(p.rating)}<span class="font-body-sm text-body-sm text-on-surface-variant ml-1">(${p.reviews})</span></div>
-        <div class="mt-auto pt-2 flex items-center justify-between">
+        <div class="text-[11px] md:text-xs font-label-sm text-tertiary mb-1 uppercase tracking-widest font-semibold">${p.material}</div>
+        <a href="product.html?p=${p.slug}" draggable="false" class="font-body-md text-sm md:text-body-md text-on-surface font-bold mb-1.5 clamp-2 hover:text-primary transition-colors leading-snug">${p.name}</a>
+        <div class="flex items-center gap-1 text-primary mb-2.5">${stars(p.rating)}<span class="font-body-sm text-xs md:text-body-sm text-on-surface-variant ml-1 font-medium">(${p.reviews})</span></div>
+        <div class="mt-auto pt-2 flex items-center justify-between border-t border-outline-variant/20">
           ${price}
-          <button data-add="${p.id}" aria-label="Səbətə at" class="w-10 h-10 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary">
+          <button data-add="${p.id}" aria-label="Səbətə at" class="w-10 h-10 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary shadow-xs">
             <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
           </button>
         </div>
@@ -254,8 +254,8 @@
       ? `<a href="${productLink}" class="rv-product hover:text-primary font-medium transition-colors">${pName}</a>`
       : `<span class="rv-product">${pName}</span>`;
 
-    return `<article class="rv-card reveal">
-      <div class="rv-image"><a href="${productLink}"><img src="${img}" alt="${pName}" loading="lazy" class="w-full h-full object-cover"></a></div>
+    return `<article class="rv-card reveal select-none">
+      <div class="rv-image"><a href="${productLink}" draggable="false"><img src="${img}" alt="${pName}" loading="lazy" draggable="false" class="w-full h-full object-cover pointer-events-none select-none"></a></div>
       <div class="rv-body">
         ${reviewStarsHTML(r.rating)}
         ${pname}
