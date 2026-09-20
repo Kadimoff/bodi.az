@@ -469,3 +469,46 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
     animation: none !important;
   }
 }
+
+/* Hero Video Seamless Positioning & Downward Adjustment */
+#hero-section {
+  background-color: #c0dce7 !important;
+}
+
+#hero-video {
+  width: 100% !important;
+  height: calc(100% + 80px) !important;
+  object-fit: cover !important;
+  object-position: 70% top !important;
+  transform: translateY(18px);
+  will-change: transform;
+}
+
+@media (min-width: 640px) {
+  #hero-video {
+    object-position: 66% top !important;
+    transform: translateY(26px);
+  }
+}
+
+@media (min-width: 768px) {
+  #hero-video {
+    object-position: 63% top !important;
+    transform: translateY(34px);
+  }
+}
+
+@media (min-width: 1024px) {
+  #hero-video {
+    object-position: 60% top !important;
+    transform: translateY(42px);
+  }
+}
+
+@media (min-width: 1440px) {
+  #hero-video {
+    object-position: 58% top !important;
+    transform: translateY(48px);
+  }
+}
+
