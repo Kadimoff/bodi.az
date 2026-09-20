@@ -74,7 +74,10 @@
   <!-- HERO -->
   <section class="relative w-full h-[82vh] min-h-[520px] md:h-[90vh] bg-surface-container-lowest overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
-      <img src="" id="hero-bg" class="w-full h-full object-cover object-center" alt="Yumşaq orqanik pambıq çarpayısında uyuyan körpə">
+      <picture>
+        <source srcset="assets/images/hero-bg.webp" type="image/webp">
+        <img src="assets/images/hero-bg.jpg" id="hero-bg" class="w-full h-full object-cover object-center" alt="Bodi.az orqanik pambıq körpə geyimləri">
+      </picture>
       <div class="absolute inset-0 bg-gradient-to-r from-surface/85 via-surface/55 to-transparent"></div>
     </div>
     <div class="relative z-20 w-full px-gutter max-w-container-max mx-auto h-full flex items-center">
@@ -271,7 +274,7 @@
   // Populate real images + product grids + customer reviews
   (function () {
     const heroBg = document.getElementById("hero-bg");
-    if (heroBg) heroBg.src = "assets/images/products/ag-pambiq-bodi.jpg";
+    if (heroBg && !heroBg.getAttribute("src")) heroBg.src = "assets/images/hero-bg.jpg";
     const promoImg = document.getElementById("promo-img");
     if (promoImg) promoImg.src = "assets/images/products/bej-uzunqol-bodi.jpg";
 

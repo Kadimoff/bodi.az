@@ -306,29 +306,65 @@
   // 4. WhatsApp Direct Buy Integrations
   function getWhatsAppBuyUrl(product, size, color, qty) {
     const count = qty || 1;
-    const pageUrl = window.location.href;
+    const origin = (typeof window !== 'undefined' && window.location.origin) || "https://bodi.az";
+    const slug = product.slug || product.id || "bodi";
+    const pageUrl = `${origin}/product.html?slug=${encodeURIComponent(slug)}`;
     const priceText = product.price ? product.price + " ₼" : "";
+    const totalLine = product.price ? (Number(product.price) * count).toFixed(2) + " ₼" : "";
     const colorLabel = (typeof color === 'object' ? color.n : color) || "";
     
     let msg = `Salam, Bodi.az saytından bu məhsulu sifariş etmək istəyirəm:\n\n`;
-    msg += `🛍️ Məhsul: ${product.name}\n`;
-    if (colorLabel) msg += `🎨 Rəng: ${colorLabel}\n`;
-    if (size) msg += `📏 Ölçü: ${size}\n`;
-    msg += `🔢 Say: ${count} ədəd\n`;
-    if (priceText) msg += `💰 Qiymət: ${priceText}\n`;
-    msg += `🔗 Link: ${pageUrl}\n\n`;
-    msg += `Zəhmət olmasa çatdırılma üçün qeydə alasınız.`;
+    msg += `🛍️ *Məhsul:* ${product.name}\n`;
+    msg += `🔗 *Məhsul Linki:* ${pageUrl}\n`;
+    if (colorLabel) msg += `🎨 *Rəng:* ${colorLabel}\n`;
+    if (size) msg += `📏 *Ölçü:* ${size}\n`;
+    msg += `🔢 *Say:* ${count} ədəd\n`;
+    if (priceText) msg += `💰 *Qiymət:* ${priceText} (Cəmi: ${totalLine})\n`;
+    if (product.material) msg += `🌿 *Material:* ${product.material}\n`;
+    if (product.desc) {
+      const cleanDesc = product.desc.replace(/<[^>]*>?/gm, "").trim().slice(0, 130);
+      if (cleanDesc) msg += `📝 *Məhsul haqqında:* ${cleanDesc}...\n`;
+    }
+    msg += `\nZəhmət olmasa çatdırılma üçün qeydə alasınız.`;
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   }
 
   function getWhatsAppCartUrl(cartItems, total) {
+    const origin = (typeof window !== 'undefined' && window.location.origin) || "https://bodi.az";
     let msg = `Salam, Bodi.az saytından səbətimdəki məhsulları sifariş etmək istəyirəm:\n\n`;
     cartItems.forEach((it, idx) => {
-      msg += `${idx + 1}. ${it.product.name} — ${it.item.qty} ədəd (${it.item.size || ''} / ${it.item.color || ''}) — ${it.line.toFixed(2)} ₼\n`;
+      const p = it.product;
+      const slug = p.slug || p.id;
+      const link = `${origin}/product.html?slug=${encodeURIComponent(slug)}`;
+      const colorLabel = (typeof it.item.color === 'object' ? it.item.color.n : it.item.color) || '';
+      msg += `*${idx + 1}. ${p.name}*\n`;
+      msg += `   🔗 Link: ${link}\n`;
+      msg += `   📦 Detallar: ${it.item.qty} ədəd${it.item.size ? ' | Ölçü: ' + it.item.size : ''}${colorLabel ? ' | Rəng: ' + colorLabel : ''}\n`;
+      if (p.material) msg += `   🌿 Material: ${p.material}\n`;
+      msg += `   💰 Məbləğ: ${it.line.toFixed(2)} ₼\n\n`;
     });
-    msg += `\n💰 Yekun Məbləğ: ${total.toFixed(2)} ₼\n`;
-    msg += `Zəhmət olmasa çatdırılma üçün qeydə alasınız.`;
+    msg += `─────────────────────\n`;
+    msg += `💵 *Yekun Məbləğ:* ${Number(total || 0).toFixed(2)} ₼\n\n`;
+    msg += `Zəhmət olmasa çatdırılma üçün sifarişimi qeydə alasınız.`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  }
+
+  function getWhatsAppOrderUrl(orderData) {
+    const origin = (typeof window !== 'undefined' && window.location.origin) || "https://bodi.az";
+    let msg = `Salam, Bodi.az saytında sifariş rəsmiləşdirdim:\n\n`;
+    msg += `📋 *Sifariş №:* #${orderData.order_id}\n`;
+    msg += `👤 *Müştəri:* ${orderData.name}\n`;
+    msg += `📞 *Telefon:* ${orderData.phone}\n`;
+    msg += `📍 *Ünvan:* ${orderData.city ? orderData.city + ', ' : ''}${orderData.address}\n\n`;
+    msg += `*Sifariş edilən məhsullar:*\n`;
+    (orderData.items || []).forEach((it, idx) => {
+      const link = it.slug ? `${origin}/product.html?slug=${encodeURIComponent(it.slug)}` : '';
+      msg += `${idx + 1}. ${it.name || it.slug} — ${it.qty} ədəd${it.size ? ' (' + it.size + ')' : ''}${it.color ? ' (' + it.color + ')' : ''}\n`;
+      if (link) msg += `   🔗 Link: ${link}\n`;
+    });
+    msg += `\n💰 *Yekun Məbləğ:* ${Number(orderData.total || 0).toFixed(2)} ₼\n`;
+    msg += `\nZəhmət olmasa sifarişi qeydə alasınız.`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   }
 
@@ -371,7 +407,8 @@
 
     whatsapp: {
       getBuyUrl: getWhatsAppBuyUrl,
-      getCartUrl: getWhatsAppCartUrl
+      getCartUrl: getWhatsAppCartUrl,
+      getOrderUrl: getWhatsAppOrderUrl
     },
 
     // Backward-compatible Top-level Methods
@@ -385,6 +422,7 @@
     submitContact: (payload) => WooCommerceAdapter.submitContact(payload),
     getWhatsAppBuyUrl,
     getWhatsAppCartUrl,
+    getWhatsAppOrderUrl,
     transformProduct
   };
 

@@ -16,106 +16,24 @@
 
 <div id="site-header"></div>
 
-<main class="flex-grow w-full max-w-container-max mx-auto px-4 md:px-gutter py-md md:py-xl">
-  <nav aria-label="Breadcrumb" class="mb-lg">
-    <ol class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
-      <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
-      <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
-      <li aria-current="page" class="text-primary font-medium">Hesabım</li>
-    </ol>
-  </nav>
-
-  <div class="grid grid-cols-1 md:grid-cols-12 gap-xl">
-    <!-- Sidebar -->
-    <aside class="md:col-span-3 space-y-md">
-      <div class="bg-surface-container-lowest rounded-2xl p-md card-ambient">
-        <div class="flex items-center gap-3">
-          <div class="w-14 h-14 rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary font-headline-md">G</div>
-          <div><div class="font-headline-sm text-headline-sm text-on-surface">Günay Əliyeva</div><div class="font-body-sm text-body-sm text-on-surface-variant">gunay@bodi.az</div></div>
-        </div>
-      </div>
-      <nav class="bg-surface-container-lowest rounded-2xl p-sm card-ambient" id="acct-nav">
-        <button data-tab="orders" class="acct-nav w-full flex items-center gap-3 px-md py-3 rounded-xl font-body-md text-body-md text-primary bg-primary-fixed border-l-2 border-primary text-left"><span class="material-symbols-outlined" style="font-size:20px">shopping_bag</span> Sifarişlər</button>
-        <button data-tab="addresses" class="acct-nav w-full flex items-center gap-3 px-md py-3 rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low border-l-2 border-transparent text-left"><span class="material-symbols-outlined" style="font-size:20px">location_on</span> Ünvanlar</button>
-        <button data-tab="wish" class="acct-nav w-full flex items-center gap-3 px-md py-3 rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low border-l-2 border-transparent text-left"><span class="material-symbols-outlined" style="font-size:20px">favorite</span> İstək siyahısı</button>
-        <button data-tab="settings" class="acct-nav w-full flex items-center gap-3 px-md py-3 rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low border-l-2 border-transparent text-left"><span class="material-symbols-outlined" style="font-size:20px">settings</span> Hesab Parametrləri</button>
-        <button onclick="STORE.toast('Çıxış edildi','logout')" class="w-full flex items-center gap-3 px-md py-3 rounded-xl font-body-md text-body-md text-error hover:bg-error-container/30 text-left"><span class="material-symbols-outlined" style="font-size:20px">logout</span> Çıxış</button>
-      </nav>
-      <div class="bg-primary text-on-primary rounded-2xl p-md">
-        <div class="flex items-center gap-2 mb-1"><span class="material-symbols-outlined">card_membership</span><span class="font-label-md text-label-md">Bodi.az Klub</span></div>
-        <p class="font-body-sm text-body-sm opacity-90 mb-md">Hər alışda 5% keşbek qazanın.</p>
-        <button onclick="STORE.toast('Kluba qoşulursunuz!','card_membership')" class="w-full bg-on-primary text-primary font-label-md text-label-md py-2.5 rounded-lg hover:bg-surface-container-lowest transition-colors">Üzv ol</button>
-      </div>
-    </aside>
-
-    <!-- Content -->
-    <section class="md:col-span-9">
-
-      <!-- ORDERS -->
-      <div id="tab-orders" class="acct-tab">
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-md gap-3">
-          <div><h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-1">Son Sifarişlər</h1><p class="font-body-md text-body-md text-on-surface-variant">Hesabınızdakı son fəaliyyətləri izləyin.</p></div>
-          <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size:18px">search</span>
-            <input id="order-search-input" class="pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-full font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Sifariş nömrəsi ilə axtar...">
-          </div>
-        </div>
-        <div class="flex flex-wrap gap-2 mb-md" id="order-chips">
-          <button class="ochip bg-primary text-on-primary px-4 py-2 rounded-full font-label-sm text-label-sm" data-status="all">Hamısı</button>
-          <button class="ochip bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-sm text-label-sm" data-status="Hazırlanır">Hazırlanır</button>
-          <button class="ochip bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-sm text-label-sm" data-status="Kuryerdə">Kuryerdə</button>
-          <button class="ochip bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-sm text-label-sm" data-status="Tamamlandı">Tamamlandı</button>
-        </div>
-        <div id="orders-list" class="space-y-md"></div>
-
-        <div class="mt-xl bg-surface-container-low rounded-2xl p-lg flex flex-col md:flex-row items-center justify-between gap-md text-center md:text-left">
-          <div><h3 class="font-headline-sm text-headline-sm text-on-surface">Daha çox məhsul axtarırsınız?</h3><p class="font-body-md text-body-md text-on-surface-variant">Yeni gələn kolleksiyamıza göz atın və övladınız üçün ən yaxşısını seçin.</p></div>
-          <a href="category.html?filter=new" class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-xl hover:bg-primary-container transition-colors whitespace-nowrap">Mağazaya keç</a>
-        </div>
-      </div>
-
-      <!-- ADDRESSES -->
-      <div id="tab-addresses" class="acct-tab hidden">
-        <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md">Ünvanlar</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-          <div class="bg-surface-container-lowest rounded-2xl p-md card-ambient">
-            <div class="flex justify-between items-start mb-2"><span class="bg-primary-fixed/40 text-primary font-label-sm text-label-sm px-2 py-1 rounded-full">Ev</span><button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined" style="font-size:18px">edit</span></button></div>
-            <p class="font-body-md text-body-md text-on-surface">Günay Əliyeva</p><p class="font-body-sm text-body-sm text-on-surface-variant">+994 50 123 45 67</p>
-            <p class="font-body-sm text-body-sm text-on-surface-variant mt-2">Bakı ş., Nərimanov r., Atatürk pr. 45, mənzil 12</p>
-          </div>
-          <button class="border-2 border-dashed border-outline-variant rounded-2xl p-md flex flex-col items-center justify-center gap-2 text-on-surface-variant hover:border-primary hover:text-primary transition-colors min-h-[140px]" onclick="STORE.toast('Yeni ünvan əlavə edin','add_location')">
-            <span class="material-symbols-outlined text-[32px]">add_location</span><span class="font-label-md text-label-md">Yeni ünvan əlavə et</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- WISHLIST -->
-      <div id="tab-wish" class="acct-tab hidden">
-        <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md">İstək siyahısı</h1>
-        <div id="wish-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"></div>
-        <div id="wish-empty" class="hidden text-center py-xl bg-surface-container-low rounded-3xl">
-          <span class="material-symbols-outlined text-[64px] text-outline-variant">favorite</span>
-          <h3 class="font-headline-md text-headline-md text-on-surface mt-md">İstək siyahısı boşdur</h3>
-          <p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-lg">Bəyəndiyiniz məhsulları burada saxlayın.</p>
-          <a href="category.html?cat=bodi" class="inline-flex items-center bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-xl hover:bg-primary-container transition-colors">Məhsullara bax</a>
-        </div>
-      </div>
-
-      <!-- SETTINGS -->
-      <div id="tab-settings" class="acct-tab hidden">
-        <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md">Hesab Parametrləri</h1>
-        <div class="bg-surface-container-lowest rounded-2xl p-lg card-ambient space-y-md max-w-xl">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-            <div><label class="font-label-md text-label-md text-on-surface block mb-2">Ad</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" value="Günay"></div>
-            <div><label class="font-label-md text-label-md text-on-surface block mb-2">Soyad</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" value="Əliyeva"></div>
-            <div class="md:col-span-2"><label class="font-label-md text-label-md text-on-surface block mb-2">E-poçt</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" value="gunay@bodi.az"></div>
-            <div><label class="font-label-md text-label-md text-on-surface block mb-2">Telefon</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" value="+994 50 123 45 67"></div>
-          </div>
-          <button onclick="STORE.toast('Məlumatlar saxlanıldı','check')" class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg hover:bg-primary-container transition-colors">Dəyişiklikləri saxla</button>
-        </div>
-      </div>
-
-    </section>
+<main class="flex-grow w-full max-w-container-max mx-auto px-4 md:px-gutter py-xl flex items-center justify-center">
+  <div class="max-w-xl w-full bg-surface-container-lowest rounded-3xl p-8 md:p-12 text-center card-ambient border border-surface-variant my-12">
+    <div class="w-20 h-20 bg-primary-fixed/40 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+      <span class="material-symbols-outlined" style="font-size:40px">person</span>
+    </div>
+    <span class="inline-block px-3 py-1 bg-primary-fixed/40 text-primary font-label-sm text-label-sm rounded-full mb-3">Gələcək Yenilənmə</span>
+    <h1 class="font-display-lg text-display-lg text-on-surface mb-3">Şəxsi Kabinet</h1>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-8 leading-relaxed">
+      Müştəri profili və şəxsi kabinet sistemi növbəti mərhələdə istifadəyə veriləcəkdir. Hazırda bütün sifarişlərinizi rahatlıqla <strong>WhatsApp</strong> və ya <strong>Sifarişi İzlə</strong> bölməmiz vasitəsilə həyata keçirə bilərsiniz.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="category.html" class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-6 py-3.5 rounded-xl hover:bg-primary-container transition-all shadow-sm">
+        <span class="material-symbols-outlined" style="font-size:20px">shopping_bag</span> Kolleksiyaya bax
+      </a>
+      <a href="track-order.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-label-md text-label-md px-6 py-3.5 rounded-xl hover:bg-primary-fixed/20 transition-all">
+        <span class="material-symbols-outlined" style="font-size:20px">my_location</span> Sifarişi izlə
+      </a>
+    </div>
   </div>
 </main>
 
@@ -126,99 +44,5 @@
 <script src="assets/js/api.js?v=2.1.0"></script>
 <script src="assets/js/store.js?v=2.1.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
-<script>
-(function () {
-  const userOrders = (STORE.getOrders && STORE.getOrders()) || [];
-  const sampleOrders = [
-    { id: "101", date: "14 Oktyabr 2024", total: 74.80, count: 3, status: "Hazırlanır", dot: "bg-secondary" },
-    { id: "102", date: "08 Oktyabr 2024", total: 119.70, count: 5, status: "Kuryerdə", dot: "bg-primary" },
-    { id: "103", date: "22 Sentyabr 2024", total: 24.90, count: 1, status: "Tamamlandı", dot: "bg-tertiary" }
-  ];
-  const ORDERS = userOrders.length > 0 ? userOrders : sampleOrders;
-
-  function statusBadge(s, dot) {
-    const pulse = s === "Kuryerdə" ? "pulse-dot" : "";
-    return `<span class="inline-flex items-center gap-2 font-label-sm text-label-sm px-3 py-1 rounded-full bg-surface-container-high text-on-surface"><span class="w-2 h-2 rounded-full ${dot || 'bg-primary'} ${pulse}"></span>${s}</span>`;
-  }
-
-  function thumbStack(o) {
-    return `<div class="flex -space-x-4">
-      <img src="assets/images/products/ag-pambiq-bodi.jpg" class="w-12 h-12 rounded-lg border-2 border-surface object-cover">
-      <img src="assets/images/products/bej-uzunqol-bodi.jpg" class="w-12 h-12 rounded-lg border-2 border-surface object-cover">
-      <img src="assets/images/products/yumshaq-yeni-dogan-tulumu.jpg" class="w-12 h-12 rounded-lg border-2 border-surface object-cover">
-    </div>`;
-  }
-
-  let currentStatus = "all";
-  let searchQuery = "";
-
-  function renderOrders() {
-    let list = ORDERS.slice();
-    if (currentStatus !== "all") list = list.filter(o => o.status === currentStatus);
-    if (searchQuery) list = list.filter(o => String(o.id).toLowerCase().includes(searchQuery.toLowerCase()));
-
-    document.getElementById("orders-list").innerHTML = list.map(o => `
-      <div class="bg-surface-container-lowest rounded-2xl p-md card-ambient flex flex-col md:flex-row md:items-center gap-md">
-        <div class="flex items-center gap-md flex-grow">
-          <div class="w-12 h-12 rounded-xl bg-primary-fixed/40 flex items-center justify-center text-primary"><span class="material-symbols-outlined">inventory_2</span></div>
-          <div>
-            <div class="font-label-md text-label-md text-on-surface">Sifariş #${o.id}</div>
-            <div class="font-body-sm text-body-sm text-on-surface-variant">${o.date} · ${o.count} məhsul</div>
-          </div>
-        </div>
-        <div class="hidden md:block">${thumbStack(o)}</div>
-        <div class="text-right"><div class="font-headline-sm text-headline-sm text-primary">${BODI.money(o.total)}</div>${statusBadge(o.status, o.dot)}</div>
-        <div class="flex gap-2 md:flex-col">
-          <a href="track-order.html?id=${o.id}" class="flex-1 md:flex-none px-4 py-2 bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:bg-primary-container transition-colors text-center shadow-sm">İzlə</a>
-        </div>
-      </div>`).join("") || `<p class="font-body-md text-body-md text-on-surface-variant text-center py-lg">Axtarışa uyğun sifariş tapılmadı.</p>`;
-  }
-
-  renderOrders();
-
-  document.querySelectorAll(".ochip").forEach(c => c.addEventListener("click", () => {
-    document.querySelectorAll(".ochip").forEach(x => { x.className = "ochip bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-sm text-label-sm"; });
-    c.className = "ochip bg-primary text-on-primary px-4 py-2 rounded-full font-label-sm text-label-sm";
-    currentStatus = c.getAttribute("data-status");
-    renderOrders();
-  }));
-
-  const searchInput = document.getElementById("order-search-input");
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      searchQuery = e.target.value.trim();
-      renderOrders();
-    });
-  }
-
-  // Tabs
-  function showTab(name) {
-    document.querySelectorAll(".acct-tab").forEach(t => t.classList.add("hidden"));
-    document.getElementById("tab-" + name).classList.remove("hidden");
-    document.querySelectorAll(".acct-nav").forEach(n => {
-      const on = n.getAttribute("data-tab") === name;
-      n.className = "acct-nav w-full flex items-center gap-3 px-md py-3 rounded-xl font-body-md text-body-md border-l-2 text-left " + (on ? "text-primary bg-primary-fixed border-primary" : "text-on-surface-variant hover:bg-surface-container-low border-transparent");
-    });
-    if (name === "wish") renderWish();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-  document.querySelectorAll(".acct-nav").forEach(n => n.addEventListener("click", () => showTab(n.getAttribute("data-tab"))));
-
-  // Wishlist render
-  function renderWish() {
-    const ids = STORE.getWish();
-    const grid = document.getElementById("wish-grid");
-    const empty = document.getElementById("wish-empty");
-    if (!ids.length) { grid.innerHTML = ""; empty.classList.remove("hidden"); return; }
-    empty.classList.add("hidden");
-    grid.innerHTML = ids.map(id => BODI.card(BODI.getById(id))).join("");
-    document.querySelectorAll("[data-wish]").forEach(btn => { if (STORE.isWished(btn.getAttribute("data-wish"))) btn.querySelector("span").classList.add("ms-fill", "text-secondary"); });
-  }
-
-  // Hash → tab
-  const hash = location.hash.replace("#", "");
-  if (["orders","addresses","wish","settings"].includes(hash)) showTab(hash);
-})();
-</script>
 </body>
 </html>

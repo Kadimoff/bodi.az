@@ -35,9 +35,8 @@
       </nav>
       <div class="flex items-center gap-sm">
         <a href="category.html" aria-label="Axtarış" class="p-2 text-primary hover:bg-surface-container-low transition-all rounded-full"><span class="material-symbols-outlined">search</span></a>
-        <a href="account.html" aria-label="Profil" class="p-2 text-primary hover:bg-surface-container-low transition-all rounded-full hidden md:block"><span class="material-symbols-outlined">person</span></a>
-        <a href="account.html#wish" aria-label="İstək siyahısı" class="p-2 text-primary hover:bg-surface-container-low transition-all rounded-full relative">
-          <span class="material-symbols-outlined">favorite</span>
+        <a href="https://wa.me/994501234567?text=Salam%2C%20Bodi.az%20sayt%C4%B1ndan%20m%C9%99lumat%20almaq%20ist%C9%99yir%C9%99m" target="_blank" rel="noopener" aria-label="WhatsApp ilə əlaqə" class="p-2 text-[#25D366] hover:bg-[#25D366]/10 transition-all rounded-full" title="WhatsApp ilə əlaqə">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.155.57 4.178 1.564 5.929l-1.564 5.903 6.077-1.595c1.701.928 3.65 1.763 5.923 1.763 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg>
         </a>
         <a href="cart.html" aria-label="Səbət" class="p-2 text-primary hover:bg-surface-container-low transition-all rounded-full relative">
           <span class="material-symbols-outlined">shopping_cart</span>
@@ -102,12 +101,12 @@
   <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface px-2 py-3 shadow-[0px_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl md:hidden">
     ${[
       { i: "home", l: "Ana səhifə", href: "index.html", a: active === "home" },
-      { i: "category", l: "Kateqoriya", href: "category.html", a: active === "category" },
+      { i: "category", l: "Kolleksiya", href: "category.html", a: active === "category" },
       { i: "search", l: "Axtarış", href: "category.html", a: false },
-      { i: "favorite", l: "İstək", href: "account.html#wish", a: false },
+      { i: "chat", l: "WhatsApp", href: "https://wa.me/994501234567?text=" + encodeURIComponent("Salam, Bodi.az saytından məhsul haqqında məlumat almaq istəyirəm"), a: false, external: true },
       { i: "shopping_bag", l: "Səbət", href: "cart.html", a: active === "cart", badge: true }
     ].map(t => `
-      <a class="flex flex-col items-center justify-center ${t.a ? "text-primary bg-primary-fixed/30 rounded-full px-4 py-1" : "text-on-surface-variant"} transition-colors" href="${t.href}">
+      <a class="flex flex-col items-center justify-center ${t.a ? "text-primary bg-primary-fixed/30 rounded-full px-4 py-1" : "text-on-surface-variant"} transition-colors relative" href="${t.href}" ${t.external ? 'target="_blank" rel="noopener"' : ''}>
         <span class="material-symbols-outlined ${t.a ? 'ms-fill' : ''}">${t.i}</span>
         <span class="font-label-sm text-label-sm mt-1">${t.l}</span>
         ${t.badge ? `<span data-cart-count class="absolute right-2 top-1 bg-error text-on-error text-[8px] font-bold px-1 rounded-full hidden">0</span>` : ""}

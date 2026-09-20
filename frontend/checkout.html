@@ -24,20 +24,15 @@
   </div>
 
   <!-- Steps -->
-  <div class="flex items-center mb-xl max-w-2xl" id="step-bar">
+  <div class="flex items-center mb-xl max-w-xl" id="step-bar">
     <div class="flex flex-col items-center" data-step="1">
       <div class="step-ring w-9 h-9 rounded-full flex items-center justify-center font-label-md bg-primary text-on-primary">1</div>
-      <span class="step-label font-label-sm text-label-sm mt-2 text-primary">Çatdırılma</span>
+      <span class="step-label font-label-sm text-label-sm mt-2 text-primary">Məlumatlar və Ödəniş</span>
     </div>
     <div class="flex-grow h-0.5 mx-2 bg-surface-variant step-line" style="margin-top:-18px"></div>
     <div class="flex flex-col items-center" data-step="2">
       <div class="step-ring w-9 h-9 rounded-full flex items-center justify-center font-label-md bg-surface-variant text-on-surface-variant">2</div>
-      <span class="step-label font-label-sm text-label-sm mt-2 text-on-surface-variant">Ödəniş</span>
-    </div>
-    <div class="flex-grow h-0.5 mx-2 bg-surface-variant step-line" style="margin-top:-18px"></div>
-    <div class="flex flex-col items-center" data-step="3">
-      <div class="step-ring w-9 h-9 rounded-full flex items-center justify-center font-label-md bg-surface-variant text-on-surface-variant">3</div>
-      <span class="step-label font-label-sm text-label-sm mt-2 text-on-surface-variant">Yoxlama</span>
+      <span class="step-label font-label-sm text-label-sm mt-2 text-on-surface-variant">Təsdiq</span>
     </div>
   </div>
 
@@ -52,31 +47,39 @@
           <div><label class="font-label-md text-label-md text-on-surface block mb-2">Telefon Nömrəsi</label><input id="ship-phone" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="+994 50 123 45 67" required value="+994 50 123 45 67"></div>
           <div><label class="font-label-md text-label-md text-on-surface block mb-2">Şəhər</label><select id="ship-city" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none"><option>Bakı</option><option>Sumqayıt</option><option>Gəncə</option></select></div>
           <div class="md:col-span-2"><label class="font-label-md text-label-md text-on-surface block mb-2">Ünvan</label><input id="ship-address" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Küçə adı, bina, mənzil..." required value="Nizami küçəsi 45, mənzil 12"></div>
-          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Poçt İndeksi</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="AZ1000"></div>
         </div>
       </section>
 
       <!-- Payment -->
       <section id="payment-section" class="bg-surface-container-lowest rounded-2xl p-lg card-ambient transition-opacity duration-300">
-        <h2 class="font-headline-md text-headline-md text-on-surface mb-md">Ödəniş Üsulu</h2>
+        <h2 class="font-headline-md text-headline-md text-on-surface mb-md">Sifariş və Ödəniş Üsulu</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-md">
-          <label class="pay-opt cursor-pointer border-2 border-primary bg-primary-fixed/20 rounded-xl p-md flex items-start gap-3" data-pay="online">
+          <label class="pay-opt cursor-pointer border-2 border-primary bg-primary-fixed/20 rounded-xl p-md flex items-start gap-3" data-pay="whatsapp">
             <input class="sr-only" type="radio" name="pay" checked>
             <span class="material-symbols-outlined text-primary pay-check ms-fill">check_circle</span>
-            <div><div class="font-label-md text-label-md text-on-surface">Onlayn Ödəniş</div><div class="font-body-sm text-body-sm text-on-surface-variant">Kart ilə dərhal ödəyin</div></div>
+            <div>
+              <div class="font-label-md text-label-md text-on-surface flex items-center gap-2">
+                <svg class="w-5 h-5 fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.155.57 4.178 1.564 5.929l-1.564 5.903 6.077-1.595c1.701.928 3.65 1.763 5.923 1.763 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg>
+                WhatsApp ilə Sifariş & Təsdiq
+              </div>
+              <div class="font-body-sm text-body-sm text-on-surface-variant">Sifariş detalları və məhsul linkləri WhatsApp-a ötürülür</div>
+            </div>
           </label>
           <label class="pay-opt cursor-pointer border-2 border-outline-variant rounded-xl p-md flex items-start gap-3" data-pay="cod">
             <input class="sr-only" type="radio" name="pay">
             <span class="material-symbols-outlined text-on-surface-variant pay-check" style="visibility:hidden">check_circle</span>
-            <div><div class="font-label-md text-label-md text-on-surface">Qapıda Ödəniş</div><div class="font-body-sm text-body-sm text-on-surface-variant">Nağd və ya kartla</div></div>
+            <div>
+              <div class="font-label-md text-label-md text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary" style="font-size:20px">payments</span>
+                Qapıda Nağd Ödəniş
+              </div>
+              <div class="font-body-sm text-body-sm text-on-surface-variant">Kuryer çatdırdıqda nağd ödəmə</div>
+            </div>
           </label>
         </div>
-
-        <div id="card-fields" class="grid grid-cols-1 md:grid-cols-3 gap-md">
-          <div class="md:col-span-3"><label class="font-label-md text-label-md text-on-surface block mb-2">Kart nömrəsi</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="0000 0000 0000 0000" maxlength="19"></div>
-          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Bitmə tarixi</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="MM/YY" maxlength="5"></div>
-          <div><label class="font-label-md text-label-md text-on-surface block mb-2">CVV</label><input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="***" type="password" maxlength="3"></div>
-          <div class="flex items-end gap-2 text-on-surface-variant"><span class="material-symbols-outlined">credit_card</span><span class="font-body-sm text-body-sm">Birkart və Tamkart ilə taksit mümkündür</span></div>
+        <div class="p-4 bg-surface-container-low rounded-xl text-on-surface-variant font-body-sm text-body-sm flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary" style="font-size:22px">verified_user</span>
+          <span>İlkin mərhələdə onlayn kart ödənişi tələb olunmur. Sifarişinizi WhatsApp və ya qapıda nağd ödənişlə rahatlıqla tamamlaya bilərsiniz.</span>
         </div>
       </section>
 
@@ -86,7 +89,7 @@
           <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span> Səbətə qayıt
         </a>
         <button id="next-btn" class="inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-lg hover:bg-primary-container transition-colors shadow-sm">
-          Ödənişə keç <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+          Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>
         </button>
       </div>
     </div>
@@ -140,13 +143,23 @@
 
   // Payment option toggle
   document.querySelectorAll(".pay-opt").forEach(opt => opt.addEventListener("click", () => {
-    document.querySelectorAll(".pay-opt").forEach(o => { o.classList.remove("border-primary", "bg-primary-fixed/20"); o.classList.add("border-outline-variant"); o.querySelector(".pay-check").classList.remove("ms-fill", "text-primary"); o.querySelector(".pay-check").classList.add("text-on-surface-variant"); o.querySelector(".pay-check").style.visibility = "hidden"; });
-    opt.classList.add("border-primary", "bg-primary-fixed/20"); opt.classList.remove("border-outline-variant");
-    const chk = opt.querySelector(".pay-check"); chk.classList.add("ms-fill", "text-primary"); chk.classList.remove("text-on-surface-variant"); chk.style.visibility = "visible";
-    document.getElementById("card-fields").style.display = opt.getAttribute("data-pay") === "online" ? "" : "none";
+    document.querySelectorAll(".pay-opt").forEach(o => {
+      o.classList.remove("border-primary", "bg-primary-fixed/20");
+      o.classList.add("border-outline-variant");
+      const c = o.querySelector(".pay-check");
+      c.classList.remove("ms-fill", "text-primary");
+      c.classList.add("text-on-surface-variant");
+      c.style.visibility = "hidden";
+    });
+    opt.classList.add("border-primary", "bg-primary-fixed/20");
+    opt.classList.remove("border-outline-variant");
+    const chk = opt.querySelector(".pay-check");
+    chk.classList.add("ms-fill", "text-primary");
+    chk.classList.remove("text-on-surface-variant");
+    chk.style.visibility = "visible";
   }));
 
-  // Step machine
+  // Step machine (2 steps: 1. Delivery & Payment, 2. Confirmation)
   let step = 1;
   const next = document.getElementById("next-btn");
   function setStep(s) {
@@ -155,112 +168,146 @@
       const n = Number(el.getAttribute("data-step"));
       const ring = el.querySelector(".step-ring");
       const lbl = el.querySelector(".step-label");
-      if (n <= step) { ring.className = "step-ring w-9 h-9 rounded-full flex items-center justify-center font-label-md bg-primary text-on-primary"; lbl.className = "step-label font-label-sm text-label-sm mt-2 text-primary"; ring.innerHTML = n < step ? '<span class="material-symbols-outlined" style="font-size:18px">check</span>' : n; }
-      else { ring.className = "step-ring w-9 h-9 rounded-full flex items-center justify-center font-label-md bg-surface-variant text-on-surface-variant"; lbl.className = "step-label font-label-sm text-label-sm mt-2 text-on-surface-variant"; ring.textContent = n; }
+      if (n <= step) {
+        ring.className = "step-ring w-9 h-9 rounded-full flex items-center justify-center font-label-md bg-primary text-on-primary";
+        lbl.className = "step-label font-label-sm text-label-sm mt-2 text-primary";
+        ring.innerHTML = n < step ? '<span class="material-symbols-outlined" style="font-size:18px">check</span>' : n;
+      } else {
+        ring.className = "step-ring w-9 h-9 rounded-full flex items-center justify-center font-label-md bg-surface-variant text-on-surface-variant";
+        lbl.className = "step-label font-label-sm text-label-sm mt-2 text-on-surface-variant";
+        ring.textContent = n;
+      }
     });
-    document.querySelectorAll(".step-line").forEach((l, i) => { l.classList.toggle("bg-primary", i < step - 1); l.classList.toggle("bg-surface-variant", i >= step - 1); });
+    document.querySelectorAll(".step-line").forEach((l, i) => {
+      l.classList.toggle("bg-primary", i < step - 1);
+      l.classList.toggle("bg-surface-variant", i >= step - 1);
+    });
   }
+
   next.addEventListener("click", async () => {
-    if (step < 3) {
-      // Validate step 1 fields
-      if (step === 1) {
-        const nameVal = (document.getElementById("ship-name")?.value || "").trim();
-        const phoneVal = (document.getElementById("ship-phone")?.value || "").trim();
-        const addrVal = (document.getElementById("ship-address")?.value || "").trim();
-        if (!nameVal || !phoneVal || !addrVal) {
-          STORE.toast("Zəhmət olmasa çatdırılma xanalarını doldurun!", "warning");
-          return;
-        }
-      }
-      setStep(step + 1);
-      next.innerHTML = step === 3 ? 'Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>' : 'Yoxlamağa keç <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>';
+    const nameVal = (document.getElementById("ship-name")?.value || "").trim();
+    const phoneVal = (document.getElementById("ship-phone")?.value || "").trim();
+    const addrVal = (document.getElementById("ship-address")?.value || "").trim();
+
+    if (!nameVal || !phoneVal || !addrVal) {
+      STORE.toast("Zəhmət olmasa çatdırılma xanalarını doldurun!", "warning");
+      return;
+    }
+
+    if (step === 1) {
+      setStep(2);
+      const activePay = document.querySelector(".pay-opt.border-primary")?.getAttribute("data-pay") || "whatsapp";
+      next.innerHTML = activePay === "whatsapp" 
+        ? '<span class="material-symbols-outlined" style="font-size:18px">send</span> WhatsApp ilə təsdiqlə' 
+        : 'Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>';
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const cartItems = STORE.getCart();
-      if (!cartItems.length) {
-        STORE.toast("Səbət boşdur!", "shopping_bag");
-        location.href = "category.html";
-        return;
-      }
+      return;
+    }
 
-      next.disabled = true;
-      next.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Sifariş qeydə alınır...';
+    const cartItems = STORE.getCart();
+    if (!cartItems.length) {
+      STORE.toast("Səbət boşdur!", "shopping_bag");
+      location.href = "category.html";
+      return;
+    }
 
-      const fullName = (document.getElementById("ship-name")?.value || "Müştəri").trim();
-      const parts = fullName.split(" ");
-      const firstName = parts[0] || "Müştəri";
-      const lastName = parts.slice(1).join(" ") || "";
-      const phone = (document.getElementById("ship-phone")?.value || "").trim();
-      const city = (document.getElementById("ship-city")?.value || "Bakı").trim();
-      const address = (document.getElementById("ship-address")?.value || "").trim();
+    next.disabled = true;
+    next.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:18px">progress_activity</span> Sifariş qeydə alınır...';
 
-      const activePay = document.querySelector(".pay-opt.border-primary");
-      const payMethod = activePay?.getAttribute("data-pay") || "cod";
-      const coupon = localStorage.getItem("bodi_coupon") || "";
+    const fullName = nameVal;
+    const parts = fullName.split(" ");
+    const firstName = parts[0] || "Müştəri";
+    const lastName = parts.slice(1).join(" ") || "";
+    const phone = phoneVal;
+    const city = (document.getElementById("ship-city")?.value || "Bakı").trim();
+    const address = addrVal;
 
-      const orderPayload = {
-        billing: {
-          first_name: firstName,
-          last_name: lastName,
-          phone: phone,
-          email: "alici@bodi.az",
-          city: city,
-          address_1: address,
-          note: "Bodi.az veb saytından onlayn sifariş"
-        },
-        payment_method: payMethod,
-        coupon: coupon,
-        items: cartItems.map(i => {
-          const prod = BODI.getById(i.id);
-          return {
-            id: i.id,
-            slug: prod ? prod.slug : "",
-            qty: i.qty,
-            size: i.size || "",
-            color: i.color || ""
-          };
-        })
+    const activePay = document.querySelector(".pay-opt.border-primary");
+    const payMethod = activePay?.getAttribute("data-pay") || "whatsapp";
+    const coupon = localStorage.getItem("bodi_coupon") || "";
+
+    const detailedItems = cartItems.map(i => {
+      const prod = BODI.getById(i.id);
+      return {
+        id: i.id,
+        name: prod ? prod.name : "Bodi.az Məhsulu",
+        slug: prod ? prod.slug : "",
+        qty: i.qty,
+        size: i.size || "",
+        color: i.color || ""
       };
+    });
 
-      try {
-        let result;
-        const checkoutFn = window.BODI_API && (window.BODI_API.submitCheckout || (window.BODI_API.orders && window.BODI_API.orders.checkout));
-        if (typeof checkoutFn === "function") {
-          result = await checkoutFn(orderPayload);
-        } else {
-          const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-          const apiBase = (window.BODI_API && window.BODI_API.API_BASE) || (isLocal ? 'http://localhost:8085' : 'https://api.bodi.az');
-          const r = await fetch(`${apiBase}/wp-json/bodi/v1/checkout`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
-            body: JSON.stringify(orderPayload)
-          });
-          result = await r.json();
-          if (!r.ok || result.code) {
-            throw new Error(result.message || "Sifariş zamanı xəta baş verdi.");
-          }
-        }
-        STORE.saveOrder({
-          id: result.order_id,
-          date: new Date().toLocaleDateString("az-AZ", { day: 'numeric', month: 'long', year: 'numeric' }),
-          total: Number(result.total) || 0,
-          count: cartItems.reduce((s, i) => s + (i.qty || 1), 0),
-          status: "Hazırlanır",
-          dot: "bg-secondary",
-          items: orderPayload.items
+    const orderPayload = {
+      billing: {
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        email: "alici@bodi.az",
+        city: city,
+        address_1: address,
+        note: `Bodi.az veb saytından sifariş (${payMethod === 'whatsapp' ? 'WhatsApp ilə təsdiq' : 'Qapıda ödəmə'})`
+      },
+      payment_method: payMethod,
+      coupon: coupon,
+      items: detailedItems
+    };
+
+    try {
+      let result;
+      const checkoutFn = window.BODI_API && (window.BODI_API.submitCheckout || (window.BODI_API.orders && window.BODI_API.orders.checkout));
+      if (typeof checkoutFn === "function") {
+        result = await checkoutFn(orderPayload);
+      } else {
+        const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+        const apiBase = (window.BODI_API && window.BODI_API.API_BASE) || (isLocal ? 'http://localhost:8085' : 'https://api.bodi.az');
+        const r = await fetch(`${apiBase}/wp-json/bodi/v1/checkout`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(orderPayload)
         });
-        STORE.clearCart();
-        localStorage.removeItem("bodi_coupon");
-        STORE.toast("Sifarişiniz qəbul edildi! #" + result.order_id, "check_circle");
-        setTimeout(() => {
-          location.href = "track-order.html?id=" + result.order_id + "&new=1";
-        }, 1000);
-      } catch (err) {
-        console.error("Checkout error:", err);
-        STORE.toast(err.message || "Xəta baş verdi, yenidən cəhd edin.", "error");
-        next.disabled = false;
-        next.innerHTML = 'Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>';
+        result = await r.json();
+        if (!r.ok || result.code) {
+          throw new Error(result.message || "Sifariş zamanı xəta baş verdi.");
+        }
       }
+
+      STORE.saveOrder({
+        id: result.order_id,
+        date: new Date().toLocaleDateString("az-AZ", { day: 'numeric', month: 'long', year: 'numeric' }),
+        total: Number(result.total) || 0,
+        count: cartItems.reduce((s, i) => s + (i.qty || 1), 0),
+        status: "Hazırlanır",
+        dot: "bg-secondary",
+        items: orderPayload.items
+      });
+      STORE.clearCart();
+      localStorage.removeItem("bodi_coupon");
+
+      STORE.toast("Sifarişiniz qəbul edildi! #" + result.order_id, "check_circle");
+
+      // If WhatsApp order was selected, open WhatsApp directly with detailed order message
+      if (payMethod === "whatsapp" && window.BODI_API && BODI_API.getWhatsAppOrderUrl) {
+        const waUrl = BODI_API.getWhatsAppOrderUrl({
+          order_id: result.order_id,
+          name: fullName,
+          phone: phone,
+          city: city,
+          address: address,
+          items: detailedItems,
+          total: result.total
+        });
+        window.open(waUrl, "_blank");
+      }
+
+      setTimeout(() => {
+        location.href = "track-order.html?id=" + result.order_id + "&new=1";
+      }, 1000);
+    } catch (err) {
+      console.error("Checkout error:", err);
+      STORE.toast(err.message || "Xəta baş verdi, yenidən cəhd edin.", "error");
+      next.disabled = false;
+      next.innerHTML = 'Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>';
     }
   });
 })();
