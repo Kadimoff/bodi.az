@@ -72,28 +72,34 @@
 <main class="flex-grow">
 
   <!-- HERO -->
-  <section class="relative w-full h-[82vh] min-h-[520px] md:h-[90vh] bg-surface-container-lowest overflow-hidden flex items-center">
+  <section class="relative w-full h-[75vh] min-h-[500px] max-h-[720px] md:h-[82vh] bg-[#b8d5e5] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
       <picture>
         <source srcset="assets/images/hero-bg.webp" type="image/webp">
-        <img src="assets/images/hero-bg.jpg" id="hero-bg" class="w-full h-full object-cover object-center" alt="Bodi.az orqanik pambıq körpə geyimləri">
+        <img src="assets/images/hero-bg.jpg" id="hero-bg" class="w-full h-full object-cover object-[62%_30%] sm:object-[58%_35%] md:object-center" alt="Bodi.az orqanik pambıq körpə geyimləri">
       </picture>
-      <div class="absolute inset-0 bg-gradient-to-r from-surface/85 via-surface/55 to-transparent"></div>
+      <!-- Subtle natural sky tint on the far left to keep text crisp while keeping image 100% vivid -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#b8d5e5]/25 via-transparent to-transparent pointer-events-none"></div>
     </div>
     <div class="relative z-20 w-full px-gutter max-w-container-max mx-auto h-full flex items-center">
-      <div class="max-w-xl space-y-md p-md md:p-lg bg-surface/80 backdrop-blur-sm rounded-2xl shadow-ambient border border-surface-dim/20">
-        <span class="inline-block px-3 py-1 bg-primary-fixed/40 text-primary font-label-sm text-label-sm rounded-full">Yeni Kolleksiya</span>
-        <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight leading-tight">
-          Balacalar üçün<br><span class="text-primary font-bold">yumşaq və rahat</span><br>yeni kolleksiya
+      <div class="max-w-md md:max-w-lg lg:max-w-xl space-y-4 md:space-y-5 p-4 sm:p-6 md:p-0 rounded-2xl bg-white/40 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-none border border-white/40 md:border-none shadow-sm md:shadow-none">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/85 backdrop-blur-md rounded-full shadow-sm border border-white/70">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span class="text-primary font-bold text-xs uppercase tracking-wider">Yeni Kolleksiya</span>
+        </div>
+        <h1 class="font-display-lg text-3xl sm:text-4xl md:text-5xl lg:text-[50px] text-[#1c2434] font-extrabold tracking-tight leading-[1.15] drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]">
+          Balacalar üçün<br>
+          <span class="text-primary font-bold">yumşaq və rahat</span><br>
+          yeni kolleksiya
         </h1>
-        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-md leading-relaxed">
+        <p class="font-body-lg text-sm sm:text-base md:text-lg text-[#334155] font-medium max-w-md leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
           Körpənizin həssas dərisinə uyğun, rahat və gündəlik istifadə üçün seçilmiş geyimlər. Hər toxunuşda sevgi.
         </p>
-        <div class="pt-sm flex flex-wrap gap-3">
-          <a class="inline-flex items-center justify-center bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-primary-container hover:shadow-ambient-md transition-all duration-300 transform hover:-translate-y-1" href="category.html?filter=new">
+        <div class="pt-2 flex flex-wrap gap-3">
+          <a class="inline-flex items-center justify-center bg-primary text-white font-label-md text-sm md:text-base font-semibold px-7 py-3.5 rounded-xl hover:bg-primary-container hover:shadow-ambient-md transition-all duration-200 shadow-md transform hover:-translate-y-0.5" href="category.html?filter=new">
             Kolleksiyaya bax <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
           </a>
-          <a class="inline-flex items-center justify-center border-2 border-primary text-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-primary-fixed/20 transition-all" href="category.html?cat=bodi">
+          <a class="inline-flex items-center justify-center bg-white/90 hover:bg-white text-on-surface font-label-md text-sm md:text-base font-semibold px-6 py-3.5 rounded-xl shadow-sm border border-white hover:shadow transition-all backdrop-blur-sm" href="category.html?cat=bodi">
             Bütün məhsullar
           </a>
         </div>
