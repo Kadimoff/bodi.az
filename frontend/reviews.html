@@ -121,6 +121,7 @@
 
 <script src="assets/js/products.js?v=7dccd3e5"></script>
 <script src="assets/js/api.js"></script>
+<script src="assets/js/seo.js"></script>
 <script src="assets/js/store.js"></script>
 <script src="assets/js/layout.js"></script>
 <script>
@@ -249,7 +250,7 @@
 
       try {
         const payload = {
-          product_id: prodSlug,
+          product_id: prodSlug || (BODI.PRODUCTS && BODI.PRODUCTS[0] && BODI.PRODUCTS[0].slug) || "ag-pambiq-bodi",
           author: author,
           city: city,
           rating: selectedRating,
@@ -261,18 +262,20 @@
         document.getElementById("new-review-form").reset();
 
         // Add to local display immediately
-        const prod = BODI.getBySlug(prodSlug);
-        BODI.REVIEWS.unshift({
+        const prod = BODI.getBySlug(prodSlug) || (BODI.PRODUCTS && BODI.PRODUCTS[0]);
+        const newRev = res.review || {
           id: Date.now(),
           productId: prod ? prod.id : 1,
           productName: prod ? prod.name : "Bodi.az Məhsulu",
-          productSlug: prodSlug,
+          productSlug: prod ? prod.slug : prodSlug,
           productImage: prod ? BODI.getProductImage(prod) : "",
           author: author,
           city: city,
           rating: selectedRating,
-          quote: content
-        });
+          quote: content,
+          date: "İndi"
+        };
+        BODI.REVIEWS.unshift(newRev);
         renderReviews();
       } catch (err) {
         STORE.toast(err.message || "Xəta baş verdi, yenidən cəhd edin.", "error");

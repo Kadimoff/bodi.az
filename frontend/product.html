@@ -96,6 +96,7 @@
 
 <script src="assets/js/products.js?v=7dccd3e5"></script>
 <script src="assets/js/api.js"></script>
+<script src="assets/js/seo.js"></script>
 <script src="assets/js/store.js"></script>
 <script src="assets/js/layout.js"></script>
 <script>
@@ -114,73 +115,10 @@
   });
 
   function updateProductSEO() {
-    document.title = `${p.name} — 100% Orqanik Pambıq | Bodi.az`;
-    
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.rel = 'canonical';
-      document.head.appendChild(canonical);
+    if (window.BODI_SEO && p) {
+      BODI_SEO.applyProductSEO(p);
+      BODI_SEO.syncFromBackend('product', p.slug);
     }
-    canonical.href = `https://bodi.az/product.html?p=${p.slug}`;
-
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.name = 'description';
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = `${p.name} — ${p.material}. ${p.desc} Qiymət: ${p.price} ₼. Bodi.az-dan sifariş et!`;
-
-    const setMeta = (prop, val) => {
-      let el = document.querySelector(`meta[property="${prop}"]`);
-      if (!el) { el = document.createElement('meta'); el.setAttribute('property', prop); document.head.appendChild(el); }
-      el.content = val;
-    };
-    setMeta('og:type', 'product');
-    setMeta('og:title', `${p.name} — Bodi.az`);
-    setMeta('og:description', p.desc);
-    const fullImg = BODI.getProductImage(p).startsWith('http') ? BODI.getProductImage(p) : 'https://bodi.az/' + BODI.getProductImage(p);
-    setMeta('og:image', fullImg);
-    setMeta('og:url', `https://bodi.az/product.html?p=${p.slug}`);
-
-    let scriptTag = document.getElementById('product-schema-ld');
-    if (!scriptTag) {
-      scriptTag = document.createElement('script');
-      scriptTag.id = 'product-schema-ld';
-      scriptTag.type = 'application/ld+json';
-      document.head.appendChild(scriptTag);
-    }
-    scriptTag.textContent = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": p.name,
-      "image": [fullImg],
-      "description": p.desc,
-      "sku": p.slug,
-      "brand": {
-        "@type": "Brand",
-        "name": "Bodi.az"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": `https://bodi.az/product.html?p=${p.slug}`,
-        "priceCurrency": "AZN",
-        "price": p.price.toFixed(2),
-        "priceValidUntil": "2027-12-31",
-        "itemCondition": "https://schema.org/NewCondition",
-        "availability": "https://schema.org/InStock",
-        "seller": {
-          "@type": "Organization",
-          "name": "Bodi.az"
-        }
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": p.rating || 5,
-        "reviewCount": p.reviews || 24
-      }
-    });
   }
 
   function renderProduct() {
@@ -472,7 +410,7 @@
 
     try {
       const payload = {
-        product_id: p.slug,
+        product_id: (p && (p.slug || p.id)) || "ag-pambiq-bodi",
         author: author,
         city: city,
         rating: selectedRating,
@@ -484,7 +422,7 @@
       document.getElementById("prod-review-form").reset();
 
       // Add to local list and re-render
-      BODI.REVIEWS.unshift({
+      const newRev = res.review || {
         id: Date.now(),
         productId: p.id,
         productName: p.name,
@@ -495,8 +433,10 @@
         rating: selectedRating,
         quote: content,
         date: "İndi"
-      });
+      };
+      BODI.REVIEWS.unshift(newRev);
       renderProductReviews();
+      if (window.BODI_SEO) BODI_SEO.applyProductSEO(p, BODI.REVIEWS);
     } catch (err) {
       STORE.toast(err.message || "Xəta baş verdi, yenidən cəhd edin.", "error");
     } finally {

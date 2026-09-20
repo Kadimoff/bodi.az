@@ -1,3 +1,7 @@
+# ==============================================================================
+# Bodi.az Robots.txt — Optimized for Google, Bing, Yandex & AI Search Engines
+# ==============================================================================
+
 User-agent: *
 Allow: /
 Disallow: /cart.html
@@ -6,5 +10,28 @@ Disallow: /account.html
 Disallow: /track-order.html
 Disallow: /404.html
 
-# Sitemap
+# AI Search & LLM Crawlers (Generative Engine Optimization)
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /llms.txt
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemaps & LLM Context
 Sitemap: https://bodi.az/sitemap.xml
