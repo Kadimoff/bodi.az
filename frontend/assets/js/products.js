@@ -180,7 +180,7 @@
       ? `<div class="flex items-baseline gap-2"><span class="font-headline-sm text-headline-sm text-error">${money(p.price)}</span><span class="font-body-sm text-body-sm text-on-surface-variant line-through">${money(p.old)}</span></div>`
       : `<div class="font-headline-sm text-headline-sm text-primary">${money(p.price)}</div>`;
     return `
-    <div class="group bg-surface-container-lowest rounded-xl p-3 md:p-4 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal">
+    <div class="group relative bg-surface-container-lowest rounded-xl p-3 md:p-4 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${opts.extraClass || ''}">
       <a href="product.html?p=${p.slug}" class="relative aspect-[4/5] rounded-lg overflow-hidden bg-surface-container-low mb-4 block">
         <img src="${img}" alt="${p.name}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy">
         <div class="absolute top-2 left-2 flex flex-col gap-1">${tag}</div>

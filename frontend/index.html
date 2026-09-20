@@ -62,8 +62,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2.1.0">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.2.0">
 <script src="assets/js/tw-config.js?v=2.1.0"></script>
+<script src="assets/js/vendor/gsap.min.js"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
 
@@ -72,7 +74,7 @@
 <main class="flex-grow">
 
   <!-- HERO -->
-  <section class="relative w-full h-[75vh] min-h-[500px] max-h-[720px] md:h-[82vh] bg-[#b8d5e5] overflow-hidden flex items-center">
+  <section class="relative w-full h-[76vh] min-h-[500px] max-h-[720px] md:h-[82vh] bg-[#b8d5e5] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
       <picture>
         <source srcset="assets/images/hero-bg.webp" type="image/webp">
@@ -82,7 +84,7 @@
       <div class="absolute inset-0 bg-gradient-to-r from-[#b8d5e5]/25 via-transparent to-transparent pointer-events-none"></div>
     </div>
     <div class="relative z-20 w-full px-gutter max-w-container-max mx-auto h-full flex items-center">
-      <div class="max-w-md md:max-w-lg lg:max-w-xl space-y-4 md:space-y-5 p-4 sm:p-6 md:p-0 rounded-2xl bg-white/40 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-none border border-white/40 md:border-none shadow-sm md:shadow-none">
+      <div id="hero-content" class="max-w-md md:max-w-lg lg:max-w-xl space-y-4 md:space-y-5 p-4 sm:p-6 md:p-0 rounded-2xl bg-white/45 md:bg-transparent backdrop-blur-[3px] md:backdrop-blur-none border border-white/50 md:border-none shadow-sm md:shadow-none">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/85 backdrop-blur-md rounded-full shadow-sm border border-white/70">
           <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
           <span class="text-primary font-bold text-xs uppercase tracking-wider">Yeni Kolleksiya</span>
@@ -95,11 +97,11 @@
         <p class="font-body-lg text-sm sm:text-base md:text-lg text-[#334155] font-medium max-w-md leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
           Körpənizin həssas dərisinə uyğun, rahat və gündəlik istifadə üçün seçilmiş geyimlər. Hər toxunuşda sevgi.
         </p>
-        <div class="pt-2 flex flex-wrap gap-3">
-          <a class="inline-flex items-center justify-center bg-primary text-white font-label-md text-sm md:text-base font-semibold px-7 py-3.5 rounded-xl hover:bg-primary-container hover:shadow-ambient-md transition-all duration-200 shadow-md transform hover:-translate-y-0.5" href="category.html?filter=new">
+        <div class="pt-2 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+          <a class="inline-flex items-center justify-center bg-primary text-white font-label-md text-sm md:text-base font-semibold px-7 py-3.5 rounded-xl hover:bg-primary-container hover:shadow-ambient-md transition-all duration-200 shadow-md transform hover:-translate-y-0.5 text-center" href="category.html?filter=new">
             Kolleksiyaya bax <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
           </a>
-          <a class="inline-flex items-center justify-center bg-white/90 hover:bg-white text-on-surface font-label-md text-sm md:text-base font-semibold px-6 py-3.5 rounded-xl shadow-sm border border-white hover:shadow transition-all backdrop-blur-sm" href="category.html?cat=bodi">
+          <a class="inline-flex items-center justify-center bg-white/90 hover:bg-white text-on-surface font-label-md text-sm md:text-base font-semibold px-6 py-3.5 rounded-xl shadow-sm border border-white hover:shadow transition-all backdrop-blur-sm text-center" href="category.html?cat=bodi">
             Bütün məhsullar
           </a>
         </div>
@@ -108,132 +110,183 @@
   </section>
 
   <!-- TRUST BAR -->
-  <section class="w-full bg-surface-container py-md border-y border-surface-dim/20">
-    <div class="max-w-container-max mx-auto px-gutter grid grid-cols-2 md:grid-cols-4 gap-md md:gap-lg divide-x divide-outline-variant/30">
-      <div class="flex flex-col items-center text-center px-sm gap-2">
-        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-2"><span class="material-symbols-outlined text-[28px]">local_shipping</span></div>
-        <h3 class="font-label-md text-label-md text-on-surface">Bakı üzrə sürətli çatdırılma</h3>
-        <p class="font-body-sm text-body-sm text-on-surface-variant hidden md:block">Sifarişiniz gün ərzində qapınızda.</p>
+  <section id="trust-section" class="w-full bg-surface-container py-4 md:py-md border-y border-surface-dim/20 overflow-hidden">
+    <div class="max-w-container-max mx-auto px-gutter flex overflow-x-auto snap-x hide-scroll gap-3 pb-1 md:pb-0 md:grid md:grid-cols-4 md:gap-lg md:divide-x md:divide-outline-variant/30">
+      <div class="trust-card flex-shrink-0 w-[230px] sm:w-[260px] md:w-auto snap-start flex flex-col items-center text-center p-3 sm:p-4 bg-surface/60 md:bg-transparent rounded-2xl border border-white/50 md:border-none shadow-xs md:shadow-none gap-2">
+        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-1"><span class="material-symbols-outlined text-[28px]">local_shipping</span></div>
+        <h3 class="font-label-md text-label-md text-on-surface font-semibold">Bakı üzrə sürətli çatdırılma</h3>
+        <p class="font-body-sm text-xs md:text-body-sm text-on-surface-variant">Sifarişiniz gün ərzində qapınızda.</p>
       </div>
-      <div class="flex flex-col items-center text-center px-sm gap-2">
-        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-2"><span class="material-symbols-outlined text-[28px]">verified_user</span></div>
-        <h3 class="font-label-md text-label-md text-on-surface">Təhlükəsiz ödəniş</h3>
-        <p class="font-body-sm text-body-sm text-on-surface-variant hidden md:block">100% təhlükəsiz və qorunan sistem.</p>
+      <div class="trust-card flex-shrink-0 w-[230px] sm:w-[260px] md:w-auto snap-start flex flex-col items-center text-center p-3 sm:p-4 bg-surface/60 md:bg-transparent rounded-2xl border border-white/50 md:border-none shadow-xs md:shadow-none gap-2">
+        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-1"><span class="material-symbols-outlined text-[28px]">verified_user</span></div>
+        <h3 class="font-label-md text-label-md text-on-surface font-semibold">Təhlükəsiz ödəniş</h3>
+        <p class="font-body-sm text-xs md:text-body-sm text-on-surface-variant">100% təhlükəsiz və qorunan sistem.</p>
       </div>
-      <div class="flex flex-col items-center text-center px-sm gap-2">
-        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-2"><span class="material-symbols-outlined text-[28px]">change_circle</span></div>
-        <h3 class="font-label-md text-label-md text-on-surface">Rahat dəyişdirmə və qaytarma</h3>
-        <p class="font-body-sm text-body-sm text-on-surface-variant hidden md:block">14 gün ərzində problemsiz iadə.</p>
+      <div class="trust-card flex-shrink-0 w-[230px] sm:w-[260px] md:w-auto snap-start flex flex-col items-center text-center p-3 sm:p-4 bg-surface/60 md:bg-transparent rounded-2xl border border-white/50 md:border-none shadow-xs md:shadow-none gap-2">
+        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-1"><span class="material-symbols-outlined text-[28px]">change_circle</span></div>
+        <h3 class="font-label-md text-label-md text-on-surface font-semibold">Rahat dəyişdirmə və qaytarma</h3>
+        <p class="font-body-sm text-xs md:text-body-sm text-on-surface-variant">14 gün ərzində problemsiz iadə.</p>
       </div>
-      <div class="flex flex-col items-center text-center px-sm gap-2">
-        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-2"><span class="material-symbols-outlined text-[28px]">spa</span></div>
-        <h3 class="font-label-md text-label-md text-on-surface">Seçilmiş materiallar</h3>
-        <p class="font-body-sm text-body-sm text-on-surface-variant hidden md:block">100% orqanik pambıq və hipoallergen.</p>
+      <div class="trust-card flex-shrink-0 w-[230px] sm:w-[260px] md:w-auto snap-start flex flex-col items-center text-center p-3 sm:p-4 bg-surface/60 md:bg-transparent rounded-2xl border border-white/50 md:border-none shadow-xs md:shadow-none gap-2">
+        <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-1"><span class="material-symbols-outlined text-[28px]">spa</span></div>
+        <h3 class="font-label-md text-label-md text-on-surface font-semibold">Seçilmiş materiallar</h3>
+        <p class="font-body-sm text-xs md:text-body-sm text-on-surface-variant">100% orqanik pambıq və hipoallergen.</p>
       </div>
     </div>
   </section>
 
   <!-- CATEGORIES -->
-  <section class="max-w-container-max mx-auto w-full px-gutter py-xl">
-    <div class="flex items-end justify-between mb-lg">
+  <section id="categories-section" class="max-w-container-max mx-auto w-full px-gutter py-xl">
+    <div class="flex items-end justify-between mb-6 md:mb-lg">
       <div>
-        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Kateqoriyalar</span>
-        <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight mt-1">Övladınız üçün</h2>
+        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Kateqoriyalar</span>
+        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Övladınız üçün</h2>
       </div>
-      <a class="hidden md:inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all" href="category.html">Hamısı <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:flex items-center gap-1.5 mr-2">
+          <button id="catPrev" aria-label="Əvvəlki kateqoriya" class="carousel-arrow-btn">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+          </button>
+          <button id="catNext" aria-label="Növbəti kateqoriya" class="carousel-arrow-btn">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
+        </div>
+        <a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all font-semibold" href="category.html">
+          Hamısı <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
-      <a href="category.html?cat=bodi" class="relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group">
+    <div id="catTrack" class="flex md:grid md:grid-cols-3 gap-4 md:gap-md overflow-x-auto snap-x snap-mandatory hide-scroll pb-2">
+      <a href="category.html?cat=bodi" class="cat-card flex-shrink-0 w-[82vw] sm:w-[320px] md:w-auto snap-center relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm">
         <img src="" data-cat-img="bodi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Bodilər">
-        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/55 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 p-lg text-on-primary">
-          <h3 class="font-headline-md text-headline-md">Bodilər</h3>
-          <p class="font-body-sm text-body-sm opacity-90">Gündəlik rahatlıq</p>
+        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white">
+          <span class="text-xs uppercase tracking-widest text-primary-fixed bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full mb-2 inline-block font-semibold">100% Pambıq</span>
+          <h3 class="font-headline-md text-2xl md:text-headline-md font-bold">Bodilər</h3>
+          <p class="font-body-sm text-body-sm opacity-90">Gündəlik rahatlıq və zəriflik</p>
         </div>
       </a>
-      <a href="category.html?cat=tulum" class="relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group">
+      <a href="category.html?cat=tulum" class="cat-card flex-shrink-0 w-[82vw] sm:w-[320px] md:w-auto snap-center relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm">
         <img src="" data-cat-img="tulum" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Tulumlar">
-        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/55 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 p-lg text-on-primary">
-          <h3 class="font-headline-md text-headline-md">Tulumlar</h3>
-          <p class="font-body-sm text-body-sm opacity-90">Bütün bədən qorunması</p>
+        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white">
+          <span class="text-xs uppercase tracking-widest text-primary-fixed bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full mb-2 inline-block font-semibold">Yumşaq Qoruma</span>
+          <h3 class="font-headline-md text-2xl md:text-headline-md font-bold">Tulumlar</h3>
+          <p class="font-body-sm text-body-sm opacity-90">Bütün bədən qorunması və isti yuxu</p>
         </div>
       </a>
-      <a href="category.html?cat=dest" class="relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group">
+      <a href="category.html?cat=dest" class="cat-card flex-shrink-0 w-[82vw] sm:w-[320px] md:w-auto snap-center relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm">
         <img src="" data-cat-img="dest" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Dəstlər">
-        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/55 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 p-lg text-on-primary">
-          <h3 class="font-headline-md text-headline-md">Dəstlər</h3>
-          <p class="font-body-sm text-body-sm opacity-90">Hədiyyəlik kolleksiyalar</p>
+        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white">
+          <span class="text-xs uppercase tracking-widest text-primary-fixed bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full mb-2 inline-block font-semibold">Hədiyyəlik</span>
+          <h3 class="font-headline-md text-2xl md:text-headline-md font-bold">Dəstlər</h3>
+          <p class="font-body-sm text-body-sm opacity-90">Hədiyyəlik zərif kolleksiyalar</p>
         </div>
       </a>
     </div>
+    <!-- Mobile dots indicator -->
+    <div id="catDots" class="flex md:hidden items-center justify-center gap-1.5 mt-3"></div>
   </section>
 
   <!-- FEATURED PRODUCTS -->
-  <section class="max-w-container-max mx-auto w-full px-gutter pb-xl">
-    <div class="flex items-end justify-between mb-lg">
+  <section id="featured-section" class="max-w-container-max mx-auto w-full px-gutter pb-xl">
+    <div class="flex items-end justify-between mb-6 md:mb-lg">
       <div>
-        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Seçilmiş</span>
-        <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight mt-1">Populyar məhsullar</h2>
+        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Seçilmiş</span>
+        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Populyar məhsullar</h2>
       </div>
-      <a class="hidden md:inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all" href="category.html">Hamısı <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 mr-2">
+          <button id="featPrev" aria-label="Əvvəlki məhsullar" class="carousel-arrow-btn">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+          </button>
+          <button id="featNext" aria-label="Növbəti məhsullar" class="carousel-arrow-btn">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
+        </div>
+        <a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all font-semibold" href="category.html">
+          Hamısı <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
     </div>
-    <div id="featured-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"></div>
+    <div id="featured-track" class="flex overflow-x-auto snap-x snap-mandatory hide-scroll gap-4 pb-3 scroll-smooth"></div>
+    <div id="featDots" class="flex items-center justify-center gap-1.5 mt-3"></div>
   </section>
 
   <!-- PROMO BANNER -->
-  <section class="max-w-container-max mx-auto w-full px-gutter pb-xl">
-    <div class="relative rounded-3xl overflow-hidden bg-primary text-on-primary px-lg py-xl md:py-2xl flex flex-col md:flex-row items-center justify-between gap-lg">
-      <div class="max-w-xl space-y-md relative z-10 p-md">
-        <span class="inline-block px-3 py-1 bg-on-primary/15 text-on-primary font-label-sm text-label-sm rounded-full">Endirim</span>
-        <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg tracking-tight leading-tight">Yeni kolleksiyada 20%-ə qədər</h2>
-        <p class="font-body-lg text-body-lg opacity-90">Payız üçün yumşaq orqanik pambıq bodilər və tulumlar. Məhdud müddətə.</p>
-        <a class="inline-flex items-center bg-on-primary text-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-surface-container-lowest transition-colors" href="category.html?filter=sale">
-          Endirimdə bax <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
-        </a>
+  <section id="promo-section" class="max-w-container-max mx-auto w-full px-gutter pb-xl">
+    <div class="promo-box relative rounded-3xl overflow-hidden bg-primary text-on-primary px-6 sm:px-8 md:px-lg py-10 md:py-2xl flex flex-col md:flex-row items-center justify-between gap-8 md:gap-lg shadow-lg">
+      <div class="max-w-xl space-y-4 md:space-y-md relative z-10">
+        <span class="inline-block px-3.5 py-1.5 bg-white/20 backdrop-blur-sm text-white font-label-sm text-xs rounded-full font-bold uppercase tracking-wider animate-pulse">
+          Endirim Kampaniyası
+        </span>
+        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg tracking-tight leading-tight font-extrabold text-white">
+          Yeni kolleksiyada 20%-ə qədər
+        </h2>
+        <p class="font-body-lg text-sm sm:text-base md:text-body-lg text-white/90 leading-relaxed max-w-lg">
+          Payız üçün yumşaq orqanik pambıq bodilər və tulumlar. Məhdud müddətə xüsusi qiymətlərlə.
+        </p>
+        <div class="pt-2">
+          <a class="inline-flex items-center justify-center bg-white text-primary font-label-md text-sm md:text-base font-bold px-7 py-3.5 rounded-xl hover:bg-surface-container-lowest transition-all shadow-md transform hover:-translate-y-0.5" href="category.html?filter=sale">
+            Endirimdə bax <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+          </a>
+        </div>
       </div>
-      <div class="relative w-full md:w-2/5 aspect-square hidden md:block">
-        <img src="" id="promo-img" class="w-full h-full object-cover rounded-2xl" alt="Yeni kolleksiya">
+      <div class="relative w-full sm:w-3/5 md:w-2/5 aspect-[4/3] sm:aspect-square">
+        <img src="" id="promo-img" class="w-full h-full object-cover rounded-2xl shadow-md" alt="Yeni kolleksiya">
       </div>
-      <div class="absolute -right-20 -bottom-20 w-72 h-72 bg-on-primary/10 rounded-full blur-3xl"></div>
+      <div class="absolute -right-20 -bottom-20 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
     </div>
   </section>
 
   <!-- NEW PRODUCTS -->
-  <section class="max-w-container-max mx-auto w-full px-gutter pb-xl">
-    <div class="flex items-end justify-between mb-lg">
+  <section id="new-section" class="max-w-container-max mx-auto w-full px-gutter pb-xl">
+    <div class="flex items-end justify-between mb-6 md:mb-lg">
       <div>
-        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Cəmi bizdə</span>
-        <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight mt-1">Yeni gələnlər</h2>
+        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Cəmi bizdə</span>
+        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Yeni gələnlər</h2>
       </div>
-      <a class="hidden md:inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all" href="category.html?filter=new">Hamısı <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 mr-2">
+          <button id="newPrev" aria-label="Əvvəlki yeni məhsullar" class="carousel-arrow-btn">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+          </button>
+          <button id="newNext" aria-label="Növbəti yeni məhsullar" class="carousel-arrow-btn">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
+        </div>
+        <a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all font-semibold" href="category.html?filter=new">
+          Hamısı <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
     </div>
-    <div id="new-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"></div>
+    <div id="new-track" class="flex overflow-x-auto snap-x snap-mandatory hide-scroll gap-4 pb-3 scroll-smooth"></div>
+    <div id="newDots" class="flex items-center justify-center gap-1.5 mt-3"></div>
   </section>
 
   <!-- VALUES -->
-  <section class="bg-surface-container py-xl">
+  <section id="values-section" class="bg-surface-container py-xl">
     <div class="max-w-container-max mx-auto px-gutter">
       <div class="text-center max-w-2xl mx-auto mb-lg">
-        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Niyə Bodi.az?</span>
-        <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight mt-1">Hər toxunuşda sevgi</h2>
-        <p class="font-body-lg text-body-lg text-on-surface-variant mt-sm">Biz inanırıq ki, hər bir körpə ən yumşaq qucaqlara layiqdir.</p>
+        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Niyə Bodi.az?</span>
+        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Hər toxunuşda sevgi</h2>
+        <p class="font-body-lg text-sm sm:text-base md:text-body-lg text-on-surface-variant mt-sm">Biz inanırıq ki, hər bir körpə ən yumşaq qucaqlara layiqdir.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
-        <div class="bg-surface rounded-2xl p-lg text-center reveal">
-          <div class="w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md"><span class="material-symbols-outlined text-[30px]">spa</span></div>
-          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">100% Üzvi Pambıq</h3>
+        <div class="value-card bg-surface rounded-2xl p-6 md:p-lg text-center shadow-xs">
+          <div class="value-icon w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md"><span class="material-symbols-outlined text-[30px]">spa</span></div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">100% Üzvi Pambıq</h3>
           <p class="font-body-md text-body-md text-on-surface-variant">Hipoallergen, sertifikatlaşdırılmış orqanik materiallar. Körpənizin dərisi üçün ən təhlükəsiz seçim.</p>
         </div>
-        <div class="bg-surface rounded-2xl p-lg text-center reveal">
-          <div class="w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md"><span class="material-symbols-outlined text-[30px]">volunteer_activism</span></div>
-          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Yumşaq Toxunuş</h3>
+        <div class="value-card bg-surface rounded-2xl p-6 md:p-lg text-center shadow-xs">
+          <div class="value-icon w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md"><span class="material-symbols-outlined text-[30px]">volunteer_activism</span></div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Yumşaq Toxunuş</h3>
           <p class="font-body-md text-body-md text-on-surface-variant">Hər məhsul ən incə toxunuş üçün xüsusi olaraq seçilir. Rahatlıq hər toxumada.</p>
         </div>
-        <div class="bg-surface rounded-2xl p-lg text-center reveal">
-          <div class="w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md"><span class="material-symbols-outlined text-[30px]">eco</span></div>
-          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Davamlı İstehsal</h3>
+        <div class="value-card bg-surface rounded-2xl p-6 md:p-lg text-center shadow-xs">
+          <div class="value-icon w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md"><span class="material-symbols-outlined text-[30px]">eco</span></div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Davamlı İstehsal</h3>
           <p class="font-body-md text-body-md text-on-surface-variant">Təbiətlə harmoniyada, təkrar emal oluna bilən qablaşdırma və etik istehsal.</p>
         </div>
       </div>
@@ -264,7 +317,16 @@
         <span class="material-symbols-outlined">chevron_right</span>
       </button>
     </div>
+    <div id="rvDots" class="flex items-center justify-center gap-1.5 mt-6"></div>
   </section>
+
+  <!-- FLOATING WHATSAPP CTA -->
+  <aside id="floating-wa" aria-label="Sürətli Əlaqə" class="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-40 transition-all duration-500 opacity-0 translate-y-8 pointer-events-none flex flex-col items-end gap-2">
+    <a href="https://wa.me/994501234567?text=Salam%2C%20Bodi.az%20sayt%C4%B1ndan%20m%C9%99hsullarla%20ba%C4%9Fl%C4%B1%20m%C9%99lumat%20almaq%20ist%C9%99yir%C9%99m" target="_blank" rel="noopener" class="group flex items-center gap-2.5 bg-[#25D366] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl wa-pulse transform hover:scale-105 transition-all">
+      <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.155.57 4.178 1.564 5.929l-1.564 5.903 6.077-1.595c1.701.928 3.65 1.763 5.923 1.763 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg>
+      <span class="font-bold text-sm hidden sm:inline">WhatsApp ilə Sual Ver</span>
+    </a>
+  </aside>
 
 </main>
 
@@ -276,6 +338,7 @@
 <script src="assets/js/seo.js?v=2.1.0"></script>
 <script src="assets/js/store.js?v=2.1.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
+<script src="assets/js/animations.js?v=2.2.0"></script>
 <script>
   // Populate real images + product grids + customer reviews
   (function () {
@@ -303,10 +366,18 @@
     updateCategoryImages();
 
     function renderGrids() {
-      const feat = document.getElementById("featured-grid");
-      const nw = document.getElementById("new-grid");
-      if (feat) feat.innerHTML = [...BODI.PRODUCTS].sort((a, b) => b.reviews - a.reviews).slice(0, 4).map(p => BODI.card(p)).join("");
-      if (nw) nw.innerHTML = BODI.getNew().slice(0, 4).map(p => BODI.card(p)).join("");
+      const feat = document.getElementById("featured-track");
+      const nw = document.getElementById("new-track");
+      const cardOpts = { extraClass: "w-[240px] sm:w-[270px] lg:w-[calc(25%-12px)] flex-shrink-0 snap-start" };
+      if (feat) {
+        const featList = [...BODI.PRODUCTS].sort((a, b) => b.reviews - a.reviews).slice(0, 8);
+        feat.innerHTML = featList.map(p => BODI.card(p, cardOpts)).join("");
+      }
+      if (nw) {
+        const nwList = BODI.getNew();
+        const items = nwList.length ? nwList : BODI.PRODUCTS;
+        nw.innerHTML = items.slice(0, 8).map(p => BODI.card(p, cardOpts)).join("");
+      }
       updateCategoryImages();
     }
     renderGrids();
