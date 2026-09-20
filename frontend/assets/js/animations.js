@@ -606,4 +606,11 @@
     }
   });
 
+  window.addEventListener("bodi:homepage-updated", function () {
+    initCarousels();
+    if (typeof ScrollTrigger !== "undefined") {
+      setTimeout(function () { ScrollTrigger.refresh(); }, 120);
+    }
+  });
+
 })();

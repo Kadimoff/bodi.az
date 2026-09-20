@@ -274,18 +274,61 @@
       }
     },
 
-    // 4. Sync SEO metadata from backend endpoint if available
+    // 4. Homepage Dynamic SEO & Schema.org JSON-LD Graph
+    applyHomepageSEO(seo) {
+      if (!seo) return;
+
+      const title = seo.title || document.title;
+      const desc = seo.description || "";
+      const canonical = seo.canonical || BASE_URL;
+
+      if (title) document.title = title;
+      if (desc) setMetaName("description", desc);
+      if (seo.keywords) setMetaName("keywords", seo.keywords);
+      if (seo.robots) setMetaName("robots", seo.robots);
+      if (canonical) setCanonical(canonical);
+
+      // OpenGraph
+      if (seo.og) {
+        if (seo.og.type) setMetaProperty("og:type", seo.og.type);
+        if (seo.og.title) setMetaProperty("og:title", seo.og.title);
+        if (seo.og.description) setMetaProperty("og:description", seo.og.description);
+        if (seo.og.image) setMetaProperty("og:image", fullImgUrl(seo.og.image));
+        if (seo.og.url) setMetaProperty("og:url", seo.og.url);
+        if (seo.og.site_name) setMetaProperty("og:site_name", seo.og.site_name);
+        if (seo.og.locale) setMetaProperty("og:locale", seo.og.locale);
+      }
+
+      // Twitter Cards
+      if (seo.twitter) {
+        if (seo.twitter.card) setMetaName("twitter:card", seo.twitter.card);
+        if (seo.twitter.title) setMetaName("twitter:title", seo.twitter.title);
+        if (seo.twitter.description) setMetaName("twitter:description", seo.twitter.description);
+        if (seo.twitter.image) setMetaName("twitter:image", fullImgUrl(seo.twitter.image));
+      }
+
+      // Schema.org Graph
+      if (seo.schema) {
+        injectSchema(seo.schema, "bodi-schema-ld");
+      }
+    },
+
+    // 5. Sync SEO metadata from backend endpoint if available
     async syncFromBackend(type, slug) {
       if (!window.BODI_API || !window.BODI_API.API_BASE) return;
       try {
-        const res = await fetch(`${window.BODI_API.API_BASE}/wp-json/bodi/v1/seo?type=${encodeURIComponent(type)}&slug=${encodeURIComponent(slug)}`);
+        const res = await fetch(`${window.BODI_API.API_BASE}/wp-json/bodi/v1/seo?type=${encodeURIComponent(type)}&slug=${encodeURIComponent(slug || '')}`);
         if (!res.ok) return;
         const data = await res.json();
         if (data && data.title) {
-          document.title = data.title;
-          if (data.description) setMetaName("description", data.description);
-          if (data.canonical) setCanonical(data.canonical);
-          if (data.schema) injectSchema(data.schema);
+          if (type === 'home') {
+            this.applyHomepageSEO(data);
+          } else {
+            document.title = data.title;
+            if (data.description) setMetaName("description", data.description);
+            if (data.canonical) setCanonical(data.canonical);
+            if (data.schema) injectSchema(data.schema);
+          }
         }
       } catch (e) {
         // graceful client fallback

@@ -74,10 +74,10 @@
 <main class="flex-grow">
 
   <!-- HERO -->
-  <section class="relative w-full h-[76vh] min-h-[500px] max-h-[720px] md:h-[82vh] bg-[#b8d5e5] overflow-hidden flex items-center">
+  <section id="hero-section" class="relative w-full h-[76vh] min-h-[500px] max-h-[720px] md:h-[82vh] bg-[#b8d5e5] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
       <picture>
-        <source srcset="assets/images/hero-bg.webp" type="image/webp">
+        <source id="hero-source" srcset="assets/images/hero-bg.webp" type="image/webp">
         <img src="assets/images/hero-bg.jpg" id="hero-bg" class="w-full h-full object-cover object-[62%_30%] sm:object-[58%_35%] md:object-center" alt="Bodi.az orqanik pambıq körpə geyimləri">
       </picture>
       <!-- Subtle natural sky tint on the far left to keep text crisp while keeping image 100% vivid -->
@@ -87,24 +87,24 @@
       <div id="hero-content" class="max-w-md md:max-w-lg lg:max-w-xl space-y-4 md:space-y-5 p-4 sm:p-6 md:p-0 rounded-2xl bg-white/45 md:bg-transparent backdrop-blur-[3px] md:backdrop-blur-none border border-white/50 md:border-none shadow-sm md:shadow-none">
         <div class="spark-badge spark-badge-hero px-4 py-1.5 shadow-sm">
           <span class="spark-icon text-primary font-bold">✦</span>
-          <span class="text-primary font-extrabold text-xs uppercase tracking-wider">Yeni Kolleksiya</span>
+          <span id="hero-badge-text" class="text-primary font-extrabold text-xs uppercase tracking-wider">Yeni Kolleksiya</span>
         </div>
-        <h1 class="font-display-lg text-3xl sm:text-4xl md:text-5xl lg:text-[50px] text-[#1c2434] font-extrabold tracking-tight leading-[1.15] drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]">
-          Balacalar üçün<br>
-          <span class="text-primary font-bold">yumşaq və rahat</span><br>
-          yeni kolleksiya
+        <h1 id="hero-title" class="font-display-lg text-3xl sm:text-4xl md:text-5xl lg:text-[50px] text-[#1c2434] font-extrabold tracking-tight leading-[1.15] drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]">
+          <span id="hero-title-line1">Balacalar üçün</span><br>
+          <span id="hero-title-highlight" class="text-primary font-bold">yumşaq və rahat</span><br>
+          <span id="hero-title-line2">yeni kolleksiya</span>
         </h1>
-        <p class="font-body-lg text-sm sm:text-base md:text-lg text-[#334155] font-medium max-w-md leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
+        <p id="hero-desc" class="font-body-lg text-sm sm:text-base md:text-lg text-[#334155] font-medium max-w-md leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
           Körpənizin həssas dərisinə uyğun, rahat və gündəlik istifadə üçün seçilmiş geyimlər. Hər toxunuşda sevgi.
         </p>
         <div class="pt-2 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
-          <a class="lumen-btn lumen-primary shadow-md" href="category.html?filter=new">
+          <a id="hero-btn-primary" class="lumen-btn lumen-primary shadow-md" href="category.html?filter=new">
             <span class="lumen-btn-inner text-sm md:text-base font-semibold px-7 py-3.5">
-              Kolleksiyaya bax <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+              <span id="hero-btn-primary-text">Kolleksiyaya bax</span> <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
             </span>
           </a>
-          <a class="inline-flex items-center justify-center bg-white/90 hover:bg-white text-on-surface font-label-md text-sm md:text-base font-semibold px-6 py-3.5 rounded-xl shadow-sm border border-white hover:shadow transition-all backdrop-blur-sm text-center" href="category.html?cat=bodi">
-            Bütün məhsullar
+          <a id="hero-btn-secondary" class="inline-flex items-center justify-center bg-white/90 hover:bg-white text-on-surface font-label-md text-sm md:text-base font-semibold px-6 py-3.5 rounded-xl shadow-sm border border-white hover:shadow transition-all backdrop-blur-sm text-center" href="category.html?cat=bodi">
+            <span id="hero-btn-secondary-text">Bütün məhsullar</span>
           </a>
         </div>
       </div>
@@ -113,7 +113,7 @@
 
   <!-- TRUST BAR -->
   <section id="trust-section" class="w-full bg-surface-container py-4 md:py-md border-y border-surface-dim/20 overflow-hidden">
-    <div class="max-w-container-max mx-auto px-gutter flex overflow-x-auto snap-x hide-scroll gap-3 pb-1 md:pb-0 md:grid md:grid-cols-4 md:gap-lg md:divide-x md:divide-outline-variant/30 drag-scroll-track">
+    <div id="trust-track" class="max-w-container-max mx-auto px-gutter flex overflow-x-auto snap-x hide-scroll gap-3 pb-1 md:pb-0 md:grid md:grid-cols-4 md:gap-lg md:divide-x md:divide-outline-variant/30 drag-scroll-track">
       <div class="trust-card flex-shrink-0 w-[230px] sm:w-[260px] md:w-auto snap-start flex flex-col items-center text-center p-3 sm:p-4 bg-surface/60 md:bg-transparent rounded-2xl border border-white/50 md:border-none shadow-xs md:shadow-none gap-2">
         <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-1"><span class="material-symbols-outlined text-[28px]">local_shipping</span></div>
         <h3 class="font-label-md text-label-md text-on-surface font-semibold">Bakı üzrə sürətli çatdırılma</h3>
@@ -141,8 +141,8 @@
   <section id="categories-section" class="max-w-container-max mx-auto w-full px-gutter py-xl">
     <div class="flex items-end justify-between mb-6 md:mb-lg">
       <div>
-        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Kateqoriyalar</span>
-        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Övladınız üçün</h2>
+        <span id="cat-eyebrow" class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Kateqoriyalar</span>
+        <h2 id="cat-title" class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Övladınız üçün</h2>
       </div>
       <div class="flex items-center gap-2">
         <div class="hidden sm:flex items-center gap-1.5 mr-2">
@@ -217,22 +217,23 @@
   </section>
 
   <!-- PROMO BANNER -->
+  <!-- PROMO BANNER -->
   <section id="promo-section" class="max-w-container-max mx-auto w-full px-gutter pb-xl">
     <div class="promo-box relative rounded-3xl overflow-hidden bg-primary text-on-primary px-6 sm:px-8 md:px-lg py-10 md:py-2xl flex flex-col md:flex-row items-center justify-between gap-8 md:gap-lg shadow-lg">
       <div class="max-w-xl space-y-4 md:space-y-md relative z-10">
         <span class="spark-badge bg-white/20 text-white border-white/40 mb-2 font-bold">
           <span class="spark-icon">✦</span>
-          Endirim Kampaniyası
+          <span id="promo-badge-text">Endirim Kampaniyası</span>
         </span>
-        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg tracking-tight leading-tight font-extrabold text-white">
+        <h2 id="promo-title" class="font-display-lg text-2xl sm:text-3xl md:text-display-lg tracking-tight leading-tight font-extrabold text-white">
           Yeni kolleksiyada 20%-ə qədər
         </h2>
-        <p class="font-body-lg text-sm sm:text-base md:text-body-lg text-white/90 leading-relaxed max-w-lg">
+        <p id="promo-desc" class="font-body-lg text-sm sm:text-base md:text-body-lg text-white/90 leading-relaxed max-w-lg">
           Payız üçün yumşaq orqanik pambıq bodilər və tulumlar. Məhdud müddətə xüsusi qiymətlərlə.
         </p>
         <div class="pt-2">
-          <a class="inline-flex items-center justify-center bg-white text-primary font-label-md text-sm md:text-base font-bold px-7 py-3.5 rounded-xl hover:bg-surface-container-lowest transition-all shadow-md transform hover:-translate-y-0.5" href="category.html?filter=sale">
-            Endirimdə bax <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+          <a id="promo-btn" class="inline-flex items-center justify-center bg-white text-primary font-label-md text-sm md:text-base font-bold px-7 py-3.5 rounded-xl hover:bg-surface-container-lowest transition-all shadow-md transform hover:-translate-y-0.5" href="category.html?filter=sale">
+            <span id="promo-btn-text">Endirimdə bax</span> <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
           </a>
         </div>
       </div>
@@ -247,8 +248,8 @@
   <section id="new-section" class="max-w-container-max mx-auto w-full px-gutter pb-xl">
     <div class="flex items-end justify-between mb-6 md:mb-lg">
       <div>
-        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Cəmi bizdə</span>
-        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Yeni gələnlər</h2>
+        <span id="new-eyebrow" class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Cəmi bizdə</span>
+        <h2 id="new-title" class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Yeni gələnlər</h2>
       </div>
       <div class="flex items-center gap-2">
         <div class="flex items-center gap-1.5 mr-2">
@@ -272,11 +273,11 @@
   <section id="values-section" class="bg-surface-container py-xl">
     <div class="max-w-container-max mx-auto px-gutter">
       <div class="text-center max-w-2xl mx-auto mb-lg">
-        <span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Niyə Bodi.az?</span>
-        <h2 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Hər toxunuşda sevgi</h2>
-        <p class="font-body-lg text-sm sm:text-base md:text-body-lg text-on-surface-variant mt-sm">Biz inanırıq ki, hər bir körpə ən yumşaq qucaqlara layiqdir.</p>
+        <span id="values-eyebrow" class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Niyə Bodi.az?</span>
+        <h2 id="values-title" class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Hər toxunuşda sevgi</h2>
+        <p id="values-desc" class="font-body-lg text-sm sm:text-base md:text-body-lg text-on-surface-variant mt-sm">Biz inanırıq ki, hər bir körpə ən yumşaq qucaqlara layiqdir.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+      <div id="values-grid" class="grid grid-cols-1 md:grid-cols-3 gap-md">
         <div class="value-card bg-surface rounded-2xl p-6 md:p-lg text-center shadow-xs">
           <div class="value-icon w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md"><span class="material-symbols-outlined text-[30px]">spa</span></div>
           <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">100% Üzvi Pambıq</h3>
@@ -296,19 +297,38 @@
     </div>
   </section>
 
+  <!-- LOOKBOOK / GALLERY -->
+  <section id="gallery-section" class="max-w-container-max mx-auto w-full px-gutter py-xl">
+    <div class="flex items-end justify-between mb-6 md:mb-lg">
+      <div>
+        <span id="gal-eyebrow" class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">İnstagram & Lookbook</span>
+        <h2 id="gal-title" class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-on-surface tracking-tight mt-1 font-extrabold">Balacaların sevimli anları</h2>
+        <p id="gal-desc" class="text-xs sm:text-sm md:text-base text-on-surface-variant mt-1 max-w-xl">Valideynlərin bizim məhsullarla çəkdiyi ən gözəl xatirələr. Bizi @bodi.az tag edin!</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:gap-2 transition-all font-semibold" href="https://instagram.com/bodi.az" target="_blank" rel="noopener">
+          @bodi.az <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+    <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+      <!-- Lookbook items rendered dynamically from backend -->
+    </div>
+  </section>
+
   <!-- CUSTOMER REVIEWS -->
   <section class="rv-section" aria-labelledby="reviews-title">
     <div class="rv-header">
-      <span class="eyebrow">Rəylər</span>
+      <span class="eyebrow" id="reviews-eyebrow">Rəylər</span>
       <h2 id="reviews-title">Valideynlər nə deyir</h2>
-      <p>Real valideynlərin real təcrübələri — yumşaq toxunuş və sevgi dolu məhsullarımız haqqında.</p>
+      <p id="reviews-desc">Real valideynlərin real təcrübələri — yumşaq toxunuş və sevgi dolu məhsullarımız haqqında.</p>
       <div class="rv-summary" id="rv-summary">
         <span class="rv-summary-stars" id="rv-summary-stars"></span>
         <strong id="rv-avg">5.0</strong>
         <span class="dot">·</span>
         <span class="count"><span id="rv-count">0</span> rəy</span>
       </div>
-      <div><a href="reviews.html" class="rv-all-link">Bütün rəylərə bax →</a></div>
+      <div><a href="reviews.html" class="rv-all-link" id="rv-all-link">Bütün rəylərə bax →</a></div>
     </div>
 
     <div class="rv-slider-wrapper">
@@ -345,12 +365,240 @@
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script src="assets/js/animations.js?v=2.2.0"></script>
 <script>
-  // Populate real images + product grids + customer reviews
+  // Populate real images + product grids + customer reviews + backend dynamic homepage
   (function () {
     const heroBg = document.getElementById("hero-bg");
     if (heroBg && !heroBg.getAttribute("src")) heroBg.src = "assets/images/hero-bg.jpg";
     const promoImg = document.getElementById("promo-img");
-    if (promoImg) promoImg.src = "assets/images/products/bej-uzunqol-bodi.jpg";
+    if (promoImg && !promoImg.getAttribute("src")) promoImg.src = "assets/images/products/bej-uzunqol-bodi.jpg";
+
+    // Dynamic Homepage Data Hydration from mu-plugin
+    function applyHomepageData(data) {
+      if (!data) return;
+
+      // 1. Hero Section
+      if (data.hero) {
+        const h = data.hero;
+        const bText = document.getElementById("hero-badge-text");
+        if (bText && h.badge) bText.textContent = h.badge;
+
+        const t1 = document.getElementById("hero-title-line1");
+        if (t1 && h.title_line1) t1.textContent = h.title_line1;
+
+        const tHigh = document.getElementById("hero-title-highlight");
+        if (tHigh && h.title_highlight) tHigh.textContent = h.title_highlight;
+
+        const t2 = document.getElementById("hero-title-line2");
+        if (t2 && h.title_line2) t2.textContent = h.title_line2;
+
+        const desc = document.getElementById("hero-desc");
+        if (desc && h.description) desc.textContent = h.description;
+
+        const btn1 = document.getElementById("hero-btn-primary");
+        const btn1Text = document.getElementById("hero-btn-primary-text");
+        if (btn1 && h.btn_primary_url) btn1.href = h.btn_primary_url;
+        if (btn1Text && h.btn_primary_text) btn1Text.textContent = h.btn_primary_text;
+
+        const btn2 = document.getElementById("hero-btn-secondary");
+        const btn2Text = document.getElementById("hero-btn-secondary-text");
+        if (btn2 && h.btn_secondary_url) btn2.href = h.btn_secondary_url;
+        if (btn2Text && h.btn_secondary_text) btn2Text.textContent = h.btn_secondary_text;
+
+        if (h.bg_image) {
+          const bg = document.getElementById("hero-bg");
+          const src = document.getElementById("hero-source");
+          if (bg) bg.src = h.bg_image;
+          if (src && !h.bg_image.endsWith('.jpg')) src.srcset = h.bg_image;
+        }
+
+        if (h.bg_color) {
+          const sec = document.getElementById("hero-section");
+          if (sec) sec.style.backgroundColor = h.bg_color;
+        }
+      }
+
+      // 2. Trust Bar
+      if (Array.isArray(data.trust_bar) && data.trust_bar.length > 0) {
+        const track = document.getElementById("trust-track");
+        if (track) {
+          track.innerHTML = data.trust_bar.map(t => `
+            <div class="trust-card flex-shrink-0 w-[230px] sm:w-[260px] md:w-auto snap-start flex flex-col items-center text-center p-3 sm:p-4 bg-surface/60 md:bg-transparent rounded-2xl border border-white/50 md:border-none shadow-xs md:shadow-none gap-2">
+              <div class="p-3 bg-surface rounded-full shadow-ambient text-primary mb-1">
+                <span class="material-symbols-outlined text-[28px]">${t.icon || 'spa'}</span>
+              </div>
+              <h3 class="font-label-md text-label-md text-on-surface font-semibold">${t.title}</h3>
+              <p class="font-body-sm text-xs md:text-body-sm text-on-surface-variant">${t.subtitle}</p>
+            </div>
+          `).join('');
+        }
+      }
+
+      // 3. Categories Section
+      if (data.categories) {
+        const c = data.categories;
+        const eye = document.getElementById("cat-eyebrow");
+        if (eye && c.eyebrow) eye.textContent = c.eyebrow;
+
+        const title = document.getElementById("cat-title");
+        if (title && c.title) title.textContent = c.title;
+
+        if (Array.isArray(c.items) && c.items.length > 0) {
+          const catTrack = document.getElementById("catTrack");
+          if (catTrack) {
+            catTrack.innerHTML = c.items.map(item => `
+              <a href="${item.url || 'category.html?cat=' + item.slug}" draggable="false" class="cat-card flex-shrink-0 w-[78vw] sm:w-[320px] md:w-auto snap-start relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden group shadow-sm select-none">
+                <img src="${item.image || 'assets/images/products/' + item.slug + '.jpg'}" data-cat-img="${item.slug}" draggable="false" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" alt="${item.name}">
+                <div class="absolute inset-0 bg-gradient-to-t from-on-surface/65 via-on-surface/20 to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 p-5 md:p-lg text-white pointer-events-none">
+                  <span class="spark-badge spark-badge-hero mb-2 text-primary font-bold"><span class="spark-icon">✦</span>${item.badge || '100% Pambıq'}</span>
+                  <h3 class="font-headline-md text-2xl md:text-headline-md font-bold">${item.name}</h3>
+                  <p class="font-body-sm text-body-sm opacity-90">${item.subtitle || ''}</p>
+                </div>
+              </a>
+            `).join('');
+          }
+        }
+      }
+
+      // 4. Promo Banner
+      if (data.promo) {
+        const pr = data.promo;
+        const pBadge = document.getElementById("promo-badge-text");
+        if (pBadge && pr.badge) pBadge.textContent = pr.badge;
+
+        const pTitle = document.getElementById("promo-title");
+        if (pTitle && pr.title) pTitle.textContent = pr.title;
+
+        const pDesc = document.getElementById("promo-desc");
+        if (pDesc && pr.description) pDesc.textContent = pr.description;
+
+        const pBtn = document.getElementById("promo-btn");
+        const pBtnText = document.getElementById("promo-btn-text");
+        if (pBtn && pr.btn_url) pBtn.href = pr.btn_url;
+        if (pBtnText && pr.btn_text) pBtnText.textContent = pr.btn_text;
+
+        const pImg = document.getElementById("promo-img");
+        if (pImg && pr.image) pImg.src = pr.image;
+      }
+
+      // 5. Values Section
+      if (data.values) {
+        const v = data.values;
+        const vEye = document.getElementById("values-eyebrow");
+        if (vEye && v.eyebrow) vEye.textContent = v.eyebrow;
+
+        const vTitle = document.getElementById("values-title");
+        if (vTitle && v.title) vTitle.textContent = v.title;
+
+        const vDesc = document.getElementById("values-desc");
+        if (vDesc && v.description) vDesc.textContent = v.description;
+
+        if (Array.isArray(v.items) && v.items.length > 0) {
+          const vGrid = document.getElementById("values-grid");
+          if (vGrid) {
+            vGrid.innerHTML = v.items.map(it => `
+              <div class="value-card bg-surface rounded-2xl p-6 md:p-lg text-center shadow-xs">
+                <div class="value-icon w-14 h-14 mx-auto bg-primary-fixed/40 text-primary rounded-2xl flex items-center justify-center mb-md">
+                  <span class="material-symbols-outlined text-[30px]">${it.icon || 'spa'}</span>
+                </div>
+                <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">${it.title}</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">${it.description}</p>
+              </div>
+            `).join('');
+          }
+        }
+      }
+
+      // 6. Lookbook / Gallery
+      if (data.gallery) {
+        const g = data.gallery;
+        const gEye = document.getElementById("gal-eyebrow");
+        if (gEye && g.eyebrow) gEye.textContent = g.eyebrow;
+
+        const gTitle = document.getElementById("gal-title");
+        if (gTitle && g.title) gTitle.textContent = g.title;
+
+        const gDesc = document.getElementById("gal-desc");
+        if (gDesc && g.description) gDesc.textContent = g.description;
+
+        if (Array.isArray(g.items) && g.items.length > 0) {
+          const gGrid = document.getElementById("gallery-grid");
+          if (gGrid) {
+            gGrid.innerHTML = g.items.map(item => `
+              <a href="${item.link || 'https://instagram.com/bodi.az'}" target="_blank" rel="noopener" class="group relative rounded-2xl overflow-hidden aspect-square bg-surface-container shadow-xs hover:shadow-md transition-all block">
+                <img src="${item.image}" alt="${item.title || 'Lookbook'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                <div class="absolute bottom-3 left-3 right-3 text-white">
+                  ${item.tag ? `<span class="spark-badge bg-white/20 text-white text-[11px] px-2 py-0.5 mb-1 inline-block"><span class="spark-icon">✦</span>${item.tag}</span>` : ''}
+                  <h4 class="font-bold text-sm truncate drop-shadow-sm">${item.title || ''}</h4>
+                </div>
+              </a>
+            `).join('');
+          }
+        }
+      }
+
+      // 7. Reviews Header
+      if (data.reviews_header) {
+        const rh = data.reviews_header;
+        const rEye = document.getElementById("reviews-eyebrow");
+        if (rEye && rh.eyebrow) rEye.textContent = rh.eyebrow;
+
+        const rTitle = document.getElementById("reviews-title");
+        if (rTitle && rh.title) rTitle.textContent = rh.title;
+
+        const rDesc = document.getElementById("reviews-desc");
+        if (rDesc && rh.description) rDesc.textContent = rh.description;
+
+        const rLink = document.getElementById("rv-all-link");
+        if (rLink) {
+          if (rh.link_url) rLink.href = rh.link_url;
+          if (rh.link_text) rLink.textContent = rh.link_text;
+        }
+      }
+
+      // 8. Yoast-Equivalent SEO & Schema.org JSON-LD
+      if (data.seo && window.BODI_SEO) {
+        window.BODI_SEO.applyHomepageSEO(data.seo);
+      }
+
+      // 9. Dynamic Animations settings
+      if (data.animations) {
+        const a = data.animations;
+        if (a.spark_glint === false) {
+          document.body.classList.add("disable-spark-glint");
+        } else {
+          document.body.classList.remove("disable-spark-glint");
+        }
+
+        if (a.lumen_speed === "slow") {
+          document.documentElement.style.setProperty("--lumen-duration", "6s");
+        } else if (a.lumen_speed === "fast") {
+          document.documentElement.style.setProperty("--lumen-duration", "2.5s");
+        } else {
+          document.documentElement.style.setProperty("--lumen-duration", "4s");
+        }
+      }
+    }
+
+    // Try instant local cache first
+    try {
+      const cached = localStorage.getItem("bodi_homepage_data");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed && parsed.hero) {
+          applyHomepageData(parsed);
+        }
+      }
+    } catch (e) {}
+
+    // Listen to network updates
+    window.addEventListener("bodi:homepage-loaded", function (e) {
+      applyHomepageData(e.detail);
+    });
+    window.addEventListener("bodi:homepage-updated", function (e) {
+      applyHomepageData(e.detail);
+    });
 
     function updateCategoryImages() {
       document.querySelectorAll("[data-cat-img]").forEach(img => {

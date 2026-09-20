@@ -300,6 +300,62 @@
         throw new Error(data.message || "Mesaj göndərilə bilmədi.");
       }
       return data;
+    },
+
+    // Homepage & Dynamic Content
+    async fetchHomepage() {
+      // 1. Instant Cache retrieval
+      try {
+        const cached = localStorage.getItem("bodi_homepage_data");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && parsed.hero) {
+            global.BODI_HOMEPAGE = parsed;
+            window.dispatchEvent(new CustomEvent("bodi:homepage-loaded", { detail: parsed }));
+          }
+        }
+      } catch (e) {}
+
+      // 2. Network fetch
+      try {
+        const res = await fetch(`${API_BASE}/wp-json/bodi/v1/homepage`, {
+          headers: getHeaders()
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        if (json && json.success && json.data) {
+          global.BODI_HOMEPAGE = json.data;
+          try {
+            localStorage.setItem("bodi_homepage_data", JSON.stringify(json.data));
+          } catch (e) {}
+          window.dispatchEvent(new CustomEvent("bodi:homepage-loaded", { detail: json.data }));
+          window.dispatchEvent(new CustomEvent("bodi:homepage-updated", { detail: json.data }));
+          return json.data;
+        }
+      } catch (err) {
+        console.warn("[Bodi API] Homepage fetch fallback:", err.message);
+      }
+      return global.BODI_HOMEPAGE || null;
+    },
+
+    async updateHomepage(payload) {
+      const res = await fetch(`${API_BASE}/wp-json/bodi/v1/homepage`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok || data.code) {
+        throw new Error(data.message || "Yenilənmə xətası baş verdi.");
+      }
+      if (data && data.data) {
+        global.BODI_HOMEPAGE = data.data;
+        try {
+          localStorage.setItem("bodi_homepage_data", JSON.stringify(data.data));
+        } catch (e) {}
+        window.dispatchEvent(new CustomEvent("bodi:homepage-updated", { detail: data.data }));
+      }
+      return data;
     }
   };
 
@@ -405,6 +461,11 @@
       submit: (payload) => WooCommerceAdapter.submitContact(payload)
     },
 
+    homepage: {
+      get: () => WooCommerceAdapter.fetchHomepage(),
+      update: (payload) => WooCommerceAdapter.updateHomepage(payload)
+    },
+
     whatsapp: {
       getBuyUrl: getWhatsAppBuyUrl,
       getCartUrl: getWhatsAppCartUrl,
@@ -420,6 +481,8 @@
     trackOrder: (orderId) => WooCommerceAdapter.trackOrder(orderId),
     fetchPosts: () => WooCommerceAdapter.fetchPosts(),
     submitContact: (payload) => WooCommerceAdapter.submitContact(payload),
+    fetchHomepage: () => WooCommerceAdapter.fetchHomepage(),
+    updateHomepage: (payload) => WooCommerceAdapter.updateHomepage(payload),
     getWhatsAppBuyUrl,
     getWhatsAppCartUrl,
     getWhatsAppOrderUrl,
@@ -435,7 +498,8 @@
   WooCommerceAdapter.fetchProducts();
   WooCommerceAdapter.fetchCategories();
   WooCommerceAdapter.fetchReviews();
+  WooCommerceAdapter.fetchHomepage();
 
-  console.log("[Bodi API] v2.1.0 ready (Driver: WooCommerce / Endpoint: " + API_BASE + ")");
+  console.log("[Bodi API] v2.2.0 ready (Driver: WooCommerce / Endpoint: " + API_BASE + ")");
 
 })(window);
