@@ -74,14 +74,18 @@
 <main class="flex-grow">
 
   <!-- HERO -->
-  <section id="hero-section" class="relative w-full h-[76vh] min-h-[500px] max-h-[720px] md:h-[82vh] bg-[#b8d5e5] overflow-hidden flex items-center">
-    <div class="absolute inset-0 z-0">
-      <picture>
+  <section id="hero-section" class="relative w-full h-[78vh] min-h-[520px] max-h-[750px] md:h-[84vh] bg-[#b8d5e5] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <!-- High-Resolution Baby Video Background (Muted, Autoplay, Loop - No Audio) -->
+      <video id="hero-video" autoplay loop muted playsinline poster="assets/videos/hero-baby-poster.jpg" class="w-full h-full object-cover object-[70%_35%] sm:object-[66%_38%] md:object-[62%_center]">
+        <source src="assets/videos/hero-baby.mp4" type="video/mp4">
+      </video>
+      <picture id="hero-picture" class="hidden w-full h-full">
         <source id="hero-source" srcset="assets/images/hero-bg.webp" type="image/webp">
         <img src="assets/images/hero-bg.jpg" id="hero-bg" class="w-full h-full object-cover object-[62%_30%] sm:object-[58%_35%] md:object-center" alt="Bodi.az orqanik pambıq körpə geyimləri">
       </picture>
-      <!-- Subtle natural sky tint on the far left to keep text crisp while keeping image 100% vivid -->
-      <div class="absolute inset-0 bg-gradient-to-r from-[#b8d5e5]/25 via-transparent to-transparent pointer-events-none"></div>
+      <!-- Soft natural gradient overlay to guarantee text legibility while video colors stay vivid -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#b8d5e5]/40 via-[#b8d5e5]/10 to-transparent pointer-events-none"></div>
     </div>
     <div class="relative z-20 w-full px-gutter max-w-container-max mx-auto h-full flex items-center">
       <div id="hero-content" class="max-w-md md:max-w-lg lg:max-w-xl space-y-4 md:space-y-5 p-4 sm:p-6 md:p-0 rounded-2xl bg-white/45 md:bg-transparent backdrop-blur-[3px] md:backdrop-blur-none border border-white/50 md:border-none shadow-sm md:shadow-none">
@@ -366,7 +370,12 @@
 <script src="assets/js/animations.js?v=2.2.0"></script>
 <script>
   // Populate real images + product grids + customer reviews + backend dynamic homepage
-  (function () {
+    const heroVid = document.getElementById("hero-video");
+    if (heroVid) {
+      heroVid.muted = true;
+      heroVid.defaultMuted = true;
+      heroVid.play().catch(() => {});
+    }
     const heroBg = document.getElementById("hero-bg");
     if (heroBg && !heroBg.getAttribute("src")) heroBg.src = "assets/images/hero-bg.jpg";
     const promoImg = document.getElementById("promo-img");
@@ -404,7 +413,26 @@
         if (btn2 && h.btn_secondary_url) btn2.href = h.btn_secondary_url;
         if (btn2Text && h.btn_secondary_text) btn2Text.textContent = h.btn_secondary_text;
 
-        if (h.bg_image) {
+        const videoElem = document.getElementById("hero-video");
+        const picElem = document.getElementById("hero-picture");
+        const videoSrc = h.bg_video || (h.bg_image && (h.bg_image.endsWith('.mp4') || h.bg_image.endsWith('.webm')) ? h.bg_image : '');
+
+        if (videoSrc) {
+          if (videoElem) {
+            videoElem.classList.remove("hidden");
+            const srcTag = videoElem.querySelector("source");
+            if (srcTag && !srcTag.src.endsWith(videoSrc)) {
+              srcTag.src = videoSrc;
+              videoElem.load();
+            }
+            videoElem.muted = true;
+            videoElem.defaultMuted = true;
+            videoElem.play().catch(() => {});
+          }
+          if (picElem) picElem.classList.add("hidden");
+        } else if (h.bg_image && h.bg_image !== 'assets/images/hero-bg.jpg') {
+          if (videoElem) videoElem.classList.add("hidden");
+          if (picElem) picElem.classList.remove("hidden");
           const bg = document.getElementById("hero-bg");
           const src = document.getElementById("hero-source");
           if (bg) bg.src = h.bg_image;
