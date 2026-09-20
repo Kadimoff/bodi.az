@@ -234,11 +234,11 @@
 
         <!-- Color -->
         <div class="mb-6">
-          <label class="font-label-md text-label-md text-on-surface block mb-2">Rəng: <span id="color-name" class="font-body-md text-body-md text-on-surface-variant">${BODI.COLORS[p.color] ? BODI.COLORS[p.color].n : p.color}</span></label>
-          <div class="flex items-center gap-2">
-            ${Object.entries(BODI.COLORS).map(([k, c]) => `
-              <button data-colorsel="${k}" class="color-sel w-8 h-8 rounded-full border-2 ${k === p.color ? 'border-primary' : 'border-transparent'} p-0.5 hover:scale-110 transition-transform">
-                <span class="block w-full h-full rounded-full border border-outline-variant shadow-sm" style="background:${c.b}"></span>
+          <label class="font-label-md text-label-md text-on-surface block mb-2">Rəng: <span id="color-name" class="font-body-md text-body-md text-on-surface-variant font-medium">${(p.colors && p.colors[0]) ? p.colors[0].n : (BODI.COLORS[p.color] ? BODI.COLORS[p.color].n : p.color)}</span></label>
+          <div class="flex items-center gap-2 flex-wrap" id="color-swatches">
+            ${(p.colors && p.colors.length > 0 ? p.colors : [BODI.resolveColor(p.color)]).map((c, idx) => `
+              <button type="button" data-colorsel="${c.slug}" data-colorname="${c.n}" title="${c.n}" class="color-sel w-9 h-9 rounded-full border-2 ${idx === 0 ? 'border-primary shadow-sm ring-2 ring-primary/20' : 'border-transparent'} p-0.5 hover:scale-110 transition-all">
+                <span class="block w-full h-full rounded-full border border-outline-variant shadow-xs" style="background:${c.b}"></span>
               </button>`).join("")}
           </div>
         </div>
@@ -249,9 +249,9 @@
             <label class="font-label-md text-label-md text-on-surface">Ölçü</label>
             <a href="faq.html#cat-olcu" class="font-label-sm text-label-sm text-primary hover:underline">Ölçü bələdçisi</a>
           </div>
-          <div class="flex flex-wrap gap-2">
-            ${BODI.SIZES.map((s, i) => `
-              <button data-sizesel="${s}" class="size-sel px-4 py-2 rounded-xl font-label-md text-label-md transition-colors ${i === 1 ? 'border-2 border-primary bg-primary-fixed/20 text-primary' : 'border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary'}">${s}</button>`).join("")}
+          <div class="flex flex-wrap gap-2" id="size-options">
+            ${(p.sizes && p.sizes.length > 0 ? p.sizes : BODI.SIZES).map((s, i) => `
+              <button type="button" data-sizesel="${s}" class="size-sel px-4 py-2 rounded-xl font-label-md text-label-md transition-colors ${i === 0 ? 'border-2 border-primary bg-primary-fixed/20 text-primary' : 'border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary'}">${s}</button>`).join("")}
           </div>
         </div>
 
@@ -313,7 +313,9 @@
     document.getElementById("related-grid").innerHTML = BODI.related(p, 4).map(r => BODI.card(r)).join("");
 
     // Interactions
-    let qty = 1, size = BODI.SIZES[1], color = p.color;
+    const initialColors = (p.colors && p.colors.length > 0 ? p.colors : [BODI.resolveColor(p.color)]);
+    const initialSizes = (p.sizes && p.sizes.length > 0 ? p.sizes : BODI.SIZES);
+    let qty = 1, size = initialSizes[0], color = initialColors[0].slug;
 
     document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
       document.getElementById("main-img").src = t.getAttribute("data-thumb");
@@ -322,11 +324,11 @@
     }));
 
     document.querySelectorAll(".color-sel").forEach(b => b.addEventListener("click", () => {
-      document.querySelectorAll(".color-sel").forEach(x => { x.classList.remove("border-primary"); x.classList.add("border-transparent"); });
-      b.classList.add("border-primary"); b.classList.remove("border-transparent");
+      document.querySelectorAll(".color-sel").forEach(x => { x.classList.remove("border-primary", "shadow-sm", "ring-2", "ring-primary/20"); x.classList.add("border-transparent"); });
+      b.classList.add("border-primary", "shadow-sm", "ring-2", "ring-primary/20"); b.classList.remove("border-transparent");
       color = b.getAttribute("data-colorsel");
-      const cObj = BODI.COLORS[color];
-      if (cObj) document.getElementById("color-name").textContent = cObj.n;
+      const cName = b.getAttribute("data-colorname") || (BODI.resolveColor(color).n);
+      document.getElementById("color-name").textContent = cName;
     }));
 
     document.querySelectorAll(".size-sel").forEach(b => b.addEventListener("click", () => {
@@ -368,7 +370,22 @@
     renderProductReviews();
   }
 
-  function renderProductReviews() {
+  async function renderProductReviews() {
+    if (window.BODI_API && typeof BODI_API.fetchReviews === "function" && p) {
+      try {
+        const freshReviews = await BODI_API.fetchReviews(p.slug);
+        if (Array.isArray(freshReviews) && freshReviews.length > 0) {
+          freshReviews.forEach(fr => {
+            if (!BODI.REVIEWS.some(r => r.id === fr.id)) {
+              BODI.REVIEWS.unshift(fr);
+            }
+          });
+        }
+      } catch (err) {
+        console.warn("Could not fetch product reviews:", err);
+      }
+    }
+
     const revList = (BODI.REVIEWS || []).filter(r => r.productId === p.id || r.productSlug === p.slug);
     const count = revList.length;
     const avg = count ? (revList.reduce((s, r) => s + (Number(r.rating) || 5), 0) / count).toFixed(1) : "5.0";

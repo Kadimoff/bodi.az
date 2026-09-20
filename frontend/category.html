@@ -153,7 +153,9 @@
     const saleOnly = document.getElementById("filter-sale").checked;
 
     if (mats.length) list = list.filter(p => mats.some(m => p.material.includes(m)));
-    if (colors.length) list = list.filter(p => colors.includes(p.color));
+    if (colors.length) {
+      list = list.filter(p => colors.includes(p.color) || (Array.isArray(p.colors) && p.colors.some(c => colors.includes(c.slug))));
+    }
     if (saleOnly) list = list.filter(p => p.old);
     list = list.filter(p => p.price >= min && p.price <= max);
 
@@ -240,10 +242,43 @@
     updateCategorySEO(crumb.textContent);
   }
 
-  window.addEventListener("bodi:products-updated", function () {
+  function populateColorFilter() {
+    const container = document.getElementById("filter-color");
+    if (!container) return;
+    const colorMap = new Map();
+    (BODI.PRODUCTS || []).forEach(p => {
+      if (Array.isArray(p.colors) && p.colors.length > 0) {
+        p.colors.forEach(c => colorMap.set(c.slug, c));
+      } else if (p.color) {
+        colorMap.set(p.color, BODI.resolveColor(p.color));
+      }
+    });
+    if (colorMap.size === 0) return;
+    container.innerHTML = Array.from(colorMap.values()).map(c => `
+      <button type="button" aria-label="${c.n}" title="${c.n}" data-color="${c.slug}" class="w-8 h-8 rounded-full border border-outline-variant shadow-sm hover:scale-110 transition-transform" style="background:${c.b}"></button>
+    `).join("");
+    container.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+      b.classList.toggle("border-primary");
+      b.classList.toggle("border-2");
+      b.classList.toggle("ring-2");
+      b.classList.toggle("ring-primary/20");
+      state.page = 1;
+      render();
+    }));
+  }
+
+  window.addEventListener("bodi:categories-updated", function () {
     updateBase();
     render();
   });
+
+  window.addEventListener("bodi:products-updated", function () {
+    populateColorFilter();
+    updateBase();
+    render();
+  });
+
+  populateColorFilter();
 
   // Events
   document.querySelectorAll("#filter-age input, #filter-mat input").forEach(i => i.addEventListener("change", () => { state.page = 1; render(); }));

@@ -5,21 +5,74 @@
   "use strict";
 
   const COLORS = {
-    cream:  { a: "#fdf9f3", b: "#f1ede7", label: "#8a8478" },
-    beige:  { a: "#efe8da", b: "#ddd0ba", label: "#8a7a5c" },
-    sage:   { a: "#d4e0cf", b: "#b8ccb5", label: "#5f705c" },
-    peach:  { a: "#fbe3d6", b: "#f6c7b0", label: "#a76a52" },
-    terracotta:{ a: "#ecc6b3", b: "#d99e80", label: "#9a5238" },
-    white:  { a: "#ffffff", b: "#eeece6", label: "#9a988f" },
-    sky:    { a: "#d6e4ea", b: "#b6cbd6", label: "#54707e" },
-    lavender:{ a: "#e2dceb", b: "#c9bcdf", label: "#6e5e8c" },
-    mustard:{ a: "#efe2bd", b: "#dcc485", label: "#8a7334" },
-    rose:   { a: "#f4d9da", b: "#ebb4b7", label: "#a65a5e" }
+    cream:  { n: "Krem", a: "#fdf9f3", b: "#f1ede7", label: "#8a8478" },
+    beige:  { n: "Bej", a: "#efe8da", b: "#ddd0ba", label: "#8a7a5c" },
+    sage:   { n: "Adaçayı", a: "#d4e0cf", b: "#b8ccb5", label: "#5f705c" },
+    peach:  { n: "Şaftalı", a: "#fbe3d6", b: "#f6c7b0", label: "#a76a52" },
+    terracotta:{ n: "Terrakotta", a: "#ecc6b3", b: "#d99e80", label: "#9a5238" },
+    white:  { n: "Ağ", a: "#ffffff", b: "#eeece6", label: "#9a988f" },
+    sky:    { n: "Göy / Mavi", a: "#d6e4ea", b: "#b6cbd6", label: "#54707e" },
+    lavender:{ n: "Lavanta", a: "#e2dceb", b: "#c9bcdf", label: "#6e5e8c" },
+    mustard:{ n: "Xardal", a: "#efe2bd", b: "#dcc485", label: "#8a7334" },
+    rose:   { n: "Çəhrayı", a: "#f4d9da", b: "#ebb4b7", label: "#a65a5e" },
+    mint:   { n: "Nanə", a: "#d7ece4", b: "#bce0d3", label: "#537869" },
+    olive:  { n: "Zeytun", a: "#e2e6d5", b: "#c8d1b1", label: "#687350" },
+    grey:   { n: "Boz", a: "#f0f0f0", b: "#dcdcdc", label: "#707070" },
+    black:  { n: "Qara", a: "#555555", b: "#2b2b2b", label: "#ffffff" },
+    brown:  { n: "Qəhvəyi", a: "#e3d2c5", b: "#c8b09f", label: "#6d4e3a" }
   };
+
+  // Resolve color string (from WooCommerce or local) to full color object
+  function resolveColor(input) {
+    if (!input) return { slug: "cream", ...COLORS.cream };
+    if (typeof input === "object" && input.slug && input.b) return input;
+    const str = String(typeof input === "object" ? (input.name || input.slug || "") : input).trim();
+    const key = str.toLowerCase()
+      .replace(/ə/g, "e").replace(/ı/g, "i").replace(/ç/g, "c").replace(/ş/g, "s").replace(/ğ/g, "g").replace(/ö/g, "o").replace(/ü/g, "u")
+      .replace(/[^a-z0-9]/g, "");
+
+    if (COLORS[key]) return { slug: key, ...COLORS[key], n: COLORS[key].n || str };
+
+    const aliases = {
+      ag: "white", beyaz: "white",
+      bej: "beige",
+      krem: "cream",
+      adacayi: "sage", yasil: "sage", green: "sage",
+      saftali: "peach", seftali: "peach",
+      terrakotta: "terracotta",
+      goy: "sky", mavi: "sky", blue: "sky",
+      benovseyi: "lavender", lavanta: "lavender", purple: "lavender",
+      xardal: "mustard", sari: "mustard", yellow: "mustard",
+      cehrayi: "rose", gul: "rose", pink: "rose",
+      nane: "mint",
+      zeytun: "olive",
+      boz: "grey", gray: "grey", gri: "grey",
+      qara: "black", siyah: "black",
+      qehveyi: "brown", kahverengi: "brown"
+    };
+
+    if (aliases[key] && COLORS[aliases[key]]) {
+      return { slug: aliases[key], ...COLORS[aliases[key]], n: COLORS[aliases[key]].n || str };
+    }
+
+    // Dynamic pastel color fallback for ANY custom color added in WooCommerce
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = Math.abs(hash) % 360;
+    return {
+      slug: key || "custom",
+      n: str,
+      a: `hsl(${h}, 45%, 93%)`,
+      b: `hsl(${h}, 40%, 82%)`,
+      label: `hsl(${h}, 45%, 35%)`
+    };
+  }
 
   // Soft gradient SVG with a onesie silhouette + color name.
   function ph(colorKey, labelText) {
-    const c = COLORS[colorKey] || COLORS.cream;
+    const c = resolveColor(colorKey);
     const txt = (labelText || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="750" viewBox="0 0 600 750">
       <defs>
@@ -215,6 +268,7 @@
   global.BODI = {
     getProductImage,
     COLORS, SIZES, PRODUCTS, CAT_NAMES, REVIEWS,
+    resolveColor,
     ph, phWide, money, stars, card,
     getBySlug, getById, getByCat, getNew, getSale, related,
     totalReviews, totalReviewsFormatted, avgRating, reviewStarsHTML, reviewCard
