@@ -370,11 +370,14 @@
 <script src="assets/js/animations.js?v=2.2.0"></script>
 <script>
   // Populate real images + product grids + customer reviews + backend dynamic homepage
+  (function () {
     const heroVid = document.getElementById("hero-video");
     if (heroVid) {
       heroVid.muted = true;
       heroVid.defaultMuted = true;
-      heroVid.play().catch(() => {});
+      if (typeof heroVid.play === "function") {
+        heroVid.play().catch(() => {});
+      }
     }
     const heroBg = document.getElementById("hero-bg");
     if (heroBg && !heroBg.getAttribute("src")) heroBg.src = "assets/images/hero-bg.jpg";
@@ -427,7 +430,9 @@
             }
             videoElem.muted = true;
             videoElem.defaultMuted = true;
-            videoElem.play().catch(() => {});
+            if (typeof videoElem.play === "function") {
+              videoElem.play().catch(() => {});
+            }
           }
           if (picElem) picElem.classList.add("hidden");
         } else if (h.bg_image && h.bg_image !== 'assets/images/hero-bg.jpg') {
