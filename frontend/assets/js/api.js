@@ -51,20 +51,36 @@
     });
 
     let productColors = [];
+    const rawColorTokens = [];
+
     if (colorAttr && Array.isArray(colorAttr.terms) && colorAttr.terms.length > 0) {
-      productColors = colorAttr.terms.map(t => {
-        const resolved = global.BODI ? global.BODI.resolveColor(t.name || t.slug) : { slug: t.slug, n: t.name, b: "#f1ede7" };
+      colorAttr.terms.forEach(t => {
+        const raw = t.name || t.slug || "";
+        raw.split("|").forEach(item => {
+          const trimmed = item.trim();
+          if (trimmed && !rawColorTokens.includes(trimmed)) rawColorTokens.push(trimmed);
+        });
+      });
+    } else if (colorAttr && Array.isArray(colorAttr.options) && colorAttr.options.length > 0) {
+      colorAttr.options.forEach(opt => {
+        const raw = typeof opt === "string" ? opt : (opt.name || "");
+        raw.split("|").forEach(item => {
+          const trimmed = item.trim();
+          if (trimmed && !rawColorTokens.includes(trimmed)) rawColorTokens.push(trimmed);
+        });
+      });
+    }
+
+    if (rawColorTokens.length > 0) {
+      productColors = rawColorTokens.map(token => {
+        const resolved = global.BODI ? global.BODI.resolveColor(token) : { slug: token, n: token, b: "#f1ede7" };
         return {
-          slug: t.slug || resolved.slug,
-          n: t.name || resolved.n,
+          slug: resolved.slug,
+          n: resolved.n,
           b: resolved.b,
           a: resolved.a,
           label: resolved.label
         };
-      });
-    } else if (colorAttr && Array.isArray(colorAttr.options) && colorAttr.options.length > 0) {
-      productColors = colorAttr.options.map(opt => {
-        return global.BODI ? global.BODI.resolveColor(opt) : { slug: opt, n: opt, b: "#f1ede7" };
       });
     }
 
@@ -85,9 +101,21 @@
 
     let productSizes = [];
     if (sizeAttr && Array.isArray(sizeAttr.terms) && sizeAttr.terms.length > 0) {
-      productSizes = sizeAttr.terms.map(t => t.name || t.slug);
+      sizeAttr.terms.forEach(t => {
+        const raw = t.name || t.slug || "";
+        raw.split("|").forEach(item => {
+          const trimmed = item.trim();
+          if (trimmed && !productSizes.includes(trimmed)) productSizes.push(trimmed);
+        });
+      });
     } else if (sizeAttr && Array.isArray(sizeAttr.options) && sizeAttr.options.length > 0) {
-      productSizes = sizeAttr.options;
+      sizeAttr.options.forEach(opt => {
+        const raw = typeof opt === "string" ? opt : (opt.name || "");
+        raw.split("|").forEach(item => {
+          const trimmed = item.trim();
+          if (trimmed && !productSizes.includes(trimmed)) productSizes.push(trimmed);
+        });
+      });
     }
     if (productSizes.length === 0) {
       productSizes = (global.BODI && global.BODI.SIZES) ? global.BODI.SIZES : ["0-3 ay", "3-6 ay", "6-9 ay", "9-12 ay", "12-18 ay"];
