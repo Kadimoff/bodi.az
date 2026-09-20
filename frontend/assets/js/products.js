@@ -173,8 +173,9 @@
     opts = opts || {};
     const img = getProductImage(p);
     const wished = opts.wished ? "ms-fill text-secondary" : "";
+    const isSale = p.badge && (p.badge.includes('%') || p.badge.toLowerCase().includes('endir'));
     const tag = p.badge
-      ? `<span class="${p.badge.includes('%') ? 'bg-error-container text-on-error-container' : 'bg-primary/10 text-primary'} font-label-sm text-[10px] px-2 py-1 rounded-full uppercase tracking-wider">${p.badge}</span>`
+      ? `<span class="spark-badge ${isSale ? 'spark-badge-sale' : 'spark-badge-new'}"><span class="spark-icon">✦</span>${p.badge}</span>`
       : "";
     const price = p.old
       ? `<div class="flex items-baseline gap-2"><span class="font-headline-sm text-headline-sm text-error">${money(p.price)}</span><span class="font-body-sm text-body-sm text-on-surface-variant line-through">${money(p.old)}</span></div>`

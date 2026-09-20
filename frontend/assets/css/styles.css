@@ -285,3 +285,187 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
 .carousel-arrow-btn:active {
   transform: scale(0.96);
 }
+
+/* ============================================================
+   Lumen CTA & Gradient Beam Buttons (Inspired by ThreeUI)
+   GPU-accelerated rotating border beam + rich glowing glass
+   ============================================================ */
+@keyframes lumenBeamSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes lumenShimmer {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(220%) skewX(-20deg); }
+}
+
+.lumen-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  overflow: hidden;
+  padding: 2px;
+  text-decoration: none;
+  font-weight: 700;
+  isolation: isolate;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
+}
+.lumen-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+.lumen-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Rotating conic beam in border */
+.lumen-btn::before {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(from 0deg, transparent 0 280deg, var(--lumen-beam, #25D366) 360deg);
+  animation: lumenBeamSpin 3.4s linear infinite;
+  z-index: 1;
+}
+
+/* Inner surface */
+.lumen-btn-inner {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  padding: 12px 26px;
+  background: var(--lumen-bg, linear-gradient(135deg, #0e2e1c 0%, #155d34 45%, #20bd5a 90%, #25D366 100%));
+  color: #ffffff;
+  overflow: hidden;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+/* Shimmer beam sweep inside button */
+.lumen-btn-inner::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+  animation: lumenShimmer 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* WhatsApp Specific Variant */
+.lumen-wa {
+  --lumen-beam: #25D366;
+  --lumen-bg: linear-gradient(135deg, #0e2e1c 0%, #145932 40%, #1db954 85%, #25D366 100%);
+  box-shadow: 0 8px 24px -4px rgba(37, 211, 102, 0.45), 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.lumen-wa:hover {
+  box-shadow: 0 14px 34px -4px rgba(37, 211, 102, 0.65), 0 0 24px rgba(37, 211, 102, 0.35);
+}
+
+/* Primary Brand Sage Variant */
+.lumen-primary {
+  --lumen-beam: #9ec89a;
+  --lumen-bg: linear-gradient(135deg, #2d382c 0%, #3e4d3c 50%, #4f614e 100%);
+  box-shadow: 0 8px 24px -4px rgba(79, 97, 78, 0.4);
+}
+.lumen-primary:hover {
+  box-shadow: 0 14px 34px -4px rgba(79, 97, 78, 0.55);
+}
+
+/* ============================================================
+   Spark Badges (Inspired by ThreeUI Spark Badge)
+   Glassmorphic 3D pill with animated glint & shimmer sweep
+   ============================================================ */
+@keyframes sparkShine {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  30%, 100% { transform: translateX(220%) skewX(-20deg); }
+}
+
+@keyframes sparkGlint {
+  0%, 100% { opacity: 0.55; transform: scale(0.85) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.25) rotate(18deg); }
+}
+
+.spark-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  line-height: 1.2;
+}
+.spark-badge:hover {
+  transform: translateY(-1px) scale(1.04);
+}
+
+/* Light sweep across the badge */
+.spark-badge::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: sparkShine 3.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Micro sparkle glint star */
+.spark-badge .spark-icon {
+  display: inline-block;
+  font-size: 9px;
+  line-height: 1;
+  animation: sparkGlint 2.2s ease-in-out infinite;
+  color: inherit;
+}
+
+/* Badge Color Themes */
+.spark-badge-sale {
+  background: linear-gradient(135deg, rgba(186, 26, 26, 0.95), rgba(217, 43, 43, 0.95));
+  color: #ffffff;
+  border-color: rgba(255, 180, 171, 0.45);
+  box-shadow: 0 2px 10px rgba(186, 26, 26, 0.28);
+}
+
+.spark-badge-new {
+  background: linear-gradient(135deg, rgba(79, 97, 78, 0.95), rgba(106, 130, 105, 0.95));
+  color: #ffffff;
+  border-color: rgba(212, 232, 208, 0.45);
+  box-shadow: 0 2px 10px rgba(79, 97, 78, 0.25);
+}
+
+.spark-badge-hero {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--primary);
+  border-color: rgba(79, 97, 78, 0.22);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lumen-btn::before,
+  .lumen-btn-inner::after,
+  .spark-badge::after,
+  .spark-badge .spark-icon {
+    animation: none !important;
+  }
+}
