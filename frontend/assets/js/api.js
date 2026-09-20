@@ -218,6 +218,13 @@
       if (!res.ok || data.code) {
         throw new Error(data.message || "Rəy göndərilə bilmədi.");
       }
+      if (data.review && global.BODI && Array.isArray(global.BODI.REVIEWS)) {
+        const exists = global.BODI.REVIEWS.some(r => r.id === data.review.id);
+        if (!exists) {
+          global.BODI.REVIEWS.unshift(data.review);
+          window.dispatchEvent(new CustomEvent("bodi:reviews-updated", { detail: global.BODI.REVIEWS }));
+        }
+      }
       return data;
     },
 
@@ -327,11 +334,12 @@
 
   // 5. Global API Facade (Decoupled Interface)
   // This provides standardized modules so switching backends only requires changing WooCommerceAdapter
-  global.BODI_API = {
-    // Config
+  const apiFacade = {
+    version: "2.1.0",
     API_BASE,
     WHATSAPP_NUMBER,
     driver: "woocommerce",
+    adapter: WooCommerceAdapter,
 
     // Domain Modules
     products: {
@@ -380,9 +388,16 @@
     transformProduct
   };
 
+  global.BODI_API = apiFacade;
+  if (typeof window !== "undefined") {
+    window.BODI_API = apiFacade;
+  }
+
   // Auto-fetch data on initialization
   WooCommerceAdapter.fetchProducts();
   WooCommerceAdapter.fetchCategories();
   WooCommerceAdapter.fetchReviews();
+
+  console.log("[Bodi API] v2.1.0 ready (Driver: WooCommerce / Endpoint: " + API_BASE + ")");
 
 })(window);

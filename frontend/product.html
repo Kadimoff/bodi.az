@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=73ee4108">
-<script src="assets/js/tw-config.js"></script>
+<link rel="stylesheet" href="assets/css/styles.css?v=2.1.0">
+<script src="assets/js/tw-config.js?v=2.1.0"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
 
@@ -94,11 +94,11 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=7dccd3e5"></script>
-<script src="assets/js/api.js"></script>
-<script src="assets/js/seo.js"></script>
-<script src="assets/js/store.js"></script>
-<script src="assets/js/layout.js"></script>
+<script src="assets/js/products.js?v=2.1.0"></script>
+<script src="assets/js/api.js?v=2.1.0"></script>
+<script src="assets/js/seo.js?v=2.1.0"></script>
+<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
 (function () {
   const params = new URLSearchParams(location.search);
@@ -416,7 +416,25 @@
         rating: selectedRating,
         content: content
       };
-      const res = await BODI_API.submitReview(payload);
+      // Defensive review submission (BODI_API facade or direct REST fallback)
+      let res;
+      const submitFn = window.BODI_API && (window.BODI_API.submitReview || (window.BODI_API.reviews && window.BODI_API.reviews.submit));
+      if (typeof submitFn === "function") {
+        res = await submitFn(payload);
+      } else {
+        const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+        const apiBase = (window.BODI_API && window.BODI_API.API_BASE) || (isLocal ? 'http://localhost:8085' : 'https://api.bodi.az');
+        const r = await fetch(`${apiBase}/wp-json/bodi/v1/reviews`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        res = await r.json();
+        if (!r.ok || res.code) {
+          throw new Error(res.message || "Rəy göndərilə bilmədi.");
+        }
+      }
+
       STORE.toast(res.message || "Rəyiniz uğurla qeydə alındı!", "check_circle");
       modal.classList.add("hidden");
       document.getElementById("prod-review-form").reset();
@@ -434,7 +452,9 @@
         quote: content,
         date: "İndi"
       };
-      BODI.REVIEWS.unshift(newRev);
+      if (!BODI.REVIEWS.some(r => r.id === newRev.id)) {
+        BODI.REVIEWS.unshift(newRev);
+      }
       renderProductReviews();
       if (window.BODI_SEO) BODI_SEO.applyProductSEO(p, BODI.REVIEWS);
     } catch (err) {
