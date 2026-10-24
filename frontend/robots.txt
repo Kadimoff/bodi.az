@@ -9,6 +9,8 @@ Disallow: /checkout.html
 Disallow: /account.html
 Disallow: /track-order.html
 Disallow: /404.html
+Disallow: /admin
+Disallow: /api/
 
 # AI Search & LLM Crawlers (Generative Engine Optimization)
 User-agent: GPTBot

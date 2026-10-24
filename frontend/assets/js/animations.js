@@ -42,7 +42,6 @@
       lastX = e.pageX;
       lastTime = performance.now();
       velocity = 0;
-      track.classList.add("is-dragging");
     });
 
     window.addEventListener("mousemove", function (e) {
@@ -50,8 +49,12 @@
       const x = e.pageX - track.offsetLeft;
       const walk = x - startX;
 
-      if (Math.abs(walk) > 6) {
+      // Only enter drag mode after real movement: "is-dragging" disables pointer
+      // events on the cards, and setting it on mousedown made plain clicks miss
+      // their links (mouseup landed on the track instead of the card).
+      if (Math.abs(walk) > 6 && !hasDragged) {
         hasDragged = true;
+        track.classList.add("is-dragging");
       }
 
       if (hasDragged) {

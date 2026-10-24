@@ -92,9 +92,9 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=2.1.0"></script>
-<script src="assets/js/api.js?v=2.1.0"></script>
-<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/api.js?v=3.0.0"></script>
+<script src="assets/js/store.js?v=3.0.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
 (function () {
@@ -149,11 +149,10 @@
     document.querySelectorAll("[data-plus]").forEach(b => b.addEventListener("click", () => { const i = Number(b.getAttribute("data-plus")); const c = STORE.getCart()[i]; STORE.updateQty(i, c.qty + 1); render(); }));
 
     const t = STORE.cartTotals();
+    // Percent coupons scale with the cart; fixed ones are capped by it.
     let discount = 0;
-    if (appliedCoupon === "BODI10") {
-      discount = t.subtotal * 0.10;
-    } else if (appliedCoupon === "BODI5") {
-      discount = Math.min(5, t.subtotal);
+    if (couponInfo && couponInfo.valid) {
+      discount = couponInfo.type === "percent" ? Math.round(t.subtotal * couponInfo.amount) / 100 : Math.min(Number(couponInfo.amount), t.subtotal);
     }
     const finalTotal = Math.max(0, t.subtotal - discount + t.shipping);
     document.getElementById("sum-subtotal").textContent = BODI.money(t.subtotal);
@@ -163,28 +162,39 @@
     if (t.freeShipRemaining > 0) document.getElementById("free-ship-note").textContent = `Pulsuz çatdırılma üçün ${BODI.money(t.freeShipRemaining)} daha əlavə edin.`;
   }
 
-  let appliedCoupon = localStorage.getItem("bodi_coupon") || "";
-  if (appliedCoupon) {
-    const input = document.getElementById("promo");
-    if (input) input.value = appliedCoupon;
+  // Promo codes are validated by the backend (managed in admin → Promokodlar).
+  let couponInfo = null;
+  async function applyCoupon(code, silent) {
+    const v = (code || "").trim().toUpperCase();
+    if (!v) {
+      couponInfo = null;
+      localStorage.removeItem("bodi_coupon");
+      if (!silent) STORE.toast("Promokod silindi", "info");
+      render();
+      return;
+    }
+    try {
+      const r = await BODI_API.validateCoupon(v, STORE.cartTotals().subtotal);
+      if (r.valid) {
+        couponInfo = r;
+        localStorage.setItem("bodi_coupon", r.code);
+        if (!silent) STORE.toast(r.message, "local_activity");
+      } else {
+        couponInfo = null;
+        localStorage.removeItem("bodi_coupon");
+        STORE.toast(r.message || "Yanlış və ya bitmiş promokod", "error");
+      }
+    } catch (e) {
+      if (!silent) STORE.toast(e.message || "Promokod yoxlanıla bilmədi", "error");
+    }
+    render();
   }
 
-  document.getElementById("promo-btn").addEventListener("click", () => {
-    const v = document.getElementById("promo").value.trim().toUpperCase();
-    if (v === "BODI10" || v === "BODI5") {
-      appliedCoupon = v;
-      localStorage.setItem("bodi_coupon", v);
-      STORE.toast("Promokod tətbiq edildi: " + v, "local_activity");
-      render();
-    } else if (!v) {
-      appliedCoupon = "";
-      localStorage.removeItem("bodi_coupon");
-      STORE.toast("Promokod silindi", "info");
-      render();
-    } else {
-      STORE.toast("Yanlış və ya bitmiş promokod", "error");
-    }
-  });
+  const promoInput = document.getElementById("promo");
+  if (promoInput) promoInput.value = localStorage.getItem("bodi_coupon") || "";
+  document.getElementById("promo-btn").addEventListener("click", () => applyCoupon(promoInput.value));
+  window.addEventListener("bodi:products-updated", render);
+  window.addEventListener("bodi:settings-loaded", render);
 
   const waCartBtn = document.getElementById("cart-whatsapp");
   if (waCartBtn && window.BODI_API) {
@@ -201,6 +211,7 @@
   }
 
   render();
+  if (promoInput && promoInput.value) applyCoupon(promoInput.value, true);
 })();
 </script>
 </body>

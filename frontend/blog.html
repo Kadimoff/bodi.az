@@ -50,9 +50,9 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=2.1.0"></script>
-<script src="assets/js/api.js?v=2.1.0"></script>
-<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/api.js?v=3.0.0"></script>
+<script src="assets/js/store.js?v=3.0.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
 (function () {
@@ -76,7 +76,7 @@
     document.getElementById("blog-grid").innerHTML = list.map(p => `
       <article class="bg-surface-container-lowest rounded-2xl overflow-hidden card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal">
         <a href="blog-post.html?b=${p.slug}" class="relative aspect-[16/10] overflow-hidden block">
-          <img src="${BODI.ph(p.color, p.cat)}" class="w-full h-full object-cover" alt="${p.title}">
+          <img src="${p.image || BODI.ph(p.color || "cream", p.cat)}" class="w-full h-full object-cover" alt="${p.imageAlt || p.title}" loading="lazy">
           <span class="absolute top-3 left-3 bg-surface/90 backdrop-blur-sm text-primary font-label-sm text-label-sm px-3 py-1 rounded-full">${p.cat}</span>
         </a>
         <div class="p-md flex-grow flex flex-col">
@@ -105,7 +105,7 @@
   if (window.BODI_API) {
     BODI_API.fetchPosts().then(wpPosts => {
       if (wpPosts && wpPosts.length > 0) {
-        // Merge or replace with live WordPress posts
+        // Replace the static list with posts from the admin panel
         POSTS.length = 0;
         wpPosts.forEach(p => POSTS.push(p));
         render();

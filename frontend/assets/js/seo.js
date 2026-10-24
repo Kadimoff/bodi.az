@@ -1,12 +1,18 @@
 /* ==============================================================================
    Bodi.az — 100% Score Frontend SEO & Schema.org JSON-LD Engine
    Synchronizes Meta Tags, OpenGraph, Twitter Cards, and Rich Snippet Schema Graphs
-   directly from WooCommerce Backend & Client Models.
+   from the Bodi backend (server-rendered <head>) & client models.
    ============================================================================== */
 (function (global) {
   "use strict";
 
   const BASE_URL = "https://bodi.az";
+
+  // Pages proxied through the backend already carry the final <head> (titles and
+  // descriptions edited in the admin). Client-side SEO must not overwrite it.
+  function serverRendered() {
+    return !!document.querySelector('meta[name="bodi-ssr"]');
+  }
 
   function setTag(selector, attr, val) {
     let el = document.querySelector(selector);
@@ -59,7 +65,7 @@
   const BODI_SEO = {
     // 1. Product Detail Page SEO & 100% Rich Results Schema
     applyProductSEO(p, reviewsList) {
-      if (!p) return;
+      if (!p || serverRendered()) return;
 
       const title = `${p.name} — 100% Orqanik Pambıq | Bodi.az`;
       const desc = `${p.name} — ${p.material || '100% Orqanik Pambıq'}. ${p.desc || ''} Qiymət: ${p.price} ₼. Bakı daxili 24 saat çatdırılma və 14 gün qaytarma zəmanəti.`;
@@ -89,8 +95,8 @@
 
       // Calculate real review stats
       const revs = Array.isArray(reviewsList) && reviewsList.length > 0 ? reviewsList : (global.BODI ? (global.BODI.REVIEWS || []).filter(r => r.productId === p.id || r.productSlug === p.slug) : []);
-      const count = revs.length > 0 ? revs.length : (p.reviews || 24);
-      const avg = revs.length > 0 ? (revs.reduce((s, r) => s + (Number(r.rating) || 5), 0) / revs.length).toFixed(1) : (p.rating || 5.0);
+      const count = revs.length > 0 ? revs.length : (p.reviews || 0);
+      const avg = revs.length > 0 ? (revs.reduce((s, r) => s + (Number(r.rating) || 5), 0) / revs.length).toFixed(1) : (p.ratingAvg || p.rating || 5.0);
 
       const imagesArray = Array.isArray(p.images) && p.images.length > 0
         ? p.images.map(fullImgUrl)
@@ -165,13 +171,13 @@
                 }
               }
             },
-            "aggregateRating": {
+            "aggregateRating": count > 0 ? {
               "@type": "AggregateRating",
               "ratingValue": Number(avg),
               "reviewCount": Number(count),
               "bestRating": 5,
               "worstRating": 1
-            },
+            } : undefined,
             "review": revs.slice(0, 5).map(r => ({
               "@type": "Review",
               "author": {
@@ -185,7 +191,7 @@
                 "worstRating": 1
               },
               "reviewBody": r.quote || "Əla məhsul",
-              "datePublished": r.date || "2026-09-20"
+              "datePublished": r.datePublished || undefined
             }))
           },
           {
@@ -220,6 +226,7 @@
 
     // 2. Category Page SEO
     applyCategorySEO(catSlug, catName) {
+      if (serverRendered()) return;
       const canonical = `${BASE_URL}/category.html${catSlug ? '?cat=' + catSlug : ''}`;
       const title = `${catName || 'Körpə Geyimləri'} — 100% Orqanik Pambıq | Bodi.az`;
       const desc = `${catName || 'Körpə geyimləri'} kolleksiyası — Bodi.az-da 100% orqanik pambıqdan hazırlanmış körpə bodiləri, tulumları və dəstləri. Bakı daxili 24 saat çatdırılma.`;
@@ -276,7 +283,7 @@
 
     // 4. Homepage Dynamic SEO & Schema.org JSON-LD Graph
     applyHomepageSEO(seo) {
-      if (!seo) return;
+      if (!seo || serverRendered()) return;
 
       const title = seo.title || document.title;
       const desc = seo.description || "";
@@ -317,7 +324,8 @@
     async syncFromBackend(type, slug) {
       if (!window.BODI_API || !window.BODI_API.API_BASE) return;
       try {
-        const res = await fetch(`${window.BODI_API.API_BASE}/wp-json/bodi/v1/seo?type=${encodeURIComponent(type)}&slug=${encodeURIComponent(slug || '')}`);
+        if (serverRendered()) return;
+        const res = await fetch(`${window.BODI_API.API_BASE}/api/v1/seo?type=${encodeURIComponent(type)}&slug=${encodeURIComponent(slug || '')}`);
         if (!res.ok) return;
         const data = await res.json();
         if (data && data.title) {

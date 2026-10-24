@@ -115,9 +115,9 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=2.1.0"></script>
-<script src="assets/js/api.js?v=2.1.0"></script>
-<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/api.js?v=3.0.0"></script>
+<script src="assets/js/store.js?v=3.0.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
   const s1 = document.querySelector("[data-store='1']");
@@ -145,15 +145,13 @@
       if (typeof contactFn === "function") {
         await contactFn(payload);
       } else {
-        const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-        const apiBase = (window.BODI_API && window.BODI_API.API_BASE) || (isLocal ? 'http://localhost:8085' : 'https://api.bodi.az');
-        const res = await fetch(`${apiBase}/wp-json/bodi/v1/contact`, {
+        const res = await fetch(`/api/v1/contact`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify(payload)
         });
         const data = await res.json();
-        if (!res.ok || data.code) {
+        if (!res.ok || data.error) {
           throw new Error(data.message || "Mesaj göndərilə bilmədi.");
         }
       }

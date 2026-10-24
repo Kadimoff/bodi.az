@@ -29,9 +29,9 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=2.1.0"></script>
-<script src="assets/js/api.js?v=2.1.0"></script>
-<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/api.js?v=3.0.0"></script>
+<script src="assets/js/store.js?v=3.0.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
 (function () {
@@ -47,8 +47,7 @@
     "dovshe-qudasinda-dikkat": { cat: "Qidalanma", title: "Əlavə qidalara keçiddə diqqət edilməli olanlar", read: 7, date: "15 Avqust 2024", color: "terracotta" }
   };
   const slug = new URLSearchParams(location.search).get("b");
-  const p = POSTS[slug] || POSTS["niye-org-pambiq"];
-  document.title = p.title + " - Bodi.az";
+  const p = POSTS[slug] || { cat: "Bloq", title: "", read: 3, date: "", color: "cream" };
 
   document.getElementById("crumbs").innerHTML = `
     <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
@@ -93,7 +92,6 @@
     BODI_API.fetchPosts().then(posts => {
       const match = posts.find(x => x.slug === slug);
       if (match) {
-        document.title = match.title + " - Bodi.az";
         const root = document.getElementById("post-root");
         if (root) {
           const prose = root.querySelector(".prose");
@@ -102,6 +100,14 @@
           }
           const h1 = root.querySelector("h1");
           if (h1) h1.textContent = match.title;
+          const chip = root.querySelector("span.inline-block");
+          if (chip) chip.textContent = match.cat;
+          const cover = root.querySelector("img");
+          if (cover && match.imageLarge) { cover.src = match.imageLarge; cover.alt = match.imageAlt || match.title; }
+          const meta = root.querySelector(".mb-lg");
+          if (meta) meta.lastElementChild.textContent = match.date;
+          const crumb = document.querySelector('#crumbs [aria-current="page"]');
+          if (crumb) crumb.textContent = match.title;
         }
       }
     });

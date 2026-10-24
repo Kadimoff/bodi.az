@@ -1,0 +1,2361 @@
+{
+  "format": "bodi-snapshot",
+  "version": 1,
+  "exported_at": "2026-10-24T23:10:10.934Z",
+  "settings": {
+    "homepage": {
+      "hero": {
+        "badge": "Yeni Kolleksiya",
+        "bg_color": "#c0dce7",
+        "bg_image": "assets/images/hero-bg.jpg",
+        "bg_video": "assets/videos/hero-baby.mp4",
+        "description": "Körpənizin həssas dərisinə uyğun, rahat və gündəlik istifadə üçün seçilmiş geyimlər. Hər toxunuşda sevgi.",
+        "title_line1": "Balacalar üçün",
+        "title_line2": "yeni kolleksiya",
+        "btn_primary_url": "category.html?filter=new",
+        "title_highlight": "yumşaq və rahat",
+        "btn_primary_text": "Kolleksiyaya bax",
+        "btn_secondary_url": "category.html?cat=bodi",
+        "btn_secondary_text": "Bütün məhsullar"
+      },
+      "promo": {
+        "badge": "Endirim Kampaniyası",
+        "image": "assets/images/products/bej-uzunqol-bodi.jpg",
+        "title": "Yeni kolleksiyada 20%-ə qədər",
+        "btn_url": "category.html?filter=sale",
+        "btn_text": "Endirimdə bax",
+        "description": "Payız üçün yumşaq orqanik pambıq bodilər və tulumlar. Məhdud müddətə xüsusi qiymətlərlə."
+      },
+      "values": {
+        "items": [
+          {
+            "icon": "spa",
+            "title": "100% Üzvi Pambıq",
+            "description": "Hipoallergen, sertifikatlaşdırılmış orqanik materiallar. Körpənizin dərisi üçün ən təhlükəsiz seçim."
+          },
+          {
+            "icon": "volunteer_activism",
+            "title": "Yumşaq Toxunuş",
+            "description": "Hər məhsul ən incə toxunuş üçün xüsusi olaraq seçilir. Rahatlıq hər toxumada."
+          },
+          {
+            "icon": "eco",
+            "title": "Davamlı İstehsal",
+            "description": "Təbiətlə harmoniyada, təkrar emal oluna bilən qablaşdırma və etik istehsal."
+          }
+        ],
+        "title": "Hər toxunuşda sevgi",
+        "eyebrow": "Niyə Bodi.az?",
+        "description": "Biz inanırıq ki, hər bir körpə ən yumşaq qucaqlara layiqdir."
+      },
+      "gallery": {
+        "items": [
+          {
+            "tag": "0-3 ay",
+            "link": "https://instagram.com/bodi.az",
+            "image": "assets/images/products/ag-pambiq-bodi.jpg",
+            "title": "Ağ Pambıq Rahatlığı",
+            "animation": "fade-up"
+          },
+          {
+            "tag": "3-6 ay",
+            "link": "https://instagram.com/bodi.az",
+            "image": "assets/images/products/yumshaq-yeni-dogan-tulumu.jpg",
+            "title": "Şirin Yuxu Tulumu",
+            "animation": "fade-up"
+          },
+          {
+            "tag": "Hədiyyəlik",
+            "link": "https://instagram.com/bodi.az",
+            "image": "assets/images/products/dest-sehrli-mevsumler.jpg",
+            "title": "Sehrli Mövsümlər Dəsti",
+            "animation": "slide-up"
+          },
+          {
+            "tag": "Payız Kolleksiyası",
+            "link": "https://instagram.com/bodi.az",
+            "image": "assets/images/products/bej-uzunqol-bodi.jpg",
+            "title": "Təbii Bej Stil",
+            "animation": "zoom-in"
+          }
+        ],
+        "title": "Balacaların sevimli anları",
+        "eyebrow": "İnstagram & Lookbook",
+        "description": "Valideynlərin bizim məhsullarla çəkdiyi ən gözəl xatirələr. Bizi @bodi.az tag edin!"
+      },
+      "trust_bar": [
+        {
+          "icon": "local_shipping",
+          "title": "Bakı üzrə sürətli çatdırılma",
+          "subtitle": "Sifarişiniz gün ərzində qapınızda."
+        },
+        {
+          "icon": "verified_user",
+          "title": "Təhlükəsiz ödəniş",
+          "subtitle": "100% təhlükəsiz və qorunan sistem."
+        },
+        {
+          "icon": "change_circle",
+          "title": "Rahat dəyişdirmə və qaytarma",
+          "subtitle": "14 gün ərzində problemsiz iadə."
+        },
+        {
+          "icon": "spa",
+          "title": "Seçilmiş materiallar",
+          "subtitle": "100% orqanik pambıq və hipoallergen."
+        }
+      ],
+      "animations": {
+        "hero_style": "fade-up",
+        "lumen_speed": "normal",
+        "spark_glint": true,
+        "lumen_shimmer": true,
+        "sections_style": "stagger-up"
+      },
+      "categories": {
+        "items": [
+          {
+            "url": "category.html?cat=bodi",
+            "name": "Bodilər",
+            "slug": "bodi",
+            "badge": "100% Pambıq",
+            "image": "assets/images/products/ag-pambiq-bodi.jpg",
+            "subtitle": "Gündəlik rahatlıq və zəriflik"
+          },
+          {
+            "url": "category.html?cat=tulum",
+            "name": "Tulumlar",
+            "slug": "tulum",
+            "badge": "Yumşaq Qoruma",
+            "image": "assets/images/products/yumshaq-yeni-dogan-tulumu.jpg",
+            "subtitle": "Bütün bədən qorunması və isti yuxu"
+          },
+          {
+            "url": "category.html?cat=dest",
+            "name": "Dəstlər",
+            "slug": "dest",
+            "badge": "Hədiyyəlik",
+            "image": "assets/images/products/dest-sehrli-mevsumler.jpg",
+            "subtitle": "Hədiyyəlik zərif kolleksiyalar"
+          }
+        ],
+        "title": "Övladınız üçün",
+        "eyebrow": "Kateqoriyalar"
+      },
+      "new_header": {
+        "title": "Yeni gələnlər",
+        "eyebrow": "Cəmi bizdə"
+      },
+      "reviews_header": {
+        "title": "Valideynlər nə deyir",
+        "eyebrow": "Rəylər",
+        "link_url": "reviews.html",
+        "link_text": "Bütün rəylərə bax →",
+        "description": "Real valideynlərin real təcrübələri — yumşaq toxunuş və sevgi dolu məhsullarımız haqqında."
+      },
+      "featured_header": {
+        "title": "Populyar məhsullar",
+        "eyebrow": "Seçilmiş"
+      }
+    },
+    "seo": {
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "og_type": "website",
+      "keywords": "körpə geyimləri, orqanik pambıq, bodi, tulum, bakı, bodi.az, uşaq paltarları",
+      "og_image": "https://bodi.az/assets/images/products/ag-pambiq-bodi.jpg",
+      "og_title": "Bodi.az — Körpələr üçün 100% Orqanik Pambıq Geyimlər",
+      "meta_title": "Bodi.az — Körpələr üçün 100% Orqanik Pambıq Geyimlər",
+      "schema_city": "Bakı",
+      "schema_logo": "",
+      "og_site_name": "Bodi.az",
+      "schema_phone": "+994-50-123-45-67",
+      "twitter_card": "summary_large_image",
+      "canonical_url": "https://bodi.az/",
+      "twitter_image": "",
+      "twitter_title": "",
+      "og_description": "Balacalarınız üçün ən yumşaq və zərif bodilər, tulumlar və hədiyyəlik dəstlər. Bakı daxili 24 saat çatdırılma.",
+      "schema_country": "AZ",
+      "title_template": "%s | Bodi.az",
+      "schema_whatsapp": "994501234567",
+      "meta_description": "Körpələriniz üçün 100% orqanik pambıqdan hazırlanmış yumşaq və rahat geyimlər. Bodilər, tulumlar və dəstlər. Nurtured Comfort.",
+      "bing_verification": "",
+      "schema_store_name": "Bodi.az",
+      "schema_store_type": "clothingstore",
+      "schema_price_range": "₼₼",
+      "twitter_description": "",
+      "yandex_verification": "",
+      "schema_opening_hours": "Mo-Su 09:00-21:00",
+      "product_title_template": "%s — 100% Orqanik Pambıq | Bodi.az",
+      "schema_social_facebook": "https://facebook.com/bodi.az",
+      "category_title_template": "%s — Körpə Geyimləri | Bodi.az",
+      "schema_social_instagram": "https://instagram.com/bodi.az",
+      "google_site_verification": ""
+    }
+  },
+  "colors": [
+    {
+      "slug": "cream",
+      "name": "Krem",
+      "hex": "#fdf9f3",
+      "hex_dark": "#f1ede7",
+      "label_color": "#8a8478",
+      "aliases": [
+        "krem"
+      ],
+      "sort_order": 0
+    },
+    {
+      "slug": "beige",
+      "name": "Bej",
+      "hex": "#efe8da",
+      "hex_dark": "#ddd0ba",
+      "label_color": "#8a7a5c",
+      "aliases": [
+        "bej"
+      ],
+      "sort_order": 1
+    },
+    {
+      "slug": "sage",
+      "name": "Adaçayı",
+      "hex": "#d4e0cf",
+      "hex_dark": "#b8ccb5",
+      "label_color": "#5f705c",
+      "aliases": [
+        "adacayi",
+        "yasil",
+        "green"
+      ],
+      "sort_order": 2
+    },
+    {
+      "slug": "peach",
+      "name": "Şaftalı",
+      "hex": "#fbe3d6",
+      "hex_dark": "#f6c7b0",
+      "label_color": "#a76a52",
+      "aliases": [
+        "saftali",
+        "seftali"
+      ],
+      "sort_order": 3
+    },
+    {
+      "slug": "terracotta",
+      "name": "Terrakotta",
+      "hex": "#ecc6b3",
+      "hex_dark": "#d99e80",
+      "label_color": "#9a5238",
+      "aliases": [
+        "terrakotta"
+      ],
+      "sort_order": 4
+    },
+    {
+      "slug": "white",
+      "name": "Ağ",
+      "hex": "#ffffff",
+      "hex_dark": "#eeece6",
+      "label_color": "#9a988f",
+      "aliases": [
+        "ag",
+        "beyaz"
+      ],
+      "sort_order": 5
+    },
+    {
+      "slug": "sky",
+      "name": "Göy / Mavi",
+      "hex": "#d6e4ea",
+      "hex_dark": "#b6cbd6",
+      "label_color": "#54707e",
+      "aliases": [
+        "goy",
+        "mavi",
+        "blue",
+        "goymavi"
+      ],
+      "sort_order": 6
+    },
+    {
+      "slug": "lavender",
+      "name": "Lavanta",
+      "hex": "#e2dceb",
+      "hex_dark": "#c9bcdf",
+      "label_color": "#6e5e8c",
+      "aliases": [
+        "lavanta",
+        "benovseyi",
+        "purple"
+      ],
+      "sort_order": 7
+    },
+    {
+      "slug": "mustard",
+      "name": "Xardal",
+      "hex": "#efe2bd",
+      "hex_dark": "#dcc485",
+      "label_color": "#8a7334",
+      "aliases": [
+        "xardal",
+        "sari",
+        "yellow"
+      ],
+      "sort_order": 8
+    },
+    {
+      "slug": "rose",
+      "name": "Çəhrayı",
+      "hex": "#f4d9da",
+      "hex_dark": "#ebb4b7",
+      "label_color": "#a65a5e",
+      "aliases": [
+        "cehrayi",
+        "gul",
+        "pink"
+      ],
+      "sort_order": 9
+    },
+    {
+      "slug": "mint",
+      "name": "Nanə",
+      "hex": "#d7ece4",
+      "hex_dark": "#bce0d3",
+      "label_color": "#537869",
+      "aliases": [
+        "nane"
+      ],
+      "sort_order": 10
+    },
+    {
+      "slug": "olive",
+      "name": "Zeytun",
+      "hex": "#e2e6d5",
+      "hex_dark": "#c8d1b1",
+      "label_color": "#687350",
+      "aliases": [
+        "zeytun"
+      ],
+      "sort_order": 11
+    },
+    {
+      "slug": "grey",
+      "name": "Boz",
+      "hex": "#f0f0f0",
+      "hex_dark": "#dcdcdc",
+      "label_color": "#707070",
+      "aliases": [
+        "boz",
+        "gray",
+        "gri"
+      ],
+      "sort_order": 12
+    },
+    {
+      "slug": "black",
+      "name": "Qara",
+      "hex": "#555555",
+      "hex_dark": "#2b2b2b",
+      "label_color": "#ffffff",
+      "aliases": [
+        "qara",
+        "siyah"
+      ],
+      "sort_order": 13
+    },
+    {
+      "slug": "brown",
+      "name": "Qəhvəyi",
+      "hex": "#e3d2c5",
+      "hex_dark": "#c8b09f",
+      "label_color": "#6d4e3a",
+      "aliases": [
+        "qehveyi",
+        "kahverengi"
+      ],
+      "sort_order": 14
+    }
+  ],
+  "warehouses": [
+    {
+      "code": "ANB-01",
+      "name": "Əsas anbar",
+      "address": "Bakı",
+      "is_default": true,
+      "is_active": true
+    }
+  ],
+  "suppliers": [],
+  "categories": [
+    {
+      "id": 16,
+      "slug": "bodi",
+      "name": "Bodilər",
+      "description": "",
+      "parent_id": null,
+      "sort_order": 0,
+      "is_active": true,
+      "seo": {},
+      "image": null
+    },
+    {
+      "id": 17,
+      "slug": "tulum",
+      "name": "Tulumlar",
+      "description": "",
+      "parent_id": null,
+      "sort_order": 0,
+      "is_active": true,
+      "seo": {},
+      "image": null
+    },
+    {
+      "id": 18,
+      "slug": "dest",
+      "name": "Dəstlər",
+      "description": "",
+      "parent_id": null,
+      "sort_order": 0,
+      "is_active": true,
+      "seo": {},
+      "image": null
+    }
+  ],
+  "products": [
+    {
+      "id": 10,
+      "slug": "ag-pambiq-bodi",
+      "name": "Ağ Pambıq Bodi",
+      "sku": "AG-PAMBIQ-BODI",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Körpənizin həssas dərisi üçün xüsusi olaraq toxunmuş, nəfəs alan və yumşaq orqanik pambıqdan hazırlanmış bodi. Gündəlik istifadə üçün mükəmməl rahatlıq.",
+      "description": "Körpənizin həssas dərisi üçün xüsusi olaraq toxunmuş, nəfəs alan və yumşaq orqanik pambıqdan hazırlanmış bodi. Gündəlik istifadə üçün mükəmməl rahatlıq.",
+      "material": "100% Orqanik Pambıq",
+      "price": 24.9,
+      "compare_at_price": 35,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "white"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 6,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:03.000Z",
+      "created_at": "2026-09-19T13:41:03.000Z",
+      "updated_at": "2026-09-20T07:26:50.000Z",
+      "images": [
+        {
+          "file": "ag-pambiq-bodi-53796c.jpg",
+          "alt": "Ağ Pambıq Bodi",
+          "title": "Ağ Pambıq Bodi",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "AG-PAMBIQ-BODI-WHITE-0-3AY",
+          "color": "white",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "AG-PAMBIQ-BODI-WHITE-3-6AY",
+          "color": "white",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "AG-PAMBIQ-BODI-WHITE-6-9AY",
+          "color": "white",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "AG-PAMBIQ-BODI-WHITE-9-12AY",
+          "color": "white",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "AG-PAMBIQ-BODI-WHITE-12-18AY",
+          "color": "white",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "slug": "bej-uzunqol-bodi",
+      "name": "Bej Rəngli Uzunqol Bodi",
+      "sku": "BEJ-UZUNQOL-BODI",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Yumşaq orqanik pambıqdan uzunqol bodi. Soyuq günlərdə rahat və isti saxlayır.",
+      "description": "Yumşaq orqanik pambıqdan uzunqol bodi. Soyuq günlərdə rahat və isti saxlayır.",
+      "material": "Orqanik Pambıq",
+      "price": 24.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": true,
+      "is_featured": false,
+      "colors": [
+        "beige"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:03.000Z",
+      "created_at": "2026-09-19T13:41:03.000Z",
+      "updated_at": "2026-09-20T07:21:48.000Z",
+      "images": [
+        {
+          "file": "bej-uzunqol-bodi-7ae8b7.jpg",
+          "alt": "Bej Rəngli Uzunqol Bodi",
+          "title": "Bej Rəngli Uzunqol Bodi",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "BEJ-UZUNQOL-BODI-BEIGE-0-3AY",
+          "color": "beige",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "BEJ-UZUNQOL-BODI-BEIGE-3-6AY",
+          "color": "beige",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "BEJ-UZUNQOL-BODI-BEIGE-6-9AY",
+          "color": "beige",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "BEJ-UZUNQOL-BODI-BEIGE-9-12AY",
+          "color": "beige",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "BEJ-UZUNQOL-BODI-BEIGE-12-18AY",
+          "color": "beige",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "slug": "adacayi-qisaqol-bodi",
+      "name": "Adaçayı Rəngli Qısaqol Bodi",
+      "sku": "ADACAYI-QISAQOL-BODI",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Sakit adaçayı yaşıılında, incə naxışlı qısaqol bodi. Yay ayları üçün idealdır.",
+      "description": "Sakit adaçayı yaşıılında, incə naxışlı qısaqol bodi. Yay ayları üçün idealdır.",
+      "material": "100% Pambıq",
+      "price": 19.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "sage"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:03.000Z",
+      "created_at": "2026-09-19T13:41:03.000Z",
+      "updated_at": "2026-09-19T14:40:12.000Z",
+      "images": [
+        {
+          "file": "adacayi-qisaqol-bodi-913a10.jpg",
+          "alt": "Adaçayı Rəngli Qısaqol Bodi",
+          "title": "Adaçayı Rəngli Qısaqol Bodi",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "ADACAYI-QISAQOL-BODI-SAGE-0-3AY",
+          "color": "sage",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ADACAYI-QISAQOL-BODI-SAGE-3-6AY",
+          "color": "sage",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ADACAYI-QISAQOL-BODI-SAGE-6-9AY",
+          "color": "sage",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ADACAYI-QISAQOL-BODI-SAGE-9-12AY",
+          "color": "sage",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ADACAYI-QISAQOL-BODI-SAGE-12-18AY",
+          "color": "sage",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "slug": "saftali-yay-bodisi",
+      "name": "Şaftalı Rəngli Yay Bodisi",
+      "sku": "SAFTALI-YAY-BODISI",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Şaftalı tonlarında, yüngül və nəfəs alan yay bodisi.",
+      "description": "Şaftalı tonlarında, yüngül və nəfəs alan yay bodisi.",
+      "material": "Kətan Qarışığı",
+      "price": 22.9,
+      "compare_at_price": 28.9,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "peach"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:12.000Z",
+      "images": [
+        {
+          "file": "saftali-yay-bodisi-53b6be.jpg",
+          "alt": "Şaftalı Rəngli Yay Bodisi",
+          "title": "Şaftalı Rəngli Yay Bodisi",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "SAFTALI-YAY-BODISI-PEACH-0-3AY",
+          "color": "peach",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAFTALI-YAY-BODISI-PEACH-3-6AY",
+          "color": "peach",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAFTALI-YAY-BODISI-PEACH-6-9AY",
+          "color": "peach",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAFTALI-YAY-BODISI-PEACH-9-12AY",
+          "color": "peach",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAFTALI-YAY-BODISI-PEACH-12-18AY",
+          "color": "peach",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "slug": "naxisli-ag-bodi",
+      "name": "Naxışlı Ağ Bodi",
+      "sku": "NAXISLI-AG-BODI",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Zeytun budağı naxışlı, incə zərif ağ bodi. Xüsusi günlər üçün.",
+      "description": "Zeytun budağı naxışlı, incə zərif ağ bodi. Xüsusi günlər üçün.",
+      "material": "Orqanik Pambıq",
+      "price": 26.5,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "white"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:12.000Z",
+      "images": [
+        {
+          "file": "naxisli-ag-bodi-43c23d.jpg",
+          "alt": "Naxışlı Ağ Bodi",
+          "title": "Naxışlı Ağ Bodi",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "NAXISLI-AG-BODI-WHITE-0-3AY",
+          "color": "white",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "NAXISLI-AG-BODI-WHITE-3-6AY",
+          "color": "white",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "NAXISLI-AG-BODI-WHITE-6-9AY",
+          "color": "white",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "NAXISLI-AG-BODI-WHITE-9-12AY",
+          "color": "white",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "NAXISLI-AG-BODI-WHITE-12-18AY",
+          "color": "white",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "slug": "terracotta-uzunqol-bodi",
+      "name": "Terrakotta Uzunqol Bodi",
+      "sku": "TERRACOTTA-UZUNQOL-BODI",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Terrakotta rəngli, payız üçün isti uzunqol bodi.",
+      "description": "Terrakotta rəngli, payız üçün isti uzunqol bodi.",
+      "material": "100% Pambıq",
+      "price": 25.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": true,
+      "is_featured": false,
+      "colors": [
+        "terracotta"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:12.000Z",
+      "images": [
+        {
+          "file": "terracotta-uzunqol-bodi-a94d1f.jpg",
+          "alt": "Terrakotta Uzunqol Bodi",
+          "title": "Terrakotta Uzunqol Bodi",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "TERRACOTTA-UZUNQOL-BODI-TERRACOTTA-0-3AY",
+          "color": "terracotta",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "TERRACOTTA-UZUNQOL-BODI-TERRACOTTA-3-6AY",
+          "color": "terracotta",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "TERRACOTTA-UZUNQOL-BODI-TERRACOTTA-6-9AY",
+          "color": "terracotta",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "TERRACOTTA-UZUNQOL-BODI-TERRACOTTA-9-12AY",
+          "color": "terracotta",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "TERRACOTTA-UZUNQOL-BODI-TERRACOTTA-12-18AY",
+          "color": "terracotta",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "slug": "yumshaq-yeni-dogan-tulumu",
+      "name": "Yumşaq Yeni Doğulan Tulumu",
+      "sku": "YUMSHAQ-YENI-DOGAN-TULUMU",
+      "status": "published",
+      "category_id": 17,
+      "short_description": "Yeni doğulanlar üçün yumşaq, fermuarlı bütün bədən tulumu. Rahat geyinmə və soyunma.",
+      "description": "Yeni doğulanlar üçün yumşaq, fermuarlı bütün bədən tulumu. Rahat geyinmə və soyunma.",
+      "material": "Orqanik Pambıq",
+      "price": 34.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": true,
+      "is_featured": false,
+      "colors": [
+        "cream"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:12.000Z",
+      "images": [
+        {
+          "file": "yumshaq-yeni-dogan-tulumu-13ed4b.jpg",
+          "alt": "Yumşaq Yeni Doğulan Tulumu",
+          "title": "Yumşaq Yeni Doğulan Tulumu",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "YUMSHAQ-YENI-DOGAN-TULUMU-CREAM-0-3AY",
+          "color": "cream",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUMSHAQ-YENI-DOGAN-TULUMU-CREAM-3-6AY",
+          "color": "cream",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUMSHAQ-YENI-DOGAN-TULUMU-CREAM-6-9AY",
+          "color": "cream",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUMSHAQ-YENI-DOGAN-TULUMU-CREAM-9-12AY",
+          "color": "cream",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUMSHAQ-YENI-DOGAN-TULUMU-CREAM-12-18AY",
+          "color": "cream",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "slug": "lavanta-yuxu-tulumu",
+      "name": "Lavanta Yuxu Tulumu",
+      "sku": "LAVANTA-YUXU-TULUMU",
+      "status": "published",
+      "category_id": 17,
+      "short_description": "Sakitləşdirici lavanta rəngində yuxu tulumu. Rahat bir gecə yuxusu üçün.",
+      "description": "Sakitləşdirici lavanta rəngində yuxu tulumu. Rahat bir gecə yuxusu üçün.",
+      "material": "100% Pambıq",
+      "price": 29.9,
+      "compare_at_price": 38,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "lavender"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-10-24T23:04:25.627Z",
+      "images": [
+        {
+          "file": "lavanta-yuxu-tulumu-9ca24a.jpg",
+          "alt": "Lavanta Yuxu Tulumu",
+          "title": "Lavanta Yuxu Tulumu",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "LAVANTA-YUXU-TULUMU-LAVENDER-0-3AY",
+          "color": "lavender",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "LAVANTA-YUXU-TULUMU-LAVENDER-3-6AY",
+          "color": "lavender",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "LAVANTA-YUXU-TULUMU-LAVENDER-6-9AY",
+          "color": "lavender",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "LAVANTA-YUXU-TULUMU-LAVENDER-9-12AY",
+          "color": "lavender",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "LAVANTA-YUXU-TULUMU-LAVENDER-12-18AY",
+          "color": "lavender",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "slug": "sage-double-tulum",
+      "name": "Adaçayı İki Parçalı Tulum",
+      "sku": "SAGE-DOUBLE-TULUM",
+      "status": "published",
+      "category_id": 17,
+      "short_description": "İki parçalı, praktik və isti. Alt dəyişdirmə üçün asanlıq.",
+      "description": "İki parçalı, praktik və isti. Alt dəyişdirmə üçün asanlıq.",
+      "material": "Orqanik Pambıq",
+      "price": 39.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "sage"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:13.000Z",
+      "images": [
+        {
+          "file": "sage-double-tulum-07d96a.jpg",
+          "alt": "Adaçayı İki Parçalı Tulum",
+          "title": "Adaçayı İki Parçalı Tulum",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "SAGE-DOUBLE-TULUM-SAGE-0-3AY",
+          "color": "sage",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAGE-DOUBLE-TULUM-SAGE-3-6AY",
+          "color": "sage",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAGE-DOUBLE-TULUM-SAGE-6-9AY",
+          "color": "sage",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAGE-DOUBLE-TULUM-SAGE-9-12AY",
+          "color": "sage",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SAGE-DOUBLE-TULUM-SAGE-12-18AY",
+          "color": "sage",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "slug": "seftali-fermuar-tulum",
+      "name": "Şaftalı Fermuarlı Tulum",
+      "sku": "SEFTALI-FERMUAR-TULUM",
+      "status": "published",
+      "category_id": 17,
+      "short_description": "Tam fermuarlı, yumşaq toxunuşlu gündəlik tulum.",
+      "description": "Tam fermuarlı, yumşaq toxunuşlu gündəlik tulum.",
+      "material": "Kətan Qarışığı",
+      "price": 32.5,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "peach"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T13:41:04.000Z",
+      "images": [
+        {
+          "file": "seftali-fermuar-tulum-0f2d0f.jpg",
+          "alt": "Şaftalı Fermuarlı Tulum",
+          "title": "Şaftalı Fermuarlı Tulum",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "SEFTALI-FERMUAR-TULUM-PEACH-0-3AY",
+          "color": "peach",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SEFTALI-FERMUAR-TULUM-PEACH-3-6AY",
+          "color": "peach",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SEFTALI-FERMUAR-TULUM-PEACH-6-9AY",
+          "color": "peach",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SEFTALI-FERMUAR-TULUM-PEACH-9-12AY",
+          "color": "peach",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "SEFTALI-FERMUAR-TULUM-PEACH-12-18AY",
+          "color": "peach",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "slug": "ilkin-des-goyler",
+      "name": "İlkin Dəst — Göylər",
+      "sku": "ILKIN-DES-GOYLER",
+      "status": "published",
+      "category_id": 18,
+      "short_description": "3 ədəd bodi + 1 tulumdan ibarət hədiyyəlik dəst. Yeni doğulanlar üçün ideal.",
+      "description": "3 ədəd bodi + 1 tulumdan ibarət hədiyyəlik dəst. Yeni doğulanlar üçün ideal.",
+      "material": "100% Pambıq",
+      "price": 54.9,
+      "compare_at_price": 69,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "sky"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:13.000Z",
+      "images": [
+        {
+          "file": "ilkin-des-goyler-1d5f29.jpg",
+          "alt": "İlkin Dəst — Göylər",
+          "title": "İlkin Dəst — Göylər",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "ILKIN-DES-GOYLER-SKY-0-3AY",
+          "color": "sky",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ILKIN-DES-GOYLER-SKY-3-6AY",
+          "color": "sky",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ILKIN-DES-GOYLER-SKY-6-9AY",
+          "color": "sky",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ILKIN-DES-GOYLER-SKY-9-12AY",
+          "color": "sky",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ILKIN-DES-GOYLER-SKY-12-18AY",
+          "color": "sky",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "slug": "dest-sehrli-mevsumler",
+      "name": "Dəst — Sehrli Mövsümlər",
+      "sku": "DEST-SEHRLI-MEVSUMLER",
+      "status": "published",
+      "category_id": 18,
+      "short_description": "Hər fəsil üçün uyğun, 4 parçalı uniseks dəst.",
+      "description": "Hər fəsil üçün uyğun, 4 parçalı uniseks dəst.",
+      "material": "Orqanik Pambıq",
+      "price": 59.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": true,
+      "is_featured": false,
+      "colors": [
+        "mustard"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:13.000Z",
+      "images": [
+        {
+          "file": "dest-sehrli-mevsumler-c93906.jpg",
+          "alt": "Dəst — Sehrli Mövsümlər",
+          "title": "Dəst — Sehrli Mövsümlər",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEST-SEHRLI-MEVSUMLER-MUSTARD-0-3AY",
+          "color": "mustard",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-SEHRLI-MEVSUMLER-MUSTARD-3-6AY",
+          "color": "mustard",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-SEHRLI-MEVSUMLER-MUSTARD-6-9AY",
+          "color": "mustard",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-SEHRLI-MEVSUMLER-MUSTARD-9-12AY",
+          "color": "mustard",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-SEHRLI-MEVSUMLER-MUSTARD-12-18AY",
+          "color": "mustard",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "slug": "dest-tebrik-nvazis",
+      "name": "Dəst — Təbrik & Nəvaziş",
+      "sku": "DEST-TEBRIK-NVAZIŞ",
+      "status": "published",
+      "category_id": 18,
+      "short_description": "Zərif çəhrayı tonlarda, xüsusi günlər üçün 3 parçalı dəst.",
+      "description": "Zərif çəhrayı tonlarda, xüsusi günlər üçün 3 parçalı dəst.",
+      "material": "Orqanik Pambıq",
+      "price": 49.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "rose"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T13:41:04.000Z",
+      "images": [
+        {
+          "file": "dest-tebrik-nvazis-154e55.jpg",
+          "alt": "Dəst — Təbrik & Nəvaziş",
+          "title": "Dəst — Təbrik & Nəvaziş",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEST-TEBRIK-NVAZI-ROSE-0-3AY",
+          "color": "rose",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-TEBRIK-NVAZI-ROSE-3-6AY",
+          "color": "rose",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-TEBRIK-NVAZI-ROSE-6-9AY",
+          "color": "rose",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-TEBRIK-NVAZI-ROSE-9-12AY",
+          "color": "rose",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "DEST-TEBRIK-NVAZI-ROSE-12-18AY",
+          "color": "rose",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "slug": "org-pambiq-sapqa",
+      "name": "Orqanik Pambıq Şapqa",
+      "sku": "ORG-PAMBIQ-SAPQA",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Yumşaq, qulaqları qoruyan nəfəs alan şapqa.",
+      "description": "Yumşaq, qulaqları qoruyan nəfəs alan şapqa.",
+      "material": "100% Orqanik Pambıq",
+      "price": 12.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "cream"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T14:40:13.000Z",
+      "images": [
+        {
+          "file": "org-pambiq-sapqa-ebe1bf.jpg",
+          "alt": "Orqanik Pambıq Şapqa",
+          "title": "Orqanik Pambıq Şapqa",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "ORG-PAMBIQ-SAPQA-CREAM-0-3AY",
+          "color": "cream",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ORG-PAMBIQ-SAPQA-CREAM-3-6AY",
+          "color": "cream",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ORG-PAMBIQ-SAPQA-CREAM-6-9AY",
+          "color": "cream",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ORG-PAMBIQ-SAPQA-CREAM-9-12AY",
+          "color": "cream",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "ORG-PAMBIQ-SAPQA-CREAM-12-18AY",
+          "color": "cream",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "slug": "yum-alt-paltar",
+      "name": "Yumşaq Alt Paltar",
+      "sku": "YUM-ALT-PALTAR",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Həssas dəri üçün yumşaq alt paltarı. Təmiz və təbii material.",
+      "description": "Həssas dəri üçün yumşaq alt paltarı. Təmiz və təbii material.",
+      "material": "100% Pambıq",
+      "price": 18.9,
+      "compare_at_price": 24,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "sage"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 0,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:04.000Z",
+      "created_at": "2026-09-19T13:41:04.000Z",
+      "updated_at": "2026-09-19T13:41:04.000Z",
+      "images": [
+        {
+          "file": "yum-alt-paltar-3ccc4c.jpg",
+          "alt": "Yumşaq Alt Paltar",
+          "title": "Yumşaq Alt Paltar",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "YUM-ALT-PALTAR-SAGE-0-3AY",
+          "color": "sage",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUM-ALT-PALTAR-SAGE-3-6AY",
+          "color": "sage",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUM-ALT-PALTAR-SAGE-6-9AY",
+          "color": "sage",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUM-ALT-PALTAR-SAGE-9-12AY",
+          "color": "sage",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "YUM-ALT-PALTAR-SAGE-12-18AY",
+          "color": "sage",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "slug": "pambiq-corab-desi",
+      "name": "Pambıq Çorab Dəsti (4 cüt)",
+      "sku": "PAMBIQ-CORAB-DESI",
+      "status": "published",
+      "category_id": 16,
+      "short_description": "Kaydırmayan tabanlı, 4 cütlük yumşaq çorab dəsti.",
+      "description": "Kaydırmayan tabanlı, 4 cütlük yumşaq çorab dəsti.",
+      "material": "100% Pambıq",
+      "price": 14.9,
+      "compare_at_price": null,
+      "cost_price": null,
+      "badge": "",
+      "is_new": false,
+      "is_featured": false,
+      "colors": [
+        "beige"
+      ],
+      "sizes": [
+        "0-3 ay",
+        "3-6 ay",
+        "6-9 ay",
+        "9-12 ay",
+        "12-18 ay"
+      ],
+      "attributes": [],
+      "track_stock": false,
+      "allow_backorder": false,
+      "sales_count": 2,
+      "sort_order": 0,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T13:41:05.000Z",
+      "created_at": "2026-09-19T13:41:05.000Z",
+      "updated_at": "2026-09-19T14:44:58.000Z",
+      "images": [
+        {
+          "file": "pambiq-corab-desi-c80ae6.jpg",
+          "alt": "Pambıq Çorab Dəsti (4 cüt)",
+          "title": "Pambıq Çorab Dəsti (4 cüt)",
+          "caption": "",
+          "color": ""
+        }
+      ],
+      "variants": [
+        {
+          "sku": "PAMBIQ-CORAB-DESI-BEIGE-0-3AY",
+          "color": "beige",
+          "size": "0-3 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "PAMBIQ-CORAB-DESI-BEIGE-3-6AY",
+          "color": "beige",
+          "size": "3-6 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "PAMBIQ-CORAB-DESI-BEIGE-6-9AY",
+          "color": "beige",
+          "size": "6-9 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "PAMBIQ-CORAB-DESI-BEIGE-9-12AY",
+          "color": "beige",
+          "size": "9-12 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        },
+        {
+          "sku": "PAMBIQ-CORAB-DESI-BEIGE-12-18AY",
+          "color": "beige",
+          "size": "12-18 ay",
+          "barcode": "",
+          "price_override": null,
+          "is_active": true
+        }
+      ]
+    }
+  ],
+  "slug_redirects": [],
+  "posts": [
+    {
+      "id": 46,
+      "slug": "korp-ilk-gunler",
+      "title": "Körpə üçün ilk günlərdə necə qulluq etməli?",
+      "excerpt": "Yeni doğulan körpənizlə evə qayıtdığınız ilk günlər həm həyəcanlı, həm də çətin ola bilər. Bu dövrdə nələrə diqqət etməli olduğunuzu sadə dildə izah edirik.",
+      "content": "<p>Yeni doğulan körpənizlə evə qayıtdığınız ilk günlər həm həyəcanlı, həm də çox həssas bir dövrdür. Bu dövrdə körpənin dərisi xüsusilə incə və allergiyaya meyilli olur.</p><p>Geyim seçərkən 100% təbii, nəfəs alan orqanik pambıq parçalara üstünlük vermək dərinin qıcıqlanmasının qarşısını alır. Otaq temperaturunun 20-22 dərəcə arasında saxlanılması körpənin rahat yatmasını təmin edir.</p>",
+      "category": "Yeni doğulanlar",
+      "tags": [],
+      "status": "published",
+      "reading_minutes": 1,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T14:32:47.000Z",
+      "created_at": "2026-09-19T14:32:47.000Z",
+      "updated_at": "2026-09-19T14:32:47.000Z",
+      "cover": null
+    },
+    {
+      "id": 47,
+      "slug": "qish-aylarinda-geyim",
+      "title": "Qış aylarında körpəni necə geyindirməli?",
+      "excerpt": "Soyuq fəsillərdə körpəni həm isti saxlamaq, həm də tərlətməmək üçün düzgün qat-qat geyim qaydaları.",
+      "content": "<p>Soyuq fəsillərdə körpəni həddindən artıq qalın bələmək tərləməyə və xəstələnməyə səbəb ola bilər. Ən düzgün yanaşma lay-lay geyindirmə üsuludur.</p><p>Alt qat üçün incə və təmiz pambıq bodi, orta qat üçün yumşaq tulum və çölə çıxarkən küləkdən qoruyan xarici geyim seçilməlidir.</p>",
+      "category": "Geyim",
+      "tags": [],
+      "status": "published",
+      "reading_minutes": 1,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T14:32:47.000Z",
+      "created_at": "2026-09-19T14:32:47.000Z",
+      "updated_at": "2026-09-19T14:32:47.000Z",
+      "cover": null
+    },
+    {
+      "id": 48,
+      "slug": "orqanik-pambiq-vacibdir",
+      "title": "Orqanik pambıq niyə vacibdir?",
+      "excerpt": "Körpə geyimlərində ənənəvi pambıqla orqanik pambıq arasındakı fərq və körpənizin dərisi üçün faydaları.",
+      "content": "<p>Orqanik pambıq zərərli kimyəvi gübrələr və pestisidlər istifadə olunmadan yetişdirilir. Körpələrin dərisi böyüklərə nisbətən 5 dəfə daha nazik və həssasdır.</p><p>Bodi.az məhsullarında istifadə olunan sertifikatlı orqanik pambıq heç bir kimyəvi qalıq daşımır, yuyulma zamanı formasını itirmir və körpənizin sağlamlığını qoruyur.</p>",
+      "category": "Qulluq",
+      "tags": [],
+      "status": "published",
+      "reading_minutes": 1,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T14:32:47.000Z",
+      "created_at": "2026-09-19T14:32:47.000Z",
+      "updated_at": "2026-09-19T14:32:47.000Z",
+      "cover": null
+    },
+    {
+      "id": 49,
+      "slug": "yuxu-rejimi-tulum",
+      "title": "Körpə yuxu rejimi və tulum seçimi",
+      "excerpt": "Körpənizin gecə yuxusunu dərinləşdirmək üçün təhlükəsiz yuxu tulumları və düzgün yataq mühiti.",
+      "content": "<p>Körpənin rahat və fasiləsiz yuxusu onun beyin və fiziki inkişafı üçün həyati əhəmiyyət daşıyır. Yuxu tulumları yorğanın körpənin üzünü örtməsi riskini aradan qaldırır.</p><p>Nəfəs alan pambıq yuxu tulumları körpənin bütün gecə boyunca optimal bədən temperaturunda qalmasına kömək edir.</p>",
+      "category": "Qulluq",
+      "tags": [],
+      "status": "published",
+      "reading_minutes": 1,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T14:32:47.000Z",
+      "created_at": "2026-09-19T14:32:47.000Z",
+      "updated_at": "2026-09-19T14:32:47.000Z",
+      "cover": null
+    },
+    {
+      "id": 50,
+      "slug": "qidalanma-gigiyena",
+      "title": "Körpələrdə düzgün qidalanma və gigiyena",
+      "excerpt": "Sağlam inkişaf üçün əsas qidalanma mərhələləri və gündəlik gigiyena qaydaları.",
+      "content": "<p>İlk 6 ayda körpə üçün ən ideal qida ana südüdür. Əlavə qidaya keçid dövründə isə gigiyenik şərait və təbii məhsullarla hazırlanan püreler tövsiyə olunur.</p>",
+      "category": "Qidalanma",
+      "tags": [],
+      "status": "published",
+      "reading_minutes": 1,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T14:32:47.000Z",
+      "created_at": "2026-09-19T14:32:47.000Z",
+      "updated_at": "2026-09-19T14:32:47.000Z",
+      "cover": null
+    },
+    {
+      "id": 51,
+      "slug": "hediyyelik-dest-secimi",
+      "title": "Hədiyyəlik dəst seçərkən nələrə diqqət etməli?",
+      "excerpt": "Yeni doğulan körpəyə və gənc valideynlərə həqiqətən lazım olacaq ən faydalı hədiyyə seçimləri.",
+      "content": "<p>Yeni doğulan körpəyə hədiyyə seçərkən həm gözəl görünüşlü, həm də valideynlər üçün faydalı və praktik dəstlərə üstünlük verilməlidir.</p><p>Bodi.az hədiyyəlik dəstləri bodi, tulum, şapqa və əlcəklərdən ibarət olub, zərif qablaşdırma ilə təqdim olunur.</p>",
+      "category": "Geyim",
+      "tags": [],
+      "status": "published",
+      "reading_minutes": 1,
+      "seo": {
+        "title": "",
+        "noindex": false,
+        "keywords": "",
+        "og_image": "",
+        "canonical": "",
+        "description": "",
+        "focus_keyword": ""
+      },
+      "published_at": "2026-09-19T14:32:47.000Z",
+      "created_at": "2026-09-19T14:32:47.000Z",
+      "updated_at": "2026-09-19T14:32:47.000Z",
+      "cover": null
+    }
+  ],
+  "reviews": [
+    {
+      "id": 6,
+      "product_id": 10,
+      "author": "Leyla Əliyeva",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Material keyfiyyəti sadəcə möhtəşəmdir. Qızımın dərisi üçün ən yumşaq bodi tapdıq, çatdırılma da çox sürətli oldu. 100% orqanik pambıq olduğu hiss olunur.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 7,
+      "product_id": 11,
+      "author": "Könül İsmayılova",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Bej uzunqol bodi payız üçün idealdır. Yumşaq toxunuşu və soyuq günlərdə isti saxlaması çox xoşumuza gəldi. Yuyulduqdan sonra da formasını itirmədi.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 8,
+      "product_id": 12,
+      "author": "Nigar Qasımova",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Rəngi şəkildəki kimidir, çox zərif və sakit adaçayı yaşılı. Düymələri çox rahat açılıb-bağlanır, körpəni incitmir.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 9,
+      "product_id": 13,
+      "author": "Aytən Məlikova",
+      "city": "Sumqayıt",
+      "rating": 4,
+      "content": "Şaftalı tonu çox gözəldir. Kətan qarışığı yayda sərin saxlayır. Razı qaldıq, çatdırılma kuryeri də çox nəzakətli idi.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 10,
+      "product_id": 14,
+      "author": "Səbinə Quliyeva",
+      "city": "Mingəçevir",
+      "rating": 5,
+      "content": "Naxışlı ağ bodi xüsusi günlər üçün həqiqətən gözəl seçimdir. Keyfiyyət gözləntilərimi aşdı, tikişləri daxildən körpənin bədənini qaşındırmır.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 11,
+      "product_id": 15,
+      "author": "Günel Rüstəmova",
+      "city": "Gəncə",
+      "rating": 5,
+      "content": "Rəngi çox dəbdəbəlidir! Həm qız, həm oğlan körpələr üçün uyğundur. Yenə sifariş edəcəyəm.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 12,
+      "product_id": 16,
+      "author": "Nərminə Məmmədova",
+      "city": "Sumqayıt",
+      "rating": 5,
+      "content": "Yeni doğulan oğlum üçün tulum aldım. Təbiiliyi və yumşaqlığı heç bir yerdə görməmişdim. Artıq daimi müştəriyəm, fermuarının qoruyucu yaxalığı olması böyük üstünlükdür.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 13,
+      "product_id": 17,
+      "author": "Gülay Hüseynova",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Lavanta yuxu tulumu qızımın gecə yuxusunu tam dəyişdi. Yumşaq, nəfəs alan və gözəl rəngdədir. Gecələr üstünü açsa belə üşümür.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:12.000Z"
+    },
+    {
+      "id": 14,
+      "product_id": 18,
+      "author": "Fidan Əhmədzadə",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "İki parçalı tulum çox rahatdır. Alt dəyişdirmə zamanı bütün kombinezonu çıxarmaq lazım gəlmir. Çox ağıllı dizayndır.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:13.000Z"
+    },
+    {
+      "id": 15,
+      "product_id": 20,
+      "author": "Aydan Rəhimli",
+      "city": "Gəncə",
+      "rating": 5,
+      "content": "Hədiyyəlik dəsti rəfiqəmin körpəsi üçün sifariş etdim. Qablaşdırma belə çox zərif və estetik idi. Hər kəsə ürəklə məsləhət görürəm.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:13.000Z"
+    },
+    {
+      "id": 16,
+      "product_id": 21,
+      "author": "Rəsmiyyə Əbdülrəhman",
+      "city": "Xırdalan",
+      "rating": 5,
+      "content": "Sehrli Mövsümlər dəsti hər fəsil üçün uyğun gəldi. Dörd parça birdən — keyfiyyətinə görə qiyməti çox münasibdir.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:13.000Z"
+    },
+    {
+      "id": 17,
+      "product_id": 25,
+      "author": "Aysel Əsgərova",
+      "city": "Lənkəran",
+      "rating": 5,
+      "content": "Çorab dəsti praktik və keyfiyyətlidir. Kaydırmayan silikon taban sayəsində körpə döşəmədə rahat sürünür və yıxılmır. Tövsiyə edirəm.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:13.000Z"
+    },
+    {
+      "id": 18,
+      "product_id": 23,
+      "author": "Tural Əhmədov",
+      "city": "Şəki",
+      "rating": 5,
+      "content": "Orqanik pambıq şapqa körpənin qulaqlarını yumşaq şəkildə qoruyur, sıxmır və iz salmır. Əla məhsuldur.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:13.000Z"
+    },
+    {
+      "id": 19,
+      "product_id": 10,
+      "author": "Vüsal Məmmədli",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Möhtəşəm bodi, çox bəyəndik!",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:40:48.000Z"
+    },
+    {
+      "id": 23,
+      "product_id": 25,
+      "author": "Aysel Əliyeva",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Sifarişi indicə aldım, parçanın keyfiyyəti heyrətamizdir!",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:44:50.000Z"
+    },
+    {
+      "id": 24,
+      "product_id": 10,
+      "author": "Könül İ.",
+      "city": "Sumqayıt",
+      "rating": 5,
+      "content": "Möhtəşəm sürət və keyfiyyət!",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-19T14:45:06.000Z"
+    },
+    {
+      "id": 25,
+      "product_id": 10,
+      "author": "Nigar Qasımova",
+      "city": "Gəncə",
+      "rating": 5,
+      "content": "Çox keyfiyyətli parçası var, yuduqdan sonra da formasını itirmədi. Əla!",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-20T06:47:07.000Z"
+    },
+    {
+      "id": 29,
+      "product_id": 11,
+      "author": "Aynur Həsənova",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Çox qəşəngdir, parçası yumşaqdır.",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-20T07:20:11.000Z"
+    },
+    {
+      "id": 30,
+      "product_id": 11,
+      "author": "Şəbnəm Quliyeva",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Dərisi çox həssas olan oğlum üçün aldıq, heç bir qızartı vermədi, çox razıyıq!",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-20T07:21:40.000Z"
+    },
+    {
+      "id": 34,
+      "product_id": 10,
+      "author": "Rauf Əliyev",
+      "city": "Bakı",
+      "rating": 5,
+      "content": "Məhsul əla keyfiyyətdədir, çox bəyəndik!",
+      "reply": "",
+      "status": "approved",
+      "is_verified": true,
+      "created_at": "2026-09-20T07:26:42.000Z"
+    }
+  ],
+  "coupons": [
+    {
+      "code": "BODI5",
+      "type": "fixed",
+      "amount": 5,
+      "min_subtotal": 0,
+      "usage_limit": null,
+      "used_count": 0,
+      "starts_at": null,
+      "expires_at": null,
+      "is_active": true,
+      "description": "5 AZN endirim"
+    },
+    {
+      "code": "BODI10",
+      "type": "percent",
+      "amount": 10,
+      "min_subtotal": 0,
+      "usage_limit": null,
+      "used_count": 3,
+      "starts_at": null,
+      "expires_at": null,
+      "is_active": true,
+      "description": "10% xoşgəldin endirimi"
+    }
+  ]
+}

@@ -36,8 +36,8 @@
       <div class="bg-surface-container-lowest rounded-2xl p-lg card-ambient">
         <h2 class="font-headline-md text-headline-md text-on-surface mb-md">Məlumatları daxil edin</h2>
         <form id="track-form" class="space-y-md" onsubmit="return false">
-          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Sifariş Nömrəsi</label><input id="track-id" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Məs: #BDI12345" value="#BDI88241"></div>
-          <div><label class="font-label-md text-label-md text-on-surface block mb-2">E-poçt ünvanı</label><input id="track-email" type="email" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="nümunə@mail.com"></div>
+          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Sifariş Nömrəsi</label><input id="track-id" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Məs: #57" inputmode="numeric" required></div>
+          <div><label class="font-label-md text-label-md text-on-surface block mb-2">Telefon nömrəsi <span class="font-body-sm text-on-surface-variant">(tam ünvanı görmək üçün)</span></label><input id="track-phone" type="tel" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="050 123 45 67" autocomplete="tel"></div>
           <button id="track-btn" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg hover:bg-primary-container transition-colors shadow-sm">İzlə <span class="material-symbols-outlined" style="font-size:18px">my_location</span></button>
         </form>
         <p class="font-body-sm text-body-sm text-on-surface-variant mt-md flex items-start gap-2"><span class="material-symbols-outlined" style="font-size:18px">info</span> Məlumatları tapmaqda çətinlik çəkirsiniz? Sifariş təsdiq mesajınızı yoxlayın.</p>
@@ -110,9 +110,9 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=2.1.0"></script>
-<script src="assets/js/api.js?v=2.1.0"></script>
-<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/api.js?v=3.0.0"></script>
+<script src="assets/js/store.js?v=3.0.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
 (function () {
@@ -125,7 +125,8 @@
   }
 
   async function runTrack(targetId) {
-    const id = (targetId || document.getElementById("track-id").value).trim();
+    const id = String(targetId || document.getElementById("track-id").value).replace(/\D/g, "");
+    const phone = (document.getElementById("track-phone").value || "").trim();
     if (!id) {
       document.getElementById("track-form").reportValidity();
       return;
@@ -137,13 +138,11 @@
       let data;
       const trackFn = window.BODI_API && (window.BODI_API.trackOrder || (window.BODI_API.orders && window.BODI_API.orders.track));
       if (typeof trackFn === "function") {
-        data = await trackFn(id);
+        data = await trackFn(id, phone);
       } else {
-        const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-        const apiBase = (window.BODI_API && window.BODI_API.API_BASE) || (isLocal ? 'http://localhost:8085' : 'https://api.bodi.az');
-        const res = await fetch(`${apiBase}/wp-json/bodi/v1/track-order?order_id=${encodeURIComponent(id)}`);
+        const res = await fetch(`/api/v1/orders/track?order_id=${encodeURIComponent(id)}&phone=${encodeURIComponent(phone)}`);
         data = await res.json();
-        if (!res.ok || data.code) {
+        if (!res.ok || data.error) {
           throw new Error(data.message || "Sifariş tapılmadı.");
         }
       }

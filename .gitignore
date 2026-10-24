@@ -1,7 +1,12 @@
+# Secrets
+.env
+
 # Archives
 *.zip
-docker/*.zip
-docker/wp-cli.phar
+
+# Node
+node_modules/
+backend/uploads/
 
 # Logs
 *.log

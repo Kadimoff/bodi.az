@@ -94,25 +94,43 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=2.1.0"></script>
-<script src="assets/js/api.js?v=2.1.0"></script>
-<script src="assets/js/seo.js?v=2.1.0"></script>
-<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/api.js?v=3.0.0"></script>
+<script src="assets/js/seo.js?v=3.0.0"></script>
+<script src="assets/js/store.js?v=3.0.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
 (function () {
   const params = new URLSearchParams(location.search);
-  const slugParam = params.get("p") || params.get("id");
+  const slugParam = params.get("p") || params.get("slug") || params.get("id");
   
   let p = (slugParam ? (BODI.getBySlug(slugParam) || BODI.getById(slugParam)) : null) || BODI.PRODUCTS[0];
+  let detail = null; // full product (rich description, attributes, gallery alt texts)
 
   window.addEventListener("bodi:products-updated", function () {
     const updatedP = (slugParam ? (BODI.getBySlug(slugParam) || BODI.getById(slugParam)) : null);
-    if (updatedP && (updatedP.name !== p.name || updatedP.image !== p.image)) {
-      p = updatedP;
+    if (updatedP && updatedP !== p) {
+      p = Object.assign({}, updatedP, detail || {});
       renderProduct();
     }
   });
+
+  if (slugParam && window.BODI_API && BODI_API.products.fetch) {
+    BODI_API.products.fetch(slugParam).then(full => {
+      detail = { descriptionHtml: full.descriptionHtml, attributes: full.attributes, gallery: full.gallery };
+      p = Object.assign({}, BODI.getBySlug(full.slug) || full, detail);
+      renderProduct();
+    }).catch(() => {});
+  }
+
+  // Stock per colour/size comes from the warehouse; untracked products are always available.
+  function variantFor(color, size) {
+    return (p.variants || []).find(v => v.color === color && v.size === size);
+  }
+  function isAvailable(color, size) {
+    const v = variantFor(color, size);
+    return !v || v.available !== false;
+  }
 
   function updateProductSEO() {
     if (window.BODI_SEO && p) {
@@ -132,7 +150,9 @@
       <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
       <li aria-current="page" class="text-primary font-medium">${p.name}</li>`;
 
-    const img = BODI.getProductImage(p);
+    const img = p.image || BODI.getProductImage(p);
+    const gallery = (p.gallery && p.gallery.length ? p.gallery.map(g => ({ src: (g.formats && (g.formats.large || g.formats.medium) || g).url, thumb: (g.formats && (g.formats.small || g.formats.thumb) || g).url, alt: g.alt || p.name, color: g.color || "" }))
+      : (p.images || [img]).map(src => ({ src: src, thumb: src, alt: p.name, color: "" }))).slice(0, 6);
     const colorHex = BODI.COLORS[p.color] ? BODI.COLORS[p.color].b : "#ddd0ba";
     const wished = STORE.isWished(p.id);
     const starsHtml = BODI.stars(p.rating);
@@ -147,16 +167,15 @@
       <!-- Gallery -->
       <div class="space-y-4">
         <div class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface-container-low">
-          <img id="main-img" src="${img}" alt="${p.name}" class="w-full h-full object-cover">
+          <img id="main-img" src="${gallery[0] ? gallery[0].src : img}" alt="${gallery[0] ? gallery[0].alt : p.name}" width="800" height="1000" class="w-full h-full object-cover" fetchpriority="high">
+          ${p.inStock === false ? '<span class="absolute bottom-4 left-4 bg-on-surface text-surface font-label-md text-label-md px-3 py-1.5 rounded-full">Stokda yoxdur</span>' : ''}
           <button id="wish-btn" aria-label="İstək siyahısına əlavə et" class="absolute top-4 right-4 w-10 h-10 bg-surface/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface transition-colors shadow-sm">
             <span class="material-symbols-outlined text-[22px] ${wished ? 'ms-fill text-secondary' : ''}">favorite</span>
           </button>
         </div>
-        <div class="grid grid-cols-4 gap-3">
-          <button data-thumb="${img}" class="aspect-square rounded-lg overflow-hidden border-2 border-primary"><img src="${img}" class="w-full h-full object-cover"></button>
-          <button data-thumb="${img}" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-colors"><img src="${img}" class="w-full h-full object-cover"></button>
-          <button data-thumb="${img}" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-colors"><img src="${img}" class="w-full h-full object-cover"></button>
-        </div>
+        ${gallery.length > 1 ? `<div class="grid grid-cols-4 gap-3">
+          ${gallery.map((g, i) => `<button data-thumb="${g.src}" data-alt="${g.alt}" data-color="${g.color}" aria-label="Şəkil ${i + 1}" class="aspect-square rounded-lg overflow-hidden border-2 ${i === 0 ? 'border-primary' : 'border-transparent hover:border-primary'} transition-colors"><img src="${g.thumb}" alt="${g.alt}" loading="lazy" class="w-full h-full object-cover"></button>`).join("")}
+        </div>` : ""}
       </div>
 
       <!-- Info -->
@@ -194,6 +213,7 @@
             ${(p.sizes && p.sizes.length > 0 ? p.sizes : BODI.SIZES).map((s, i) => `
               <button type="button" data-sizesel="${s}" class="size-sel px-4 py-2 rounded-xl font-label-md text-label-md transition-colors ${i === 0 ? 'border-2 border-primary bg-primary-fixed/20 text-primary' : 'border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary'}">${s}</button>`).join("")}
           </div>
+          <p id="stock-note" class="font-body-sm text-body-sm mt-2 hidden"></p>
         </div>
 
         <!-- Actions -->
@@ -233,9 +253,10 @@
             </button>
             <div class="acc-body"><div class="px-md pb-md font-body-md text-body-md text-on-surface-variant space-y-2">
               <p><strong>Material:</strong> ${p.material}</p>
-              <p><strong>Mövsüm:</strong> Dörd fəsil</p>
-              <p><strong>Baxım:</strong> 30 dərəcədə yuyun. Ağardıcı istifadə etməyin.</p>
-              <p class="pt-2">${p.desc}</p>
+              ${(p.attributes && p.attributes.length)
+                ? p.attributes.map(a => `<p><strong>${a.name}:</strong> ${a.value}</p>`).join("")
+                : `<p><strong>Mövsüm:</strong> Dörd fəsil</p><p><strong>Baxım:</strong> 30 dərəcədə yuyun. Ağardıcı istifadə etməyin.</p>`}
+              <div class="pt-2 product-description">${p.descriptionHtml || `<p>${p.desc}</p>`}</div>
             </div></div>
           </div>
           <div class="acc-item border border-surface-variant rounded-xl">
@@ -260,11 +281,40 @@
     const initialSizes = (p.sizes && p.sizes.length > 0 ? p.sizes : BODI.SIZES);
     let qty = 1, size = initialSizes[0], color = initialColors[0].slug;
 
-    document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
-      document.getElementById("main-img").src = t.getAttribute("data-thumb");
+    function showImage(t) {
+      const main = document.getElementById("main-img");
+      main.src = t.getAttribute("data-thumb");
+      main.alt = t.getAttribute("data-alt") || p.name;
       document.querySelectorAll("[data-thumb]").forEach(x => { x.classList.remove("border-primary"); x.classList.add("border-transparent"); });
       t.classList.add("border-primary"); t.classList.remove("border-transparent");
-    }));
+    }
+    document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => showImage(t)));
+
+    // Disable sizes that are out of stock for the chosen colour.
+    function refreshSizes() {
+      const note = document.getElementById("stock-note");
+      document.querySelectorAll(".size-sel").forEach(b => {
+        const ok = isAvailable(color, b.getAttribute("data-sizesel"));
+        b.disabled = !ok;
+        b.classList.toggle("opacity-40", !ok);
+        b.classList.toggle("line-through", !ok);
+        b.title = ok ? "" : "Stokda yoxdur";
+      });
+      if (!isAvailable(color, size)) {
+        const first = [...document.querySelectorAll(".size-sel")].find(b => !b.disabled);
+        if (first) first.click();
+      }
+      const v = variantFor(color, size);
+      if (note) {
+        const out = !isAvailable(color, size);
+        note.classList.toggle("hidden", !(out || (v && v.lowStock)));
+        note.className = "font-body-sm text-body-sm mt-2 " + (out ? "text-error" : "text-secondary") + (out || (v && v.lowStock) ? "" : " hidden");
+        note.textContent = out ? "Seçilmiş rəng və ölçü hazırda stokda yoxdur." : "Tələsin — bu ölçüdən son ədədlər qalıb!";
+      }
+      const add = document.getElementById("add-cart");
+      const buy = document.getElementById("buy-now");
+      [add, buy].forEach(btn => { if (btn) { btn.disabled = !isAvailable(color, size); btn.classList.toggle("opacity-50", btn.disabled); } });
+    }
 
     document.querySelectorAll(".color-sel").forEach(b => b.addEventListener("click", () => {
       document.querySelectorAll(".color-sel").forEach(x => { x.classList.remove("border-primary", "shadow-sm", "ring-2", "ring-primary/20"); x.classList.add("border-transparent"); });
@@ -272,13 +322,18 @@
       color = b.getAttribute("data-colorsel");
       const cName = b.getAttribute("data-colorname") || (BODI.resolveColor(color).n);
       document.getElementById("color-name").textContent = cName;
+      const colorImg = document.querySelector(`[data-thumb][data-color="${color}"]`);
+      if (colorImg) showImage(colorImg);
+      refreshSizes();
     }));
 
     document.querySelectorAll(".size-sel").forEach(b => b.addEventListener("click", () => {
       document.querySelectorAll(".size-sel").forEach(x => { x.className = "size-sel px-4 py-2 rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors font-label-md text-label-md"; });
       b.className = "size-sel px-4 py-2 rounded-xl border-2 border-primary bg-primary-fixed/20 text-primary font-label-md text-label-md";
       size = b.getAttribute("data-sizesel");
+      refreshSizes();
     }));
+    refreshSizes();
 
     document.getElementById("qty-minus").addEventListener("click", () => { qty = Math.max(1, qty - 1); document.getElementById("qty").textContent = qty; });
     document.getElementById("qty-plus").addEventListener("click", () => { qty++; document.getElementById("qty").textContent = qty; });
@@ -427,15 +482,13 @@
       if (typeof submitFn === "function") {
         res = await submitFn(payload);
       } else {
-        const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-        const apiBase = (window.BODI_API && window.BODI_API.API_BASE) || (isLocal ? 'http://localhost:8085' : 'https://api.bodi.az');
-        const r = await fetch(`${apiBase}/wp-json/bodi/v1/reviews`, {
+        const r = await fetch(`/api/v1/reviews`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify(payload)
         });
         res = await r.json();
-        if (!r.ok || res.code) {
+        if (!r.ok || res.error) {
           throw new Error(res.message || "Rəy göndərilə bilmədi.");
         }
       }
@@ -444,21 +497,9 @@
       modal.classList.add("hidden");
       document.getElementById("prod-review-form").reset();
 
-      // Add to local list and re-render
-      const newRev = res.review || {
-        id: Date.now(),
-        productId: p.id,
-        productName: p.name,
-        productSlug: p.slug,
-        productImage: BODI.getProductImage(p),
-        author: author,
-        city: city,
-        rating: selectedRating,
-        quote: content,
-        date: "İndi"
-      };
-      if (!BODI.REVIEWS.some(r => r.id === newRev.id)) {
-        BODI.REVIEWS.unshift(newRev);
+      // Published reviews come back from the API; moderated ones appear after approval.
+      if (res.review && !BODI.REVIEWS.some(r => r.id === res.review.id)) {
+        BODI.REVIEWS.unshift(res.review);
       }
       renderProductReviews();
       if (window.BODI_SEO) BODI_SEO.applyProductSEO(p, BODI.REVIEWS);

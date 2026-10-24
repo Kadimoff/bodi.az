@@ -22,7 +22,7 @@
     brown:  { n: "Qəhvəyi", a: "#e3d2c5", b: "#c8b09f", label: "#6d4e3a" }
   };
 
-  // Resolve color string (from WooCommerce or local) to full color object
+  // Resolve color string (from the API or local) to full color object
   function resolveColor(input) {
     if (!input) return { slug: "cream", ...COLORS.cream };
     if (typeof input === "object" && input.slug && input.b) return input;
@@ -55,7 +55,7 @@
       return { slug: aliases[key], ...COLORS[aliases[key]], n: COLORS[aliases[key]].n || str };
     }
 
-    // Dynamic pastel color fallback for ANY custom color added in WooCommerce
+    // Dynamic pastel color fallback for ANY colour not in the palette
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -113,25 +113,25 @@
   const SIZES = ["0-3 ay", "3-6 ay", "6-9 ay", "9-12 ay", "12-18 ay"];
 
   const PRODUCTS = [
-    { id: 1, slug: "ag-pambiq-bodi", name: "Ağ Pambıq Bodi", cat: "bodi", material: "100% Orqanik Pambıq", price: 24.90, old: 35.00, color: "white", rating: 5, reviews: 124, badge: "-28%", isNew: false, desc: "Körpənizin həssas dərisi üçün xüsusi olaraq toxunmuş, nəfəs alan və yumşaq orqanik pambıqdan hazırlanmış bodi. Gündəlik istifadə üçün mükəmməl rahatlıq." },
-    { id: 2, slug: "bej-uzunqol-bodi", name: "Bej Rəngli Uzunqol Bodi", cat: "bodi", material: "Orqanik Pambıq", price: 24.90, color: "beige", rating: 5, reviews: 88, badge: "Yeni", isNew: true, desc: "Yumşaq orqanik pambıqdan uzunqol bodi. Soyuq günlərdə rahat və isti saxlayır." },
-    { id: 3, slug: "adacayi-qisaqol-bodi", name: "Adaçayı Rəngli Qısaqol Bodi", cat: "bodi", material: "100% Pambıq", price: 19.90, color: "sage", rating: 5, reviews: 56, desc: "Sakit adaçayı yaşıılında, incə naxışlı qısaqol bodi. Yay ayları üçün idealdır." },
-    { id: 4, slug: "saftali-yay-bodisi", name: "Şaftalı Rəngli Yay Bodisi", cat: "bodi", material: "Kətan Qarışığı", price: 22.90, old: 28.90, color: "peach", rating: 4, reviews: 41, badge: "-20%", desc: "Şaftalı tonlarında, yüngül və nəfəs alan yay bodisi." },
-    { id: 5, slug: "naxisli-ag-bodi", name: "Naxışlı Ağ Bodi", cat: "bodi", material: "Orqanik Pambıq", price: 26.50, color: "white", rating: 5, reviews: 73, desc: "Zeytun budağı naxışlı, incə zərif ağ bodi. Xüsusi günlər üçün." },
-    { id: 6, slug: "terracotta-uzunqol-bodi", name: "Terrakotta Uzunqol Bodi", cat: "bodi", material: "100% Pambıq", price: 25.90, color: "terracotta", rating: 5, reviews: 39, isNew: true, badge: "Yeni", desc: "Terrakotta rəngli, payız üçün isti uzunqol bodi." },
+    { id: 10, slug: "ag-pambiq-bodi", name: "Ağ Pambıq Bodi", cat: "bodi", material: "100% Orqanik Pambıq", price: 24.90, old: 35.00, color: "white", rating: 5, reviews: 124, badge: "-28%", isNew: false, desc: "Körpənizin həssas dərisi üçün xüsusi olaraq toxunmuş, nəfəs alan və yumşaq orqanik pambıqdan hazırlanmış bodi. Gündəlik istifadə üçün mükəmməl rahatlıq." },
+    { id: 11, slug: "bej-uzunqol-bodi", name: "Bej Rəngli Uzunqol Bodi", cat: "bodi", material: "Orqanik Pambıq", price: 24.90, color: "beige", rating: 5, reviews: 88, badge: "Yeni", isNew: true, desc: "Yumşaq orqanik pambıqdan uzunqol bodi. Soyuq günlərdə rahat və isti saxlayır." },
+    { id: 12, slug: "adacayi-qisaqol-bodi", name: "Adaçayı Rəngli Qısaqol Bodi", cat: "bodi", material: "100% Pambıq", price: 19.90, color: "sage", rating: 5, reviews: 56, desc: "Sakit adaçayı yaşıılında, incə naxışlı qısaqol bodi. Yay ayları üçün idealdır." },
+    { id: 13, slug: "saftali-yay-bodisi", name: "Şaftalı Rəngli Yay Bodisi", cat: "bodi", material: "Kətan Qarışığı", price: 22.90, old: 28.90, color: "peach", rating: 4, reviews: 41, badge: "-20%", desc: "Şaftalı tonlarında, yüngül və nəfəs alan yay bodisi." },
+    { id: 14, slug: "naxisli-ag-bodi", name: "Naxışlı Ağ Bodi", cat: "bodi", material: "Orqanik Pambıq", price: 26.50, color: "white", rating: 5, reviews: 73, desc: "Zeytun budağı naxışlı, incə zərif ağ bodi. Xüsusi günlər üçün." },
+    { id: 15, slug: "terracotta-uzunqol-bodi", name: "Terrakotta Uzunqol Bodi", cat: "bodi", material: "100% Pambıq", price: 25.90, color: "terracotta", rating: 5, reviews: 39, isNew: true, badge: "Yeni", desc: "Terrakotta rəngli, payız üçün isti uzunqol bodi." },
 
-    { id: 7, slug: "yumshaq-yeni-dogan-tulumu", name: "Yumşaq Yeni Doğulan Tulumu", cat: "tulum", material: "Orqanik Pambıq", price: 34.90, color: "cream", rating: 5, reviews: 102, badge: "Yeni", isNew: true, desc: "Yeni doğulanlar üçün yumşaq, fermuarlı bütün bədən tulumu. Rahat geyinmə və soyunma." },
-    { id: 8, slug: "lavanta-yuxu-tulumu", name: "Lavanta Yuxu Tulumu", cat: "tulum", material: "100% Pambıq", price: 29.90, old: 38.00, color: "lavender", rating: 5, reviews: 67, badge: "-21%", desc: "Sakitləşdirici lavanta rəngində yuxu tulumu. Rahat bir gecə yuxusu üçün." },
-    { id: 9, slug: "sage-double-tulum", name: "Adaçayı İki Parçalı Tulum", cat: "tulum", material: "Orqanik Pambıq", price: 39.90, color: "sage", rating: 5, reviews: 48, desc: "İki parçalı, praktik və isti. Alt dəyişdirmə üçün asanlıq." },
-    { id: 10, slug: "seftali-fermuar-tulum", name: "Şaftalı Fermuarlı Tulum", cat: "tulum", material: "Kətan Qarışığı", price: 32.50, color: "peach", rating: 4, reviews: 35, desc: "Tam fermuarlı, yumşaq toxunuşlu gündəlik tulum." },
+    { id: 16, slug: "yumshaq-yeni-dogan-tulumu", name: "Yumşaq Yeni Doğulan Tulumu", cat: "tulum", material: "Orqanik Pambıq", price: 34.90, color: "cream", rating: 5, reviews: 102, badge: "Yeni", isNew: true, desc: "Yeni doğulanlar üçün yumşaq, fermuarlı bütün bədən tulumu. Rahat geyinmə və soyunma." },
+    { id: 17, slug: "lavanta-yuxu-tulumu", name: "Lavanta Yuxu Tulumu", cat: "tulum", material: "100% Pambıq", price: 29.90, old: 38.00, color: "lavender", rating: 5, reviews: 67, badge: "-21%", desc: "Sakitləşdirici lavanta rəngində yuxu tulumu. Rahat bir gecə yuxusu üçün." },
+    { id: 18, slug: "sage-double-tulum", name: "Adaçayı İki Parçalı Tulum", cat: "tulum", material: "Orqanik Pambıq", price: 39.90, color: "sage", rating: 5, reviews: 48, desc: "İki parçalı, praktik və isti. Alt dəyişdirmə üçün asanlıq." },
+    { id: 19, slug: "seftali-fermuar-tulum", name: "Şaftalı Fermuarlı Tulum", cat: "tulum", material: "Kətan Qarışığı", price: 32.50, color: "peach", rating: 4, reviews: 35, desc: "Tam fermuarlı, yumşaq toxunuşlu gündəlik tulum." },
 
-    { id: 11, slug: "ilkin-des-goyler", name: "İlkin Dəst — Göylər", cat: "dest", material: "100% Pambıq", price: 54.90, old: 69.00, color: "sky", rating: 5, reviews: 91, badge: "-20%", desc: "3 ədəd bodi + 1 tulumdan ibarət hədiyyəlik dəst. Yeni doğulanlar üçün ideal." },
-    { id: 12, slug: "dest-sehrli-mevsumler", name: "Dəst — Sehrli Mövsümlər", cat: "dest", material: "Orqanik Pambıq", price: 59.90, color: "mustard", rating: 5, reviews: 44, badge: "Yeni", isNew: true, desc: "Hər fəsil üçün uyğun, 4 parçalı uniseks dəst." },
-    { id: 13, slug: "dest-tebrik-nvazis", name: "Dəst — Təbrik & Nəvaziş", cat: "dest", material: "Orqanik Pambıq", price: 49.90, color: "rose", rating: 5, reviews: 28, desc: "Zərif çəhrayı tonlarda, xüsusi günlər üçün 3 parçalı dəst." },
+    { id: 20, slug: "ilkin-des-goyler", name: "İlkin Dəst — Göylər", cat: "dest", material: "100% Pambıq", price: 54.90, old: 69.00, color: "sky", rating: 5, reviews: 91, badge: "-20%", desc: "3 ədəd bodi + 1 tulumdan ibarət hədiyyəlik dəst. Yeni doğulanlar üçün ideal." },
+    { id: 21, slug: "dest-sehrli-mevsumler", name: "Dəst — Sehrli Mövsümlər", cat: "dest", material: "Orqanik Pambıq", price: 59.90, color: "mustard", rating: 5, reviews: 44, badge: "Yeni", isNew: true, desc: "Hər fəsil üçün uyğun, 4 parçalı uniseks dəst." },
+    { id: 22, slug: "dest-tebrik-nvazis", name: "Dəst — Təbrik & Nəvaziş", cat: "dest", material: "Orqanik Pambıq", price: 49.90, color: "rose", rating: 5, reviews: 28, desc: "Zərif çəhrayı tonlarda, xüsusi günlər üçün 3 parçalı dəst." },
 
-    { id: 14, slug: "org-pambiq-sapqa", name: "Orqanik Pambıq Şapqa", cat: "bodi", material: "100% Orqanik Pambıq", price: 12.90, color: "cream", rating: 5, reviews: 60, desc: "Yumşaq, qulaqları qoruyan nəfəs alan şapqa." },
-    { id: 15, slug: "yum-alt-paltar", name: "Yumşaq Alt Paltar", cat: "bodi", material: "100% Pambıq", price: 18.90, old: 24.00, color: "sage", rating: 4, reviews: 33, badge: "-21%", desc: "Həssas dəri üçün yumşaq alt paltarı. Təmiz və təbii material." },
-    { id: 16, slug: "pambiq-corab-desi", name: "Pambıq Çorab Dəsti (4 cüt)", cat: "bodi", material: "100% Pambıq", price: 14.90, color: "beige", rating: 5, reviews: 77, desc: "Kaydırmayan tabanlı, 4 cütlük yumşaq çorab dəsti." }
+    { id: 23, slug: "org-pambiq-sapqa", name: "Orqanik Pambıq Şapqa", cat: "bodi", material: "100% Orqanik Pambıq", price: 12.90, color: "cream", rating: 5, reviews: 60, desc: "Yumşaq, qulaqları qoruyan nəfəs alan şapqa." },
+    { id: 24, slug: "yum-alt-paltar", name: "Yumşaq Alt Paltar", cat: "bodi", material: "100% Pambıq", price: 18.90, old: 24.00, color: "sage", rating: 4, reviews: 33, badge: "-21%", desc: "Həssas dəri üçün yumşaq alt paltarı. Təmiz və təbii material." },
+    { id: 25, slug: "pambiq-corab-desi", name: "Pambıq Çorab Dəsti (4 cüt)", cat: "bodi", material: "100% Pambıq", price: 14.90, color: "beige", rating: 5, reviews: 77, desc: "Kaydırmayan tabanlı, 4 cütlük yumşaq çorab dəsti." }
   ];
 
   const CAT_NAMES = {
@@ -164,6 +164,7 @@
 
   // Renders a product card. `wished` toggles heart fill.
   function getProductImage(p) {
+    if (p && p.cardImage) return p.cardImage;
     if (p && p.image) return p.image;
     if (p && p.slug) return "assets/images/products/" + p.slug + ".jpg";
     return ph(p ? p.color : "cream", p ? p.name : "");
@@ -174,16 +175,19 @@
     const img = getProductImage(p);
     const wished = opts.wished ? "ms-fill text-secondary" : "";
     const isSale = p.badge && (p.badge.includes('%') || p.badge.toLowerCase().includes('endir'));
-    const tag = p.badge
-      ? `<span class="spark-badge ${isSale ? 'spark-badge-sale' : 'spark-badge-new'}"><span class="spark-icon">✦</span>${p.badge}</span>`
-      : "";
+    const soldOut = p.inStock === false;
+    const tag = soldOut
+      ? `<span class="spark-badge" style="background:#31302d;color:#fff">Stokda yoxdur</span>`
+      : p.badge
+        ? `<span class="spark-badge ${isSale ? 'spark-badge-sale' : 'spark-badge-new'}"><span class="spark-icon">✦</span>${p.badge}</span>`
+        : "";
     const price = p.old
       ? `<div class="flex items-baseline gap-2"><span class="font-headline-sm text-headline-sm text-error">${money(p.price)}</span><span class="font-body-sm text-body-sm text-on-surface-variant line-through">${money(p.old)}</span></div>`
       : `<div class="font-headline-sm text-headline-sm text-primary">${money(p.price)}</div>`;
     return `
     <div class="group relative bg-surface-container-lowest rounded-2xl p-3.5 md:p-4 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${opts.extraClass || ''}">
       <a href="product.html?p=${p.slug}" draggable="false" class="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-container-low mb-3.5 md:mb-4 block select-none">
-        <img src="${img}" alt="${p.name}" draggable="false" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" loading="lazy">
+        <img src="${img}"${p.cardSrcset ? ` srcset="${p.cardSrcset}" sizes="(min-width: 1024px) 25vw, 50vw"` : ""} alt="${p.name}" width="480" height="600" draggable="false" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" loading="lazy" decoding="async">
         <div class="absolute top-2.5 left-2.5 flex flex-col gap-1">${tag}</div>
       </a>
       <button data-wish="${p.id}" aria-label="İstək siyahısına əlavə et" class="absolute top-5 right-5 w-8 h-8 bg-surface/85 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface transition-colors shadow-sm">
@@ -195,7 +199,7 @@
         <div class="flex items-center gap-1 text-primary mb-2.5">${stars(p.rating)}<span class="font-body-sm text-xs md:text-body-sm text-on-surface-variant ml-1 font-medium">(${p.reviews})</span></div>
         <div class="mt-auto pt-2 flex items-center justify-between border-t border-outline-variant/20">
           ${price}
-          <button data-add="${p.id}" aria-label="Səbətə at" class="w-10 h-10 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary shadow-xs">
+          <button data-add="${p.id}" aria-label="Səbətə at"${soldOut ? ' disabled title="Stokda yoxdur" style="opacity:.4;pointer-events:none"' : ''} class="w-10 h-10 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary shadow-xs">
             <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
           </button>
         </div>
@@ -205,15 +209,15 @@
 
   // Customer reviews — tied to real products. az-AZ names + cities.
   const REVIEWS = [
-    { id: 1, productId: 1,  rating: 5, quote: "Material keyfiyyəti sadəcə möhtəşəmdir. Qızımın dərisi üçün ən yumşaq bodi tapdıq, çatdırılma da çox sürətli oldu.", author: "Leyla Əliyeva", city: "Bakı" },
-    { id: 2, productId: 7,  rating: 5, quote: "Yeni doğulan oğlum üçün tulum dəsti aldım. Təbiiliyi və yumşaqlığı heç bir yerdə görməmişdim. Artıq daimi müştəriyəm.", author: "Nərminə Məmmədova", city: "Sumqayıt" },
-    { id: 3, productId: 11, rating: 5, quote: "Hədiyyəlik dəsti doğum günü üçün sifariş etdim. Qablaşdırma belə çox zərif idi. Hər kəsə məsləhət görürəm.", author: "Aydan Rəhimli", city: "Gəncə" },
-    { id: 4, productId: 8,  rating: 5, quote: "Lavanta yuxu tulumu qızımın gecə yuxusunu tam dəyişdi. Yumşaq, nəfəs alan və gözəl rəngdədir.", author: "Gülay Hüseynova", city: "Bakı" },
-    { id: 5, productId: 5,  rating: 5, quote: "Naxışlı ağ bodi xüsusi günlər üçün həqiqətən gözəl seçimdir. Keyfiyyət gözləntilərimi aşdı.", author: "Səbinə Quliyeva", city: "Mingəçevir" },
-    { id: 6, productId: 16, rating: 5, quote: "Çorab dəsti praktik və keyfiyyətlidir. Kaydırmayan taban sayəsində rahat sürünür. Tövsiyə edirəm.", author: "Aysel Əsgərova", city: "Lənkəran" },
-    { id: 7, productId: 14, rating: 5, quote: "Orqanik pambıq şapqa qulaqları tam qoruyur. Qış aylarında oğlumdan heç ayırmıram.", author: "Tural Əhmədov", city: "Şəki" },
-    { id: 8, productId: 2,  rating: 5, quote: "Bej uzunqol bodi payız üçün idealdır. Yumşaq toxunuşu və sowuq günlərdə isti saxlayır.", author: "Könül İsmayılova", city: "Bakı" },
-    { id: 9, productId: 12, rating: 5, quote: "Sehrli Mövsümlər dəsti hər fəsil üçün uyğun gəldi. Dörd parça birdən — qiymətə dəyər.", author: "Rəsmiyyə Əbdülrəhman", city: "Xırdalan" }
+    { id: 1, productId: 10,  rating: 5, quote: "Material keyfiyyəti sadəcə möhtəşəmdir. Qızımın dərisi üçün ən yumşaq bodi tapdıq, çatdırılma da çox sürətli oldu.", author: "Leyla Əliyeva", city: "Bakı" },
+    { id: 2, productId: 16,  rating: 5, quote: "Yeni doğulan oğlum üçün tulum dəsti aldım. Təbiiliyi və yumşaqlığı heç bir yerdə görməmişdim. Artıq daimi müştəriyəm.", author: "Nərminə Məmmədova", city: "Sumqayıt" },
+    { id: 3, productId: 20, rating: 5, quote: "Hədiyyəlik dəsti doğum günü üçün sifariş etdim. Qablaşdırma belə çox zərif idi. Hər kəsə məsləhət görürəm.", author: "Aydan Rəhimli", city: "Gəncə" },
+    { id: 4, productId: 17,  rating: 5, quote: "Lavanta yuxu tulumu qızımın gecə yuxusunu tam dəyişdi. Yumşaq, nəfəs alan və gözəl rəngdədir.", author: "Gülay Hüseynova", city: "Bakı" },
+    { id: 5, productId: 14,  rating: 5, quote: "Naxışlı ağ bodi xüsusi günlər üçün həqiqətən gözəl seçimdir. Keyfiyyət gözləntilərimi aşdı.", author: "Səbinə Quliyeva", city: "Mingəçevir" },
+    { id: 6, productId: 25, rating: 5, quote: "Çorab dəsti praktik və keyfiyyətlidir. Kaydırmayan taban sayəsində rahat sürünür. Tövsiyə edirəm.", author: "Aysel Əsgərova", city: "Lənkəran" },
+    { id: 7, productId: 23, rating: 5, quote: "Orqanik pambıq şapqa qulaqları tam qoruyur. Qış aylarında oğlumdan heç ayırmıram.", author: "Tural Əhmədov", city: "Şəki" },
+    { id: 8, productId: 11,  rating: 5, quote: "Bej uzunqol bodi payız üçün idealdır. Yumşaq toxunuşu və sowuq günlərdə isti saxlayır.", author: "Könül İsmayılova", city: "Bakı" },
+    { id: 9, productId: 21, rating: 5, quote: "Sehrli Mövsümlər dəsti hər fəsil üçün uyğun gəldi. Dörd parça birdən — qiymətə dəyər.", author: "Rəsmiyyə Əbdülrəhman", city: "Xırdalan" }
   ];
 
   // Aggregate review count across the catalog (formatted az-AZ: "1.240").

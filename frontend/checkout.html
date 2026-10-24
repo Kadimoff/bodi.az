@@ -99,13 +99,14 @@
       <div class="bg-surface-container-low rounded-2xl p-lg md:sticky md:top-24">
         <h2 class="font-headline-md text-headline-md text-on-surface mb-md">Sifarişin xülasəsi</h2>
         <div id="summary-items" class="space-y-3 mb-md max-h-64 overflow-auto hide-scroll"></div>
-        <form class="flex gap-2 mb-md" onsubmit="return false">
-          <input class="flex-grow px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm outline-none focus:border-primary" placeholder="Promokod">
-          <button class="px-4 py-2 bg-on-surface text-surface rounded-lg font-label-sm text-label-sm" onclick="STORE.toast('Promokod tətbiq edildi','local_activity')">Tətbiq et</button>
+        <form id="co-promo-form" class="flex gap-2 mb-md">
+          <input id="co-promo" class="flex-grow px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm outline-none focus:border-primary uppercase" placeholder="Promokod">
+          <button type="submit" class="px-4 py-2 bg-on-surface text-surface rounded-lg font-label-sm text-label-sm">Tətbiq et</button>
         </form>
         <div class="space-y-2 font-body-md text-body-md border-t border-surface-variant pt-md">
           <div class="flex justify-between"><span class="text-on-surface-variant">Məhsullar</span><span id="sum-sub">—</span></div>
-          <div class="flex justify-between"><span class="text-on-surface-variant">Çatdırılma</span><span class="text-primary font-label-md">PULSUZ</span></div>
+          <div id="sum-disc-row" class="flex justify-between hidden"><span class="text-on-surface-variant">Endirim <span id="sum-disc-code" class="font-label-sm"></span></span><span id="sum-disc" class="text-error">—</span></div>
+          <div class="flex justify-between"><span class="text-on-surface-variant">Çatdırılma</span><span id="sum-ship" class="text-primary font-label-md">—</span></div>
           <div class="flex justify-between items-center pt-2 border-t border-surface-variant mt-2"><span class="font-headline-sm text-headline-sm">Cəmi</span><span id="sum-total" class="font-headline-md text-headline-md text-primary">—</span></div>
         </div>
         <div class="grid grid-cols-2 gap-2 mt-md">
@@ -120,13 +121,15 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=2.1.0"></script>
-<script src="assets/js/api.js?v=2.1.0"></script>
-<script src="assets/js/store.js?v=2.1.0"></script>
+<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/api.js?v=3.0.0"></script>
+<script src="assets/js/store.js?v=3.0.0"></script>
 <script src="assets/js/layout.js?v=2.1.0"></script>
 <script>
 (function () {
-  // Summary
+  // Summary — re-rendered when live products, settings or the coupon change.
+  let couponInfo = null;
+  function renderSummary() {
   const rows = STORE.cartDetailed();
   const t = STORE.cartTotals();
   document.getElementById("summary-items").innerHTML = rows.map(r => `
@@ -134,12 +137,51 @@
       <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-lowest flex-shrink-0"><img src="${BODI.getProductImage(r.product)}" class="w-full h-full object-cover"></div>
       <div class="flex-grow min-w-0">
         <div class="font-body-sm text-body-sm text-on-surface clamp-2">${r.product.name}</div>
-        <div class="font-body-sm text-body-sm text-on-surface-variant">${r.item.qty} × ${BODI.money(r.product.price)}</div>
+        <div class="font-body-sm text-body-sm text-on-surface-variant">${r.item.qty} × ${BODI.money(r.line / r.item.qty)}${r.item.size ? " · " + r.item.size : ""}</div>
       </div>
       <div class="font-body-sm text-body-sm text-on-surface whitespace-nowrap">${BODI.money(r.line)}</div>
     </div>`).join("") || `<p class="font-body-sm text-body-sm text-on-surface-variant">Səbət boşdur.</p>`;
+  const discount = couponInfo && couponInfo.valid ? Math.min(couponInfo.discount, t.subtotal) : 0;
   document.getElementById("sum-sub").textContent = BODI.money(t.subtotal);
-  document.getElementById("sum-total").textContent = BODI.money(t.total);
+  document.getElementById("sum-ship").textContent = t.shipping === 0 ? "PULSUZ" : BODI.money(t.shipping);
+  document.getElementById("sum-disc-row").classList.toggle("hidden", !discount);
+  document.getElementById("sum-disc").textContent = "−" + BODI.money(discount);
+  document.getElementById("sum-disc-code").textContent = couponInfo && couponInfo.valid ? "(" + couponInfo.code + ")" : "";
+  document.getElementById("sum-total").textContent = BODI.money(Math.max(0, t.subtotal - discount) + t.shipping);
+  }
+
+  // Coupon: validated by the backend (rules, limits and dates are managed in the admin).
+  async function applyCoupon(code, silent) {
+    code = (code || "").trim().toUpperCase();
+    if (!code) {
+      couponInfo = null;
+      localStorage.removeItem("bodi_coupon");
+      renderSummary();
+      return;
+    }
+    try {
+      const r = await BODI_API.validateCoupon(code, STORE.cartTotals().subtotal);
+      if (r.valid) {
+        couponInfo = r;
+        localStorage.setItem("bodi_coupon", r.code);
+        if (!silent) STORE.toast(r.message, "local_activity");
+      } else {
+        couponInfo = null;
+        localStorage.removeItem("bodi_coupon");
+        STORE.toast(r.message || "Promokod etibarsızdır", "error");
+      }
+    } catch (e) {
+      if (!silent) STORE.toast(e.message || "Promokod yoxlanıla bilmədi", "error");
+    }
+    renderSummary();
+  }
+  const promoInput = document.getElementById("co-promo");
+  promoInput.value = localStorage.getItem("bodi_coupon") || "";
+  document.getElementById("co-promo-form").addEventListener("submit", (e) => { e.preventDefault(); applyCoupon(promoInput.value); });
+  renderSummary();
+  if (promoInput.value) applyCoupon(promoInput.value, true);
+  window.addEventListener("bodi:products-updated", renderSummary);
+  window.addEventListener("bodi:settings-loaded", renderSummary);
 
   // Payment option toggle
   document.querySelectorAll(".pay-opt").forEach(opt => opt.addEventListener("click", () => {
@@ -234,7 +276,8 @@
         slug: prod ? prod.slug : "",
         qty: i.qty,
         size: i.size || "",
-        color: i.color || ""
+        color: i.color || "",
+        colorName: (prod && (prod.colors || []).find(c => c.slug === i.color) || {}).n || ""
       };
     });
 
@@ -259,15 +302,13 @@
       if (typeof checkoutFn === "function") {
         result = await checkoutFn(orderPayload);
       } else {
-        const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-        const apiBase = (window.BODI_API && window.BODI_API.API_BASE) || (isLocal ? 'http://localhost:8085' : 'https://api.bodi.az');
-        const r = await fetch(`${apiBase}/wp-json/bodi/v1/checkout`, {
+        const r = await fetch(`/api/v1/orders`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify(orderPayload)
         });
         result = await r.json();
-        if (!r.ok || result.code) {
+        if (!r.ok || result.error) {
           throw new Error(result.message || "Sifariş zamanı xəta baş verdi.");
         }
       }

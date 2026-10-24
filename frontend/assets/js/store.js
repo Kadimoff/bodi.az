@@ -42,18 +42,35 @@
 
   function cartCount() { return getCart().reduce((s, i) => s + i.qty, 0); }
 
+  // Variant-specific price (set per colour/size in the admin) wins over the product price.
+  function unitPrice(p, item) {
+    const v = (p.variants || []).find(v => v.color === item.color && v.size === item.size);
+    return v && v.price != null ? Number(v.price) : p.price;
+  }
+
   function cartDetailed() {
     return getCart().map((i, idx) => {
       const p = BODI.getById(i.id);
-      return { idx, item: i, product: p, line: p ? p.price * i.qty : 0 };
+      return { idx, item: i, product: p, line: p ? unitPrice(p, i) * i.qty : 0 };
     }).filter(x => x.product);
+  }
+
+  // Shipping rules come from the backend settings (admin → Tənzimləmələr); the
+  // server recomputes everything at checkout, this is only the preview.
+  function shippingRules() {
+    const s = global.BODI_API && global.BODI_API.settings;
+    return {
+      fee: s && s.shipping_fee != null ? Number(s.shipping_fee) : 5,
+      threshold: s && s.free_shipping_threshold != null ? Number(s.free_shipping_threshold) : 50
+    };
   }
 
   function cartTotals() {
     const rows = cartDetailed();
+    const rules = shippingRules();
     const subtotal = rows.reduce((s, r) => s + r.line, 0);
-    const shipping = subtotal === 0 ? 0 : (subtotal >= 50 ? 0 : 5);
-    return { subtotal, shipping, total: subtotal + shipping, freeShipRemaining: Math.max(0, 50 - subtotal) };
+    const shipping = subtotal === 0 ? 0 : (subtotal >= rules.threshold ? 0 : rules.fee);
+    return { subtotal, shipping, total: subtotal + shipping, freeShipRemaining: Math.max(0, rules.threshold - subtotal) };
   }
 
   /* ---------- WISHLIST ---------- */

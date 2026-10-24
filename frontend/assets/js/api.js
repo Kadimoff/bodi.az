@@ -1,21 +1,21 @@
 /* ==============================================================================
    Bodi.az — Headless E-Commerce API Service & Decoupled Architecture
-   
+
    Architecture:
    - Facade: BODI_API provides a platform-agnostic e-commerce client.
-   - Adapter: WooCommerceAdapter translates between WordPress/WooCommerce REST APIs
-     and Bodi canonical domain models.
-   - Decoupling: If backend changes in the future (e.g., Medusa, Shopify, custom API),
-     only the adapter needs to be replaced. All UI templates remain 100% agnostic.
+   - Adapter: BodiAdapter talks to Bodi's own backend (/api/v1). The backend
+     already returns the canonical storefront models, so no translation layer
+     is needed beyond keeping the shared BODI catalog arrays in sync.
+   - Decoupling: All UI templates call the facade only; swapping the backend
+     means replacing the adapter, nothing else.
    ============================================================================== */
 (function (global) {
   "use strict";
 
-  // 1. Configuration
-  const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-  const DEFAULT_API_URL = isLocal ? 'http://localhost:8085' : 'https://api.bodi.az';
-  const API_BASE = (window.BODI_CONFIG && window.BODI_CONFIG.apiUrl) || DEFAULT_API_URL;
-  const WHATSAPP_NUMBER = (window.BODI_CONFIG && window.BODI_CONFIG.whatsapp) || "994501234567";
+  // 1. Configuration — same origin by default (nginx proxies /api to the backend)
+  const API_BASE = ((window.BODI_CONFIG && window.BODI_CONFIG.apiUrl) || "").replace(/\/+$/, "");
+  const API = API_BASE + "/api/v1";
+  let WHATSAPP_NUMBER = (window.BODI_CONFIG && window.BODI_CONFIG.whatsapp) || "994501234567";
 
   function getHeaders() {
     return {
@@ -24,194 +24,97 @@
     };
   }
 
-  // 2. Canonical Model Transformer
-  // Transforms WooCommerce Store API product into Bodi Universal Product Model
-  function transformProduct(p) {
-    const div = Math.pow(10, (p.prices && p.prices.currency_minor_unit) || 2);
-    const rawPrice = p.prices ? Number(p.prices.price) / div : 0;
-    const rawRegular = p.prices ? Number(p.prices.regular_price) / div : 0;
-    const isSale = rawRegular > rawPrice && rawPrice > 0;
-
-    // Categories
-    const categories = (p.categories || []).map(c => ({
-      id: c.id,
-      slug: c.slug,
-      name: c.name
-    }));
-    const catSlug = (categories[0] && categories[0].slug) || "bodi";
-
-    // Dynamic Attributes Extraction (Colors, Material, Sizes)
-    const attrs = p.attributes || [];
-
-    // Colors: support pa_color, pa_reng, Rəng, Color, etc.
-    const colorAttr = attrs.find(a => {
-      const n = (a.name || "").toLowerCase();
-      return n === "rəng" || n === "reng" || n === "color" || n === "colour" ||
-             a.taxonomy === "pa_color" || a.taxonomy === "pa_reng";
-    });
-
-    let productColors = [];
-    const rawColorTokens = [];
-
-    if (colorAttr && Array.isArray(colorAttr.terms) && colorAttr.terms.length > 0) {
-      colorAttr.terms.forEach(t => {
-        const raw = t.name || t.slug || "";
-        raw.split("|").forEach(item => {
-          const trimmed = item.trim();
-          if (trimmed && !rawColorTokens.includes(trimmed)) rawColorTokens.push(trimmed);
-        });
-      });
-    } else if (colorAttr && Array.isArray(colorAttr.options) && colorAttr.options.length > 0) {
-      colorAttr.options.forEach(opt => {
-        const raw = typeof opt === "string" ? opt : (opt.name || "");
-        raw.split("|").forEach(item => {
-          const trimmed = item.trim();
-          if (trimmed && !rawColorTokens.includes(trimmed)) rawColorTokens.push(trimmed);
-        });
-      });
+  async function request(path, options) {
+    const res = await fetch(API + path, Object.assign({ headers: getHeaders() }, options || {}));
+    let data = null;
+    try { data = await res.json(); } catch (e) { /* empty body */ }
+    if (!res.ok || (data && data.error)) {
+      const err = new Error((data && data.message) || ("API HTTP " + res.status));
+      err.status = res.status;
+      err.code = data && data.code;
+      throw err;
     }
-
-    if (rawColorTokens.length > 0) {
-      productColors = rawColorTokens.map(token => {
-        const resolved = global.BODI ? global.BODI.resolveColor(token) : { slug: token, n: token, b: "#f1ede7" };
-        return {
-          slug: resolved.slug,
-          n: resolved.n,
-          b: resolved.b,
-          a: resolved.a,
-          label: resolved.label
-        };
-      });
-    }
-
-    if (productColors.length === 0) {
-      const fallbackKey = p.color || "cream";
-      const resolved = global.BODI ? global.BODI.resolveColor(fallbackKey) : { slug: fallbackKey, n: "Krem", b: "#f1ede7" };
-      productColors = [resolved];
-    }
-
-    const primaryColor = productColors[0].slug;
-
-    // Sizes: support pa_size, pa_olcu, Ölçü, Size, etc.
-    const sizeAttr = attrs.find(a => {
-      const n = (a.name || "").toLowerCase();
-      return n === "ölçü" || n === "olcu" || n === "size" ||
-             a.taxonomy === "pa_size" || a.taxonomy === "pa_olcu";
-    });
-
-    let productSizes = [];
-    if (sizeAttr && Array.isArray(sizeAttr.terms) && sizeAttr.terms.length > 0) {
-      sizeAttr.terms.forEach(t => {
-        const raw = t.name || t.slug || "";
-        raw.split("|").forEach(item => {
-          const trimmed = item.trim();
-          if (trimmed && !productSizes.includes(trimmed)) productSizes.push(trimmed);
-        });
-      });
-    } else if (sizeAttr && Array.isArray(sizeAttr.options) && sizeAttr.options.length > 0) {
-      sizeAttr.options.forEach(opt => {
-        const raw = typeof opt === "string" ? opt : (opt.name || "");
-        raw.split("|").forEach(item => {
-          const trimmed = item.trim();
-          if (trimmed && !productSizes.includes(trimmed)) productSizes.push(trimmed);
-        });
-      });
-    }
-    if (productSizes.length === 0) {
-      productSizes = (global.BODI && global.BODI.SIZES) ? global.BODI.SIZES : ["0-3 ay", "3-6 ay", "6-9 ay", "9-12 ay", "12-18 ay"];
-    }
-
-    // Material
-    const matAttr = attrs.find(a => {
-      const n = (a.name || "").toLowerCase();
-      return n === "material" || a.taxonomy === "pa_material";
-    });
-    const material = (matAttr && matAttr.terms && matAttr.terms[0] && matAttr.terms[0].name) ||
-                     (matAttr && matAttr.options && matAttr.options[0]) ||
-                     "100% Orqanik Pambıq";
-
-    const cleanDesc = (p.description || p.short_description || "")
-      .replace(/<[^>]*>?/gm, "").trim();
-
-    // Image handling: WP media upload or local high-res fallback
-    let imgSrc = "";
-    let galleryImages = [];
-    if (p.images && p.images.length > 0) {
-      imgSrc = p.images[0].src;
-      galleryImages = p.images.map(img => img.src);
-    } else {
-      imgSrc = `assets/images/products/${p.slug}.jpg`;
-      galleryImages = [imgSrc];
-    }
-
-    return {
-      id: p.id,
-      slug: p.slug,
-      name: p.name,
-      cat: catSlug,
-      categories: categories,
-      material: material,
-      price: rawPrice,
-      old: isSale ? rawRegular : null,
-      color: primaryColor,
-      colors: productColors,
-      sizes: productSizes,
-      image: imgSrc,
-      images: galleryImages,
-      rating: Math.round(Number(p.average_rating) || 5),
-      reviews: Number(p.review_count) || 24,
-      badge: isSale ? `-${Math.round((1 - rawPrice / rawRegular) * 100)}%` : (p.on_sale ? "Endirim" : (p.is_new ? "Yeni" : "")),
-      isNew: !isSale,
-      desc: cleanDesc,
-      inStock: p.is_in_stock !== false,
-      sku: p.sku || p.slug,
-      wpProduct: p
-    };
+    return data;
   }
 
-  // 3. WooCommerce Adapter Implementation
-  const WooCommerceAdapter = {
+  // Replace array contents in place: products.js helpers (getBySlug, getById,
+  // getByCat, related…) close over the original arrays, so reassigning
+  // BODI.PRODUCTS would leave them reading the static fallback catalog.
+  function replaceInPlace(target, items) {
+    target.splice(0, target.length, ...items);
+    return target;
+  }
+
+  // 2. Canonical model passthrough (kept for templates that call transformProduct)
+  function transformProduct(p) {
+    if (!p) return p;
+    const colors = Array.isArray(p.colors) && p.colors.length
+      ? p.colors.map(c => (c && c.b) ? c : (global.BODI ? global.BODI.resolveColor(c) : c))
+      : [global.BODI ? global.BODI.resolveColor(p.color || "cream") : { slug: "cream", n: "Krem", b: "#f1ede7" }];
+    return Object.assign({}, p, {
+      colors: colors,
+      color: p.color || (colors[0] && colors[0].slug) || "cream",
+      sizes: (Array.isArray(p.sizes) && p.sizes.length) ? p.sizes : ((global.BODI && global.BODI.SIZES) || []),
+      images: (Array.isArray(p.images) && p.images.length) ? p.images : [p.image],
+      reviews: Number(p.reviews) || 0
+    });
+  }
+
+  // 3. Bodi backend adapter
+  const BodiAdapter = {
+    settings: null,
+
+    async fetchSettings() {
+      try {
+        const s = await request("/settings");
+        BodiAdapter.settings = s;
+        if (s && s.whatsapp) {
+          WHATSAPP_NUMBER = s.whatsapp;
+          apiFacade.WHATSAPP_NUMBER = s.whatsapp;
+        }
+        window.dispatchEvent(new CustomEvent("bodi:settings-loaded", { detail: s }));
+        return s;
+      } catch (err) {
+        console.warn("[Bodi API] Settings unavailable:", err.message);
+        return null;
+      }
+    },
+
     // Products
     async fetchProducts() {
       try {
-        const res = await fetch(`${API_BASE}/wp-json/wc/store/v1/products?per_page=100`, {
-          headers: getHeaders()
-        });
-        if (!res.ok) throw new Error("WP API HTTP " + res.status);
-        const data = await res.json();
+        const data = await request("/products");
         if (Array.isArray(data) && data.length > 0) {
           const mapped = data.map(transformProduct);
           if (global.BODI) {
-            global.BODI.PRODUCTS = mapped;
-            window.dispatchEvent(new CustomEvent("bodi:products-updated", { detail: mapped }));
+            replaceInPlace(global.BODI.PRODUCTS, mapped);
+            window.dispatchEvent(new CustomEvent("bodi:products-updated", { detail: global.BODI.PRODUCTS }));
           }
           return mapped;
         }
       } catch (err) {
-        console.warn("[Bodi API] WordPress API offline, using fallback catalog:", err.message);
+        console.warn("[Bodi API] Backend offline, using fallback catalog:", err.message);
       }
       return global.BODI ? global.BODI.PRODUCTS : [];
+    },
+
+    async fetchProduct(slug) {
+      return transformProduct(await request("/products/" + encodeURIComponent(slug)));
     },
 
     // Categories
     async fetchCategories() {
       try {
-        const res = await fetch(`${API_BASE}/wp-json/wc/store/v1/products/categories`, {
-          headers: getHeaders()
-        });
-        if (!res.ok) throw new Error("WP API HTTP " + res.status);
-        const data = await res.json();
+        const data = await request("/categories");
         if (Array.isArray(data) && data.length > 0) {
           if (global.BODI && global.BODI.CAT_NAMES) {
-            data.forEach(c => {
-              global.BODI.CAT_NAMES[c.slug] = c.name;
-            });
+            data.forEach(c => { global.BODI.CAT_NAMES[c.slug] = c.name; });
             window.dispatchEvent(new CustomEvent("bodi:categories-updated", { detail: data }));
           }
           return data;
         }
       } catch (err) {
-        console.warn("[Bodi API] Could not fetch categories from WP:", err.message);
+        console.warn("[Bodi API] Could not fetch categories:", err.message);
       }
       return [];
     },
@@ -219,33 +122,22 @@
     // Reviews
     async fetchReviews(productId) {
       try {
-        const url = `${API_BASE}/wp-json/bodi/v1/reviews${productId ? '?product_id=' + encodeURIComponent(productId) : ''}`;
-        const res = await fetch(url, { headers: getHeaders() });
-        if (!res.ok) throw new Error("API HTTP " + res.status);
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          if (!productId && global.BODI) {
-            global.BODI.REVIEWS = data;
-            window.dispatchEvent(new CustomEvent("bodi:reviews-updated", { detail: data }));
+        const data = await request("/reviews" + (productId ? "?product_id=" + encodeURIComponent(productId) : ""));
+        if (Array.isArray(data)) {
+          if (!productId && global.BODI && data.length > 0) {
+            replaceInPlace(global.BODI.REVIEWS, data);
+            window.dispatchEvent(new CustomEvent("bodi:reviews-updated", { detail: global.BODI.REVIEWS }));
           }
           return data;
         }
       } catch (err) {
-        console.warn("[Bodi API] Error fetching reviews from WP:", err.message);
+        console.warn("[Bodi API] Error fetching reviews:", err.message);
       }
       return (!productId && global.BODI) ? global.BODI.REVIEWS : [];
     },
 
     async submitReview(payload) {
-      const res = await fetch(`${API_BASE}/wp-json/bodi/v1/reviews`, {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (!res.ok || data.code) {
-        throw new Error(data.message || "Rəy göndərilə bilmədi.");
-      }
+      const data = await request("/reviews", { method: "POST", body: JSON.stringify(payload) });
       if (data.review && global.BODI && Array.isArray(global.BODI.REVIEWS)) {
         const exists = global.BODI.REVIEWS.some(r => r.id === data.review.id);
         if (!exists) {
@@ -258,58 +150,36 @@
 
     // Orders & Checkout
     async submitCheckout(payload) {
-      const res = await fetch(`${API_BASE}/wp-json/bodi/v1/checkout`, {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (!res.ok || data.code) {
-        throw new Error(data.message || "Sifariş zamanı xəta baş verdi.");
-      }
-      return data;
+      return request("/orders", { method: "POST", body: JSON.stringify(payload) });
     },
 
-    async trackOrder(orderId) {
-      const res = await fetch(`${API_BASE}/wp-json/bodi/v1/track-order?order_id=${encodeURIComponent(orderId)}`, {
-        headers: getHeaders()
-      });
-      const data = await res.json();
-      if (!res.ok || data.code) {
-        throw new Error(data.message || "Sifariş tapılmadı.");
-      }
-      return data;
+    async trackOrder(orderId, phone) {
+      const q = "?order_id=" + encodeURIComponent(orderId) + (phone ? "&phone=" + encodeURIComponent(phone) : "");
+      return request("/orders/track" + q);
+    },
+
+    async validateCoupon(code, subtotal) {
+      return request("/coupons/validate", { method: "POST", body: JSON.stringify({ code: code, subtotal: subtotal }) });
     },
 
     // Blog
     async fetchPosts() {
       try {
-        const res = await fetch(`${API_BASE}/wp-json/wp/v2/posts?_embed&per_page=20`, {
-          headers: getHeaders()
-        });
-        if (!res.ok) throw new Error("WP Posts API error");
-        const data = await res.json();
-        return data.map(post => {
-          let catName = "Geyim";
-          if (post._embedded && post._embedded['wp:term'] && post._embedded['wp:term'][0] && post._embedded['wp:term'][0][0]) {
-            catName = post._embedded['wp:term'][0][0].name;
-          }
-          let featuredImg = "";
-          if (post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0]) {
-            featuredImg = post._embedded['wp:featuredmedia'][0].source_url;
-          }
-          return {
-            id: post.id,
-            slug: post.slug,
-            title: post.title.rendered,
-            cat: catName,
-            excerpt: post.excerpt.rendered.replace(/<[^>]*>?/gm, "").trim(),
-            content: post.content.rendered,
-            date: new Date(post.date).toLocaleDateString("az-AZ", { day: 'numeric', month: 'short', year: 'numeric' }),
-            image: featuredImg,
-            read: 5
-          };
-        });
+        const data = await request("/posts");
+        return (data || []).map(post => ({
+          id: post.id,
+          slug: post.slug,
+          title: post.title,
+          cat: post.cat || "Geyim",
+          excerpt: post.excerpt,
+          content: post.content,
+          date: post.date,
+          image: post.cardImage || post.image,
+          imageLarge: post.image,
+          imageAlt: post.imageAlt,
+          read: post.read || 3,
+          publishedAt: post.publishedAt
+        }));
       } catch (err) {
         console.warn("[Bodi API] Error fetching posts:", err.message);
         return [];
@@ -318,21 +188,12 @@
 
     // Contact
     async submitContact(payload) {
-      const res = await fetch(`${API_BASE}/wp-json/bodi/v1/contact`, {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (!res.ok || data.code) {
-        throw new Error(data.message || "Mesaj göndərilə bilmədi.");
-      }
-      return data;
+      return request("/contact", { method: "POST", body: JSON.stringify(payload) });
     },
 
     // Homepage & Dynamic Content
     async fetchHomepage() {
-      // 1. Instant Cache retrieval
+      // 1. Instant cache retrieval
       try {
         const cached = localStorage.getItem("bodi_homepage_data");
         if (cached) {
@@ -346,11 +207,7 @@
 
       // 2. Network fetch
       try {
-        const res = await fetch(`${API_BASE}/wp-json/bodi/v1/homepage`, {
-          headers: getHeaders()
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
+        const json = await request("/homepage");
         if (json && json.success && json.data) {
           global.BODI_HOMEPAGE = json.data;
           try {
@@ -366,37 +223,26 @@
       return global.BODI_HOMEPAGE || null;
     },
 
-    async updateHomepage(payload) {
-      const res = await fetch(`${API_BASE}/wp-json/bodi/v1/homepage`, {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (!res.ok || data.code) {
-        throw new Error(data.message || "Yenilənmə xətası baş verdi.");
-      }
-      if (data && data.data) {
-        global.BODI_HOMEPAGE = data.data;
-        try {
-          localStorage.setItem("bodi_homepage_data", JSON.stringify(data.data));
-        } catch (e) {}
-        window.dispatchEvent(new CustomEvent("bodi:homepage-updated", { detail: data.data }));
-      }
-      return data;
+    async fetchSeo(type, slug) {
+      return request("/seo?type=" + encodeURIComponent(type) + "&slug=" + encodeURIComponent(slug || ""));
     }
   };
 
   // 4. WhatsApp Direct Buy Integrations
+  function productLink(origin, slug) {
+    return `${origin}/product.html?p=${encodeURIComponent(slug)}`;
+  }
+
   function getWhatsAppBuyUrl(product, size, color, qty) {
     const count = qty || 1;
     const origin = (typeof window !== 'undefined' && window.location.origin) || "https://bodi.az";
     const slug = product.slug || product.id || "bodi";
-    const pageUrl = `${origin}/product.html?slug=${encodeURIComponent(slug)}`;
+    const pageUrl = productLink(origin, slug);
     const priceText = product.price ? product.price + " ₼" : "";
     const totalLine = product.price ? (Number(product.price) * count).toFixed(2) + " ₼" : "";
-    const colorLabel = (typeof color === 'object' ? color.n : color) || "";
-    
+    const colorObj = typeof color === 'object' ? color : (product.colors || []).find(c => c.slug === color);
+    const colorLabel = (colorObj && colorObj.n) || color || "";
+
     let msg = `Salam, Bodi.az saytından bu məhsulu sifariş etmək istəyirəm:\n\n`;
     msg += `🛍️ *Məhsul:* ${product.name}\n`;
     msg += `🔗 *Məhsul Linki:* ${pageUrl}\n`;
@@ -420,8 +266,9 @@
     cartItems.forEach((it, idx) => {
       const p = it.product;
       const slug = p.slug || p.id;
-      const link = `${origin}/product.html?slug=${encodeURIComponent(slug)}`;
-      const colorLabel = (typeof it.item.color === 'object' ? it.item.color.n : it.item.color) || '';
+      const link = productLink(origin, slug);
+      const colorObj = typeof it.item.color === 'object' ? it.item.color : (p.colors || []).find(c => c.slug === it.item.color);
+      const colorLabel = (colorObj && colorObj.n) || it.item.color || '';
       msg += `*${idx + 1}. ${p.name}*\n`;
       msg += `   🔗 Link: ${link}\n`;
       msg += `   📦 Detallar: ${it.item.qty} ədəd${it.item.size ? ' | Ölçü: ' + it.item.size : ''}${colorLabel ? ' | Rəng: ' + colorLabel : ''}\n`;
@@ -443,8 +290,8 @@
     msg += `📍 *Ünvan:* ${orderData.city ? orderData.city + ', ' : ''}${orderData.address}\n\n`;
     msg += `*Sifariş edilən məhsullar:*\n`;
     (orderData.items || []).forEach((it, idx) => {
-      const link = it.slug ? `${origin}/product.html?slug=${encodeURIComponent(it.slug)}` : '';
-      msg += `${idx + 1}. ${it.name || it.slug} — ${it.qty} ədəd${it.size ? ' (' + it.size + ')' : ''}${it.color ? ' (' + it.color + ')' : ''}\n`;
+      const link = it.slug ? productLink(origin, it.slug) : '';
+      msg += `${idx + 1}. ${it.name || it.slug} — ${it.qty} ədəd${it.size ? ' (' + it.size + ')' : ''}${it.colorName || it.color ? ' (' + (it.colorName || it.color) + ')' : ''}\n`;
       if (link) msg += `   🔗 Link: ${link}\n`;
     });
     msg += `\n💰 *Yekun Məbləğ:* ${Number(orderData.total || 0).toFixed(2)} ₼\n`;
@@ -453,45 +300,53 @@
   }
 
   // 5. Global API Facade (Decoupled Interface)
-  // This provides standardized modules so switching backends only requires changing WooCommerceAdapter
   const apiFacade = {
-    version: "2.1.0",
+    version: "3.0.0",
     API_BASE,
     WHATSAPP_NUMBER,
-    driver: "woocommerce",
-    adapter: WooCommerceAdapter,
+    driver: "bodi",
+    adapter: BodiAdapter,
+    get settings() { return BodiAdapter.settings; },
 
     // Domain Modules
     products: {
-      list: () => WooCommerceAdapter.fetchProducts(),
+      list: () => BodiAdapter.fetchProducts(),
       get: (slugOrId) => {
         if (!global.BODI) return null;
         return global.BODI.getBySlug(slugOrId) || global.BODI.getById(slugOrId);
       },
-      categories: () => WooCommerceAdapter.fetchCategories()
+      fetch: (slug) => BodiAdapter.fetchProduct(slug),
+      categories: () => BodiAdapter.fetchCategories()
     },
 
     reviews: {
-      list: (productId) => WooCommerceAdapter.fetchReviews(productId),
-      submit: (payload) => WooCommerceAdapter.submitReview(payload)
+      list: (productId) => BodiAdapter.fetchReviews(productId),
+      submit: (payload) => BodiAdapter.submitReview(payload)
     },
 
     orders: {
-      checkout: (payload) => WooCommerceAdapter.submitCheckout(payload),
-      track: (orderId) => WooCommerceAdapter.trackOrder(orderId)
+      checkout: (payload) => BodiAdapter.submitCheckout(payload),
+      track: (orderId, phone) => BodiAdapter.trackOrder(orderId, phone)
+    },
+
+    coupons: {
+      validate: (code, subtotal) => BodiAdapter.validateCoupon(code, subtotal)
     },
 
     blog: {
-      list: () => WooCommerceAdapter.fetchPosts()
+      list: () => BodiAdapter.fetchPosts()
     },
 
     contact: {
-      submit: (payload) => WooCommerceAdapter.submitContact(payload)
+      submit: (payload) => BodiAdapter.submitContact(payload)
     },
 
     homepage: {
-      get: () => WooCommerceAdapter.fetchHomepage(),
-      update: (payload) => WooCommerceAdapter.updateHomepage(payload)
+      get: () => BodiAdapter.fetchHomepage()
+    },
+
+    seo: {
+      get: (type, slug) => BodiAdapter.fetchSeo(type, slug)
     },
 
     whatsapp: {
@@ -501,16 +356,16 @@
     },
 
     // Backward-compatible Top-level Methods
-    fetchProducts: () => WooCommerceAdapter.fetchProducts(),
-    fetchCategories: () => WooCommerceAdapter.fetchCategories(),
-    fetchReviews: (productId) => WooCommerceAdapter.fetchReviews(productId),
-    submitReview: (payload) => WooCommerceAdapter.submitReview(payload),
-    submitCheckout: (payload) => WooCommerceAdapter.submitCheckout(payload),
-    trackOrder: (orderId) => WooCommerceAdapter.trackOrder(orderId),
-    fetchPosts: () => WooCommerceAdapter.fetchPosts(),
-    submitContact: (payload) => WooCommerceAdapter.submitContact(payload),
-    fetchHomepage: () => WooCommerceAdapter.fetchHomepage(),
-    updateHomepage: (payload) => WooCommerceAdapter.updateHomepage(payload),
+    fetchProducts: () => BodiAdapter.fetchProducts(),
+    fetchCategories: () => BodiAdapter.fetchCategories(),
+    fetchReviews: (productId) => BodiAdapter.fetchReviews(productId),
+    submitReview: (payload) => BodiAdapter.submitReview(payload),
+    submitCheckout: (payload) => BodiAdapter.submitCheckout(payload),
+    trackOrder: (orderId, phone) => BodiAdapter.trackOrder(orderId, phone),
+    validateCoupon: (code, subtotal) => BodiAdapter.validateCoupon(code, subtotal),
+    fetchPosts: () => BodiAdapter.fetchPosts(),
+    submitContact: (payload) => BodiAdapter.submitContact(payload),
+    fetchHomepage: () => BodiAdapter.fetchHomepage(),
     getWhatsAppBuyUrl,
     getWhatsAppCartUrl,
     getWhatsAppOrderUrl,
@@ -523,11 +378,12 @@
   }
 
   // Auto-fetch data on initialization
-  WooCommerceAdapter.fetchProducts();
-  WooCommerceAdapter.fetchCategories();
-  WooCommerceAdapter.fetchReviews();
-  WooCommerceAdapter.fetchHomepage();
+  BodiAdapter.fetchSettings();
+  BodiAdapter.fetchProducts();
+  BodiAdapter.fetchCategories();
+  BodiAdapter.fetchReviews();
+  BodiAdapter.fetchHomepage();
 
-  console.log("[Bodi API] v2.2.0 ready (Driver: WooCommerce / Endpoint: " + API_BASE + ")");
+  console.log("[Bodi API] v3.0.0 ready (Driver: Bodi / Endpoint: " + API + ")");
 
 })(window);
