@@ -1,18 +1,19 @@
 name: bodi-ecommerce
 
 # Bodi.az: storefront (nginx) + own backend (Node.js/Fastify) + PostgreSQL.
-# Everything is reachable on one port: site /, admin /admin, API /api.
-# Secrets live in .env (see .env.example).
+# This file is the production stack (Coolify deploys it; the reverse proxy
+# routes the domain to the "frontend" service on port 80). Local development
+# settings — host port 7777, live-mounted files — are in docker-compose.override.yml.
+# Secrets come from the environment (.env locally, Coolify variables on the server).
 
 services:
   db:
     image: postgres:16-alpine
-    container_name: bodi-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-bodi}
       POSTGRES_USER: ${POSTGRES_USER:-bodi}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD .env faylında təyin edilməlidir}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD təyin edilməlidir}
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
@@ -20,15 +21,12 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
-    networks:
-      - bodi_network
 
   api:
     build:
-      context: ./backend
+      context: .
+      dockerfile: backend/Dockerfile
       network: host
-    image: bodi-api:latest
-    container_name: bodi-api
     restart: unless-stopped
     depends_on:
       db:
@@ -39,34 +37,19 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-bodi}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-bodi}
       SITE_URL: ${SITE_URL:-https://bodi.az}
       ADMIN_ROOT_USERNAME: ${ADMIN_ROOT_USERNAME:-root}
-      ADMIN_ROOT_PASSWORD: ${ADMIN_ROOT_PASSWORD:?ADMIN_ROOT_PASSWORD .env faylında təyin edilməlidir}
-      COOKIE_SECURE: ${COOKIE_SECURE:-false}
-      FRONTEND_DIR: /app/frontend
-      UPLOADS_DIR: /app/uploads
+      ADMIN_ROOT_PASSWORD: ${ADMIN_ROOT_PASSWORD:?ADMIN_ROOT_PASSWORD təyin edilməlidir}
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
     volumes:
       - uploads:/app/uploads
-      - ./frontend:/app/frontend:ro
-    networks:
-      - bodi_network
 
   frontend:
-    image: nginx:1.27-alpine
-    container_name: bodi-frontend
+    build:
+      context: ./frontend
     restart: unless-stopped
     depends_on:
       - api
-    ports:
-      - "${PUBLIC_PORT:-7777}:80"
     volumes:
-      - ./frontend:/usr/share/nginx/html:ro
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - uploads:/srv/uploads:ro
-    networks:
-      - bodi_network
-
-networks:
-  bodi_network:
-    driver: bridge
 
 volumes:
   pg_data:

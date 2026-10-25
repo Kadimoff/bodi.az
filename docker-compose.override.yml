@@ -1,0 +1,22 @@
+# Local development (merged automatically by `docker compose up`):
+# site on http://localhost:7777 and storefront files mounted live, so HTML/JS
+# edits show up without rebuilding.
+services:
+  db:
+    container_name: bodi-postgres
+
+  api:
+    container_name: bodi-api
+    image: bodi-api:latest
+    environment:
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    volumes:
+      - ./frontend:/app/frontend:ro
+
+  frontend:
+    container_name: bodi-frontend
+    ports:
+      - "${PUBLIC_PORT:-7777}:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro

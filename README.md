@@ -100,11 +100,16 @@ docker compose logs -f api
 
 PostgreSQL məlumatları `pg_data` volume-unda, yüklənən şəkillər isə `uploads` volume-unda saxlanılır.
 
-## Canlıya çıxarma
+## Canlıya çıxarma (Coolify)
 
-1. `.env` faylında:
-   - `SITE_URL=https://bodi.az`
-   - `COOKIE_SECURE=true` (admin cookie-si yalnız HTTPS ilə göndərilir)
-   - güclü `POSTGRES_PASSWORD`
-2. Serverdəki reverse proxy (HTTPS) bütün trafiki `http://127.0.0.1:7777` ünvanına yönləndirsin. Ayrıca `api.bodi.az` lazım deyil, çünki API eyni domendə `/api` altında işləyir.
-3. `docker compose up -d --build`
+`docker-compose.yml` production üçündür; `docker-compose.override.yml` yalnız lokal inkişafda işləyir (7777 portu, faylların canlı qoşulması).
+
+Coolify-da tətbiq belə qurulub:
+- **Build pack:** Docker Compose. **Fayl:** `/docker-compose.yml`. **Branch:** `main`.
+- **Domen:** `frontend` servisinə `https://bodi.az` və `https://www.bodi.az`. Traefik SSL-i özü alır.
+- **Mühit dəyişənləri:**
+  - `POSTGRES_PASSWORD` və `ADMIN_ROOT_PASSWORD` (mütləq);
+  - `SITE_URL` (standart `https://bodi.az`) və `COOKIE_SECURE` (standart `true`).
+- Yeni versiya: GitHub-a push → Coolify-da **Redeploy**. Verilənlər bazası və şəkillər volume-larda qalır.
+
+Cloudflare: `bodi.az` və `www` qeydləri serverin IP-sinə proxied olaraq yönləndirilib. SSL/TLS rejimi **Full** və ya **Full (strict)** olmalıdır (Flexible yönləndirmə dövrünə səbəb olur).
