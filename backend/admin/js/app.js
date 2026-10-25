@@ -89,7 +89,7 @@ function Login({ onLogin }) {
   return html`<div class="login-wrap">
     <form class="card login-card" onSubmit=${submit}>
       <div class="card-body stack" style="padding:28px">
-        <div class="brand"><div class="brand-logo" style="color:#fff">B</div><div><b>Bodi.az</b><small>İdarəetmə paneli</small></div></div>
+        <div class="brand"><img class="brand-logo" src="/admin/logo.png" alt="Bodi.az" /><div><b>Bodi.az</b><small>İdarəetmə paneli</small></div></div>
         ${error && html`<${Alert} type="danger">${error}</${Alert}>`}
         <${Field} label="İstifadəçi adı"><${Input} value=${form.username} onInput=${(v) => setForm({ ...form, username: v })} autocomplete="username" autofocus required /></${Field}>
         <${Field} label="Şifrə"><${Input} type="password" value=${form.password} onInput=${(v) => setForm({ ...form, password: v })} autocomplete="current-password" required /></${Field}>
@@ -107,7 +107,7 @@ function Sidebar({ path, badges, onNavigate }) {
   const isActive = (href) => href === best;
   const u = session.user;
   return html`<aside class="sidebar">
-    <a class="brand" href="#/" style="text-decoration:none"><div class="brand-logo">B</div><div><b>Bodi.az</b><small>İdarəetmə paneli</small></div></a>
+    <a class="brand" href="#/" style="text-decoration:none"><img class="brand-logo" src="/admin/logo-disc.png" alt="Bodi.az" /><div><b>Bodi.az</b><small>İdarəetmə paneli</small></div></a>
     ${NAV.map((g) => {
       const items = g.items.filter((it) => can(it[3]));
       if (!items.length) return null;

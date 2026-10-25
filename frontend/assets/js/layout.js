@@ -29,7 +29,15 @@
   const header = `
   <header class="bg-surface sticky top-0 z-40 shadow-sm w-full">
     <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
-      <a class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tight" href="index.html">Bodi.az</a>
+      <div class="flex items-center gap-1">
+        <button type="button" data-drawer-open aria-label="Menyunu aç" aria-controls="mobile-drawer" aria-expanded="false" class="md:hidden -ml-2 p-2 text-primary hover:bg-surface-container-low rounded-full transition-colors">
+          <span class="material-symbols-outlined" style="font-size:28px">menu</span>
+        </button>
+        <a class="flex items-center gap-2 md:gap-2.5 font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tight" href="index.html" aria-label="Bodi.az — ana səhifə">
+          <img src="assets/images/brand/logo-160.png" alt="Bodi.az loqosu" width="56" height="56" class="w-11 h-11 md:w-14 md:h-14 flex-shrink-0" decoding="async">
+          <span>Bodi.az</span>
+        </a>
+      </div>
       <nav class="hidden md:flex items-center gap-md">
         ${NAV.map(navLink).join("")}
       </nav>
@@ -50,7 +58,10 @@
   <footer class="bg-surface-container-low w-full pt-xl pb-32 md:pb-xl mt-xl border-t border-surface-dim/20">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-md px-gutter max-w-container-max mx-auto">
       <div class="space-y-4 col-span-1">
-        <span class="font-headline-md text-headline-md text-primary">Bodi.az</span>
+        <a href="index.html" class="flex items-center gap-2.5 font-headline-md text-headline-md text-primary">
+          <img src="assets/images/brand/logo-160.png" alt="Bodi.az loqosu" width="48" height="48" class="w-12 h-12 flex-shrink-0" loading="lazy" decoding="async">
+          <span>Bodi.az</span>
+        </a>
         <p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs">Körpələrinizin rahatlığı və təhlükəsizliyi üçün ən yaxşı materiallardan hazırlanmış geyimlər. Nurtured Comfort.</p>
         <div class="flex gap-3 pt-2 text-on-surface-variant">
           <a href="#" class="hover:text-primary transition-colors"><span class="material-symbols-outlined">photo_camera</span></a>
@@ -115,6 +126,121 @@
       </a>`).join("")}
   </nav>`;
 
+  /* ---------- Mobile drawer (burger menu) ---------- */
+  const STATIC_CATS = [
+    { slug: "bodi", name: "Bodilər" },
+    { slug: "tulum", name: "Tulumlar" },
+    { slug: "dest", name: "Dəstlər" }
+  ];
+
+  function isCurrent(href) {
+    return href === currentFull || (!href.includes("?") && path === href);
+  }
+
+  function drawerLink(href, label, icon, extra) {
+    const on = isCurrent(href);
+    return `<a href="${href}" class="flex items-center gap-3 px-3 py-3 rounded-xl transition-colors ${on ? "bg-primary-fixed/40 text-primary font-bold" : "text-on-surface hover:bg-surface-container-low"}"${on ? ' aria-current="page"' : ""}>
+      <span class="material-symbols-outlined text-primary ${on ? "ms-fill" : ""}" style="font-size:22px">${icon}</span>
+      <span class="flex-1 font-body-md text-body-md">${label}</span>
+      ${extra || '<span class="material-symbols-outlined text-outline" style="font-size:20px">chevron_right</span>'}
+    </a>`;
+  }
+
+  function categoryLinks(cats) {
+    return cats.map(c => drawerLink(
+      "category.html?cat=" + encodeURIComponent(c.slug),
+      c.name,
+      "checkroom",
+      c.count != null ? `<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">${c.count}</span>` : ""
+    )).join("");
+  }
+
+  const drawer = `
+  <div id="mobile-drawer" class="fixed inset-0 z-[60] md:hidden pointer-events-none" aria-hidden="true">
+    <div data-drawer-close class="absolute inset-0 bg-on-surface/40 opacity-0 transition-opacity duration-300" data-drawer-overlay></div>
+    <aside role="dialog" aria-modal="true" aria-label="Menyu" class="absolute left-0 top-0 h-full w-[86%] max-w-[340px] bg-surface shadow-2xl -translate-x-full transition-transform duration-300 ease-out flex flex-col" data-drawer-panel>
+      <div class="flex items-center justify-between px-4 h-20 border-b border-surface-variant/60 flex-shrink-0">
+        <a href="index.html" class="flex items-center gap-2 font-headline-md text-headline-md text-primary">
+          <img src="assets/images/brand/logo-160.png" alt="Bodi.az loqosu" width="40" height="40" class="w-10 h-10">
+          <span>Bodi.az</span>
+        </a>
+        <button type="button" data-drawer-close aria-label="Menyunu bağla" class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors">
+          <span class="material-symbols-outlined" style="font-size:26px">close</span>
+        </button>
+      </div>
+      <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-5" aria-label="Mobil menyu">
+        <div>
+          <p class="px-3 mb-1 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Kateqoriyalar</p>
+          <div data-drawer-cats>${categoryLinks(STATIC_CATS)}</div>
+          ${drawerLink("category.html", "Bütün məhsullar", "grid_view")}
+        </div>
+        <div>
+          <p class="px-3 mb-1 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Kolleksiyalar</p>
+          ${drawerLink("category.html?filter=new", "Yeni kolleksiya", "new_releases")}
+          ${drawerLink("category.html?filter=sale", "Endirim", "sell")}
+        </div>
+        <div>
+          <p class="px-3 mb-1 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Bodi.az</p>
+          ${drawerLink("reviews.html", "Müştəri rəyləri", "reviews")}
+          ${drawerLink("blog.html", "Bloq", "article")}
+          ${drawerLink("about.html", "Haqqımızda", "favorite")}
+          ${drawerLink("faq.html", "Tez-tez verilən suallar", "help")}
+          ${drawerLink("track-order.html", "Sifarişi izlə", "local_shipping")}
+          ${drawerLink("contact.html", "Əlaqə", "call")}
+        </div>
+      </nav>
+      <div class="p-4 border-t border-surface-variant/60 flex-shrink-0">
+        <a data-drawer-wa href="https://wa.me/994501234567" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white font-label-md text-label-md shadow-sm">
+          ${WA_LOGO_SVG.replace("fill-[#25D366]", "fill-white")} WhatsApp ilə yazın
+        </a>
+      </div>
+    </aside>
+  </div>`;
+
+  function setupDrawer() {
+    const root = document.getElementById("mobile-drawer");
+    if (!root) return;
+    const panel = root.querySelector("[data-drawer-panel]");
+    const overlay = root.querySelector("[data-drawer-overlay]");
+    const toggles = document.querySelectorAll("[data-drawer-open]");
+    let lastFocus = null;
+
+    function setOpen(open) {
+      root.classList.toggle("pointer-events-none", !open);
+      root.setAttribute("aria-hidden", open ? "false" : "true");
+      overlay.classList.toggle("opacity-0", !open);
+      panel.classList.toggle("-translate-x-full", !open);
+      document.body.style.overflow = open ? "hidden" : "";
+      toggles.forEach(t => t.setAttribute("aria-expanded", String(open)));
+      if (open) {
+        lastFocus = document.activeElement;
+        const wa = root.querySelector("[data-drawer-wa]");
+        const num = (window.BODI_API && window.BODI_API.WHATSAPP_NUMBER) || "994501234567";
+        if (wa) wa.href = "https://wa.me/" + num + "?text=" + encodeURIComponent("Salam, Bodi.az saytından məlumat almaq istəyirəm");
+        setTimeout(() => { const c = root.querySelector("button[data-drawer-close]"); if (c) c.focus(); }, 50);
+      } else if (lastFocus) {
+        lastFocus.focus();
+      }
+    }
+
+    toggles.forEach(t => t.addEventListener("click", () => setOpen(true)));
+    root.addEventListener("click", (e) => {
+      if (e.target.closest("[data-drawer-close]") || e.target.closest("a[href]")) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && root.getAttribute("aria-hidden") === "false") setOpen(false); });
+    window.matchMedia("(min-width: 768px)").addEventListener("change", (mq) => { if (mq.matches) setOpen(false); });
+
+    // Categories managed in the admin panel replace the static list
+    // (whether they arrived before or after the drawer was built).
+    function renderCats(list) {
+      const cats = (list || []).filter(c => c.count > 0 || STATIC_CATS.some(s => s.slug === c.slug));
+      const box = root.querySelector("[data-drawer-cats]");
+      if (box && cats.length) box.innerHTML = categoryLinks(cats);
+    }
+    renderCats(window.BODI_API && window.BODI_API.adapter && window.BODI_API.adapter.categories);
+    window.addEventListener("bodi:categories-updated", (e) => renderCats(e.detail));
+  }
+
   // Map page → mobile active key
   const MOB_KEY = {
     "index.html": "home",
@@ -128,6 +254,10 @@
     const f = document.getElementById("site-footer"); if (f) f.innerHTML = footer;
     const m = document.getElementById("mobile-nav");
     if (m) m.innerHTML = mobNav(MOB_KEY[path] || "");
+    if (h && !document.getElementById("mobile-drawer")) {
+      document.body.insertAdjacentHTML("beforeend", drawer);
+      setupDrawer();
+    }
 
     // Global click delegation: add-to-cart + wishlist
     document.addEventListener("click", (e) => {

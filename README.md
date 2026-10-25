@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="frontend/assets/images/brand/logo.png" alt="Bodi.az" width="140">
+</p>
+
 # Bodi.az — Körpə geyimləri mağazası
 
 Bodi.az körpə geyimləri onlayn mağazasıdır. Mağazanın öz backend-i və Strapi-yə bənzər admin paneli var (tam Azərbaycan dilində). Sayt, admin və API eyni portda işləyir.
@@ -83,6 +87,12 @@ docker compose up -d --build
 - Dinamik `sitemap.xml` (şəkillərlə). `noindex` qeyd olunan səhifələr sitemap-a düşmür.
 - Slug dəyişəndə köhnə URL avtomatik 301 ilə yeni URL-ə yönləndirilir. Tapılmayan məhsul və yazılar 404 status qaytarır.
 - Şəkillər avtomatik WebP-yə çevrilir (160/480/960/1600 px) və EXIF/GPS məlumatlarından təmizlənir. Alt mətni olmayan şəkillər admin paneldə göstərilir.
+
+## Brend faylları
+
+- **Əsas logo:** `frontend/assets/images/brand/logo.png` (şəffaf fon, 512 px). Header və footer-də `logo-160.png` istifadə olunur.
+- **Favicon və tətbiq ikonları:** `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` və `site.webmanifest` (`frontend/` kökündə). Kiçik ölçülərdə oxunaqlı olsun deyə logo ağ dairə üzərindədir.
+- **Paylaşım şəkli:** `frontend/assets/images/brand/og-default.jpg` (1200×630). WhatsApp, Facebook və Telegram önizləmələrində standart şəkil kimi istifadə olunur. SEO tənzimləmələrindən dəyişdirilə bilər.
 
 ## Faydalı əmrlər
 

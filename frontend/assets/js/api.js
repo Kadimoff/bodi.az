@@ -63,6 +63,7 @@
   // 3. Bodi backend adapter
   const BodiAdapter = {
     settings: null,
+    categories: null,
 
     async fetchSettings() {
       try {
@@ -107,6 +108,7 @@
       try {
         const data = await request("/categories");
         if (Array.isArray(data) && data.length > 0) {
+          BodiAdapter.categories = data;
           if (global.BODI && global.BODI.CAT_NAMES) {
             data.forEach(c => { global.BODI.CAT_NAMES[c.slug] = c.name; });
             window.dispatchEvent(new CustomEvent("bodi:categories-updated", { detail: data }));

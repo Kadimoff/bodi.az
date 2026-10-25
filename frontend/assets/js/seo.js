@@ -57,7 +57,7 @@
   }
 
   function fullImgUrl(src) {
-    if (!src) return `${BASE_URL}/assets/images/products/ag-pambiq-bodi.jpg`;
+    if (!src) return `${BASE_URL}/assets/images/brand/og-default.jpg`;
     if (src.startsWith('http')) return src;
     return `${BASE_URL}/${src.replace(/^\/+/, '')}`;
   }
