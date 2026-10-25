@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2.1.0">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.7.0">
 <script src="assets/js/tw-config.js?v=2.1.0"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
@@ -37,12 +37,14 @@
       <h1 style="margin:0;font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.02em;color:var(--on-surface);">Müştəri Rəyləri</h1>
       <p>Bodi.az ailəsinin üzvlərinin real təcrübələri. Hər rəy bizim üçün vacibdir.</p>
       
-      <div class="rv-summary flex-wrap">
-        <span class="rv-summary-stars" id="rv-summary-stars"></span>
-        <strong id="rv-avg">5.0</strong>
-        <span class="dot">·</span>
-        <span class="count"><span id="rv-count">0</span> rəy</span>
-        <button id="open-write-modal" class="ml-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm">
+      <div class="flex flex-wrap items-center justify-center gap-3 mt-[18px]">
+        <div class="rv-summary" style="margin-top:0">
+          <span class="rv-summary-stars" id="rv-summary-stars"></span>
+          <strong id="rv-avg">5.0</strong>
+          <span class="dot">·</span>
+          <span class="count"><span id="rv-count">0</span> rəy</span>
+        </div>
+        <button id="open-write-modal" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm">
           <span class="material-symbols-outlined" style="font-size:18px">rate_review</span> Rəy bildir
         </button>
       </div>
@@ -58,7 +60,7 @@
   </section>
 
   <section class="rv-section" style="background:transparent;padding-top:24px;">
-    <div class="rv-grid" id="rvGrid"></div>
+    <div class="rv-masonry" id="rvGrid"></div>
 
     <div style="max-width:1280px;margin:48px auto 0;padding:0 24px;text-align:center;">
       <a href="category.html?cat=bodi" class="inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-primary-container transition-colors shadow-sm">
@@ -124,11 +126,11 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/products.js?v=3.1.0"></script>
 <script src="assets/js/api.js?v=3.0.1"></script>
 <script src="assets/js/seo.js?v=3.0.0"></script>
 <script src="assets/js/store.js?v=3.0.0"></script>
-<script src="assets/js/layout.js?v=2.3.0"></script>
+<script src="assets/js/layout.js?v=2.5.0"></script>
 <script>
   (function () {
     if (typeof BODI === "undefined" || typeof BODI.reviewCard !== "function") return;
@@ -146,9 +148,9 @@
       const list = getFilteredReviews();
       const grid = document.getElementById("rvGrid");
       if (!list.length) {
-        grid.innerHTML = `<p class="col-span-full text-center py-12 text-on-surface-variant font-body-md">Bu kateqoriyada rəy tapılmadı.</p>`;
+        grid.innerHTML = `<p class="text-center py-12 text-on-surface-variant font-body-md" style="column-span:all">Bu kateqoriyada rəy tapılmadı.</p>`;
       } else {
-        grid.innerHTML = list.map(BODI.reviewCard).join("");
+        grid.innerHTML = list.map(BODI.reviewTile).join("");
       }
 
       // Summary

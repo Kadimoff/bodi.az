@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2.1.0">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.7.0">
 <script src="assets/js/tw-config.js?v=2.1.0"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
@@ -68,8 +68,8 @@
         </div>
 
         <form class="flex gap-2 mt-md" onsubmit="return false">
-          <input id="promo" class="flex-grow px-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Promokod">
-          <button id="promo-btn" class="px-4 py-2 bg-on-surface text-surface rounded-lg font-label-md text-label-md hover:bg-on-surface-variant transition-colors">Tətbiq et</button>
+          <input id="promo" class="flex-1 min-w-0 px-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Promokod">
+          <button id="promo-btn" class="flex-shrink-0 whitespace-nowrap px-4 py-2 bg-on-surface text-surface rounded-lg font-label-md text-label-md hover:bg-on-surface-variant transition-colors">Tətbiq et</button>
         </form>
 
         <button id="cart-whatsapp" class="lumen-btn lumen-wa w-full mt-md shadow-md group">
@@ -97,10 +97,10 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/products.js?v=3.1.0"></script>
 <script src="assets/js/api.js?v=3.0.1"></script>
 <script src="assets/js/store.js?v=3.0.0"></script>
-<script src="assets/js/layout.js?v=2.3.0"></script>
+<script src="assets/js/layout.js?v=2.5.0"></script>
 <script>
 (function () {
   function render() {
@@ -120,19 +120,19 @@
     subtitle.textContent = "Sifarişinizə " + rows.reduce((s, r) => s + r.item.qty, 0) + " məhsul əlavə edilib.";
 
     document.getElementById("cart-items").innerHTML = rows.map(r => `
-      <div class="bg-surface-container-lowest rounded-2xl p-md card-ambient flex gap-md items-center">
-        <a href="product.html?p=${r.product.slug}" class="w-24 h-28 sm:w-28 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container-low">
+      <div class="bg-surface-container-lowest rounded-2xl p-3 sm:p-md card-ambient flex gap-3 sm:gap-md items-start sm:items-center">
+        <a href="product.html?p=${r.product.slug}" class="w-20 h-24 sm:w-28 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container-low">
           <img src="${BODI.getProductImage(r.product)}" class="w-full h-full object-cover" alt="${r.product.name}">
         </a>
         <div class="flex-grow min-w-0">
           <div class="flex justify-between gap-2">
-            <a href="product.html?p=${r.product.slug}" class="font-headline-sm text-headline-sm text-on-surface hover:text-primary transition-colors clamp-2">${r.product.name}</a>
+            <a href="product.html?p=${r.product.slug}" class="font-headline-sm text-base leading-6 sm:text-headline-sm text-on-surface hover:text-primary transition-colors clamp-2">${r.product.name}</a>
             <button data-remove="${r.idx}" class="text-on-surface-variant hover:text-error transition-colors flex-shrink-0"><span class="material-symbols-outlined">delete</span></button>
           </div>
-          <div class="flex flex-wrap gap-2 mt-1 mb-2">
-            <span class="inline-block bg-primary/10 text-primary font-label-sm text-label-sm px-2 py-1 rounded-full">${r.product.material}</span>
+          <div class="flex flex-wrap gap-1.5 mt-1 mb-2">
+            <span class="hidden sm:inline-block bg-primary/10 text-primary font-label-sm text-label-sm px-2 py-1 rounded-full">${r.product.material}</span>
             ${r.item.size ? `<span class="inline-block bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-full">Ölçü: ${r.item.size}</span>` : ""}
-            ${r.item.color ? `<span class="inline-block bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-full capitalize">Rəng: ${r.item.color}</span>` : ""}
+            ${r.item.color ? `<span class="inline-block bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-full">Rəng: ${((r.product.colors || []).find(c => c.slug === r.item.color) || BODI.resolveColor(r.item.color)).n}</span>` : ""}
           </div>
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center border border-outline-variant rounded-full bg-surface-container-lowest">
@@ -141,8 +141,8 @@
               <button data-plus="${r.idx}" class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined" style="font-size:18px">add</span></button>
             </div>
             <div class="text-right">
-              <div class="font-headline-sm text-headline-sm text-primary">${BODI.money(r.line)}</div>
-              ${r.product.old ? `<div class="font-body-sm text-body-sm text-on-surface-variant line-through">${BODI.money(r.product.old * r.item.qty)}</div>` : ""}
+              <div class="whitespace-nowrap font-headline-sm text-[17px] leading-6 sm:text-headline-sm text-primary">${BODI.money(r.line)}</div>
+              ${r.product.old ? `<div class="whitespace-nowrap text-xs sm:text-body-sm text-on-surface-variant line-through">${BODI.money(r.product.old * r.item.qty)}</div>` : ""}
             </div>
           </div>
         </div>

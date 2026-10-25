@@ -181,9 +181,10 @@
       : p.badge
         ? `<span class="spark-badge ${isSale ? 'spark-badge-sale' : 'spark-badge-new'}"><span class="spark-icon">✦</span>${p.badge}</span>`
         : "";
+    // Prices never break mid-amount; on narrow cards the old price drops below.
     const price = p.old
-      ? `<div class="flex items-baseline gap-2"><span class="font-headline-sm text-headline-sm text-error">${money(p.price)}</span><span class="font-body-sm text-body-sm text-on-surface-variant line-through">${money(p.old)}</span></div>`
-      : `<div class="font-headline-sm text-headline-sm text-primary">${money(p.price)}</div>`;
+      ? `<div class="flex flex-wrap items-baseline gap-x-1.5 min-w-0"><span class="whitespace-nowrap font-headline-sm text-[17px] leading-6 md:text-headline-sm text-error">${money(p.price)}</span><span class="whitespace-nowrap text-xs md:text-body-sm text-on-surface-variant line-through">${money(p.old)}</span></div>`
+      : `<div class="whitespace-nowrap font-headline-sm text-[17px] leading-6 md:text-headline-sm text-primary">${money(p.price)}</div>`;
     return `
     <div class="group relative bg-surface-container-lowest rounded-2xl p-3.5 md:p-4 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${opts.extraClass || ''}">
       <a href="product.html?p=${p.slug}" draggable="false" class="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-container-low mb-3.5 md:mb-4 block select-none">
@@ -194,12 +195,12 @@
         <span class="material-symbols-outlined text-[18px] ${wished}">favorite</span>
       </button>
       <div class="flex-grow flex flex-col">
-        <div class="text-[11px] md:text-xs font-label-sm text-tertiary mb-1 uppercase tracking-widest font-semibold">${p.material}</div>
+        <div class="text-[10px] md:text-xs font-label-sm text-tertiary mb-1 uppercase tracking-wider md:tracking-widest font-semibold truncate">${p.material}</div>
         <a href="product.html?p=${p.slug}" draggable="false" class="font-body-md text-sm md:text-body-md text-on-surface font-bold mb-1.5 clamp-2 hover:text-primary transition-colors leading-snug">${p.name}</a>
         <div class="flex items-center gap-1 text-primary mb-2.5">${stars(p.rating)}<span class="font-body-sm text-xs md:text-body-sm text-on-surface-variant ml-1 font-medium">(${p.reviews})</span></div>
-        <div class="mt-auto pt-2 flex items-center justify-between border-t border-outline-variant/20">
+        <div class="mt-auto pt-2 flex items-center justify-between gap-1.5 border-t border-outline-variant/20">
           ${price}
-          <button data-add="${p.id}" aria-label="Səbətə at"${soldOut ? ' disabled title="Stokda yoxdur" style="opacity:.4;pointer-events:none"' : ''} class="w-10 h-10 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary shadow-xs">
+          <button data-add="${p.id}" aria-label="Səbətə at"${soldOut ? ' disabled title="Stokda yoxdur" style="opacity:.4;pointer-events:none"' : ''} class="w-9 h-9 md:w-10 md:h-10 flex-shrink-0 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary shadow-xs">
             <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
           </button>
         </div>
@@ -270,12 +271,32 @@
     </article>`;
   }
 
+  // Masonry tile: image, author + verified badge, stars, full quote, product link.
+  function reviewTile(r) {
+    const p = getById(r.productId) || (r.productSlug ? getBySlug(r.productSlug) : null);
+    const img = r.productImage || (p ? getProductImage(p) : "assets/images/products/ag-pambiq-bodi.jpg");
+    const pName = r.productName || (p ? p.name : "Bodi.az");
+    const pSlug = r.productSlug || (p ? p.slug : "");
+    const link = pSlug ? `product.html?p=${pSlug}` : "category.html";
+    const verified = r.verified !== false;
+    return `<article class="rv-tile">
+      <a class="rv-tile-img" href="${link}" draggable="false"><img src="${img}" alt="${pName}" loading="lazy" decoding="async" draggable="false"></a>
+      <div class="rv-tile-body">
+        <div class="rv-tile-head"><strong>${r.author}</strong>${verified ? '<span class="rv-verified"><span class="material-symbols-outlined ms-fill">verified</span>Alıcı</span>' : ""}</div>
+        ${reviewStarsHTML(r.rating)}
+        <p class="rv-tile-quote">${r.quote}</p>
+        <span class="rv-tile-meta">${r.city || "Bakı"}${r.date ? " · " + r.date : ""}</span>
+      </div>
+      <a class="rv-tile-product" href="${link}"><span>${pName}</span><span class="material-symbols-outlined">chevron_right</span></a>
+    </article>`;
+  }
+
   global.BODI = {
     getProductImage,
     COLORS, SIZES, PRODUCTS, CAT_NAMES, REVIEWS,
     resolveColor,
     ph, phWide, money, stars, card,
     getBySlug, getById, getByCat, getNew, getSale, related,
-    totalReviews, totalReviewsFormatted, avgRating, reviewStarsHTML, reviewCard
+    totalReviews, totalReviewsFormatted, avgRating, reviewStarsHTML, reviewCard, reviewTile
   };
 })(window);

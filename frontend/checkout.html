@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2.1.0">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.7.0">
 <script src="assets/js/tw-config.js?v=2.1.0"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
@@ -89,11 +89,11 @@
       </section>
 
       <!-- Nav buttons -->
-      <div class="flex justify-between gap-md">
-        <a href="cart.html" class="inline-flex items-center gap-2 px-6 py-4 border-2 border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">
+      <div class="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-md">
+        <a href="cart.html" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-4 border-2 border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">
           <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span> Səbətə qayıt
         </a>
-        <button id="next-btn" class="inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-lg hover:bg-primary-container transition-colors shadow-sm">
+        <button id="next-btn" class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-lg hover:bg-primary-container transition-colors shadow-sm">
           Sifarişi tamamla <span class="material-symbols-outlined" style="font-size:18px">check</span>
         </button>
       </div>
@@ -105,8 +105,8 @@
         <h2 class="font-headline-md text-headline-md text-on-surface mb-md">Sifarişin xülasəsi</h2>
         <div id="summary-items" class="space-y-3 mb-md max-h-64 overflow-auto hide-scroll"></div>
         <form id="co-promo-form" class="flex gap-2 mb-md">
-          <input id="co-promo" class="flex-grow px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm outline-none focus:border-primary uppercase" placeholder="Promokod">
-          <button type="submit" class="px-4 py-2 bg-on-surface text-surface rounded-lg font-label-sm text-label-sm">Tətbiq et</button>
+          <input id="co-promo" class="flex-1 min-w-0 px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm outline-none focus:border-primary uppercase" placeholder="Promokod">
+          <button type="submit" class="flex-shrink-0 whitespace-nowrap px-4 py-2 bg-on-surface text-surface rounded-lg font-label-sm text-label-sm">Tətbiq et</button>
         </form>
         <div class="space-y-2 font-body-md text-body-md border-t border-surface-variant pt-md">
           <div class="flex justify-between"><span class="text-on-surface-variant">Məhsullar</span><span id="sum-sub">—</span></div>
@@ -126,10 +126,10 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=3.0.0"></script>
+<script src="assets/js/products.js?v=3.1.0"></script>
 <script src="assets/js/api.js?v=3.0.1"></script>
 <script src="assets/js/store.js?v=3.0.0"></script>
-<script src="assets/js/layout.js?v=2.3.0"></script>
+<script src="assets/js/layout.js?v=2.5.0"></script>
 <script>
 (function () {
   // Summary — re-rendered when live products, settings or the coupon change.

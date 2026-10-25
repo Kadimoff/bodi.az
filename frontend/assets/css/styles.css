@@ -233,7 +233,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: pan-y;
+  /* Both axes: the browser scrolls the track sideways on swipe and the page
+     vertically. ("pan-y" alone blocked every horizontal swipe on phones.) */
+  touch-action: pan-x pan-y;
   -webkit-overflow-scrolling: touch;
 }
 .drag-scroll-track.is-dragging {
@@ -512,3 +514,88 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
   }
 }
 
+
+
+/* ============================================================
+   Review tiles — masonry (2 columns on phones, 3–4 on wider screens)
+   ============================================================ */
+.rv-masonry {
+  column-count: 2; column-gap: 12px;
+  max-width: 1280px; margin: 0 auto; padding: 0 12px;
+}
+@media (min-width: 768px) { .rv-masonry { column-count: 3; column-gap: 20px; padding: 0 24px; } }
+@media (min-width: 1100px) { .rv-masonry { column-count: 4; } }
+.rv-tile {
+  display: inline-block; width: 100%; margin: 0 0 12px;
+  break-inside: avoid; -webkit-column-break-inside: avoid;
+  background: #ffffff; border-radius: 18px; overflow: hidden;
+  box-shadow: 0 6px 20px rgba(62, 61, 57, 0.07);
+}
+@media (min-width: 768px) { .rv-tile { margin-bottom: 20px; } }
+.rv-tile-img { display: block; background: #f1ede7; }
+.rv-tile-img img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.rv-tile:nth-child(3n + 2) .rv-tile-img img { aspect-ratio: 1 / 1; }
+.rv-tile:nth-child(4n + 3) .rv-tile-img img { aspect-ratio: 3 / 4; }
+.rv-tile-body { background: #fbf1ea; padding: 12px 12px 10px; }
+.rv-tile-head { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-bottom: 6px; }
+.rv-tile-head strong { font-size: 15px; line-height: 20px; font-weight: 700; color: var(--on-surface); }
+.rv-verified { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: var(--primary); }
+.rv-verified .material-symbols-outlined { font-size: 14px; }
+.rv-tile .rv-stars .material-symbols-outlined { font-size: 16px !important; }
+.rv-tile-quote { margin: 6px 0 0; font-size: 14px; line-height: 1.45; color: var(--on-surface); overflow-wrap: anywhere; }
+.rv-tile-meta { display: block; margin-top: 8px; font-size: 12px; color: var(--on-surface-variant); }
+.rv-tile-product {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  padding: 10px 12px; background: #fbf1ea; border-top: 1px solid rgba(62, 61, 57, 0.08);
+  font-size: 11px; line-height: 1.3; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--primary);
+}
+.rv-tile-product .material-symbols-outlined { font-size: 18px; flex-shrink: 0; }
+@media (min-width: 768px) {
+  .rv-tile-body { padding: 16px 16px 12px; }
+  .rv-tile-quote { font-size: 15px; }
+  .rv-tile-product { padding: 12px 16px; }
+}
+/* Homepage: masonry replaces the slider on phones */
+.rv-masonry--home { display: none; }
+
+/* ============================================================
+   Mobile hardening (≤ 767px): fit every screen down to 320px
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Safety net — real overflow sources are fixed in the markup. */
+  html, body { overflow-x: clip; }
+
+  /* Desktop-sized paddings shrink so cards and forms keep usable width. */
+  .p-lg { padding: 20px !important; }
+  .px-lg { padding-left: 20px !important; padding-right: 20px !important; }
+  .py-lg { padding-top: 28px !important; padding-bottom: 28px !important; }
+  .py-xl { padding-top: 48px !important; padding-bottom: 48px !important; }
+  .p-xl { padding: 24px !important; }
+  .gap-xl { gap: 32px !important; }
+  .mt-xl { margin-top: 40px !important; }
+  .mb-xl { margin-bottom: 40px !important; }
+  .px-gutter { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Swipe replaces arrow buttons on touch screens. */
+  #featPrev, #featNext, #newPrev, #newNext, #catPrev, #catNext, .rv-btn { display: none !important; }
+
+  /* Floating WhatsApp sits just above the bottom bar (and the iPhone home indicator). */
+  #floating-wa { right: 14px !important; bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  /* Reviews on the homepage: 2-column masonry instead of the slider. */
+  .rv-masonry--home { display: block; }
+  .rv-section .rv-slider-wrapper, #rvDots { display: none !important; }
+  .rv-section { padding: 48px 0; }
+
+  /* Long words (e-mails, links, Azerbaijani compounds) wrap instead of overflowing. */
+  h1, h2, h3, p, li, a { overflow-wrap: break-word; }
+  img, video, iframe, svg { max-width: 100%; }
+}
+
+/* Carousel dots: 8px visuals with a finger-sized tap area. */
+[id$="Dots"] > button { position: relative; }
+[id$="Dots"] > button::before { content: ""; position: absolute; inset: -12px -5px; }
+
+/* Icon font safety: if Material Symbols is slow or blocked, the ligature name
+   ("shopping_bag") must not render as wide text and push the layout. */
+.material-symbols-outlined { width: 1em; overflow: hidden; white-space: nowrap; flex-shrink: 0; }
