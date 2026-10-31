@@ -26,7 +26,8 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-      network: host
+      # No `network: host`: Docker ≥29 (BuildKit bake) refuses it without --allow=network.host,
+      # which Coolify doesn't pass. npm reaches the registry fine over the default build network.
     restart: unless-stopped
     depends_on:
       db:
