@@ -39,9 +39,18 @@ export async function loadPosts(where = sql`TRUE`, limit = 100) {
 }
 
 export async function loadCategoryForSeo(slug) {
-  const [c] = await sql`
+  let [c] = await sql`
     SELECT c.*, m.path AS m_path, m.formats AS m_formats FROM categories c
     LEFT JOIN media m ON m.id = c.image_id WHERE c.slug = ${slug} AND c.is_active`;
+  if (!c) {
+    // A renamed category keeps working under its old address (301 to the new slug).
+    [c] = await sql`
+      SELECT c.*, m.path AS m_path, m.formats AS m_formats FROM slug_redirects r
+      JOIN categories c ON c.id = r.entity_id AND c.is_active
+      LEFT JOIN media m ON m.id = c.image_id
+      WHERE r.entity = 'category' AND r.old_slug = ${slug}`;
+    if (c) c.redirectedFrom = slug;
+  }
   if (!c) return null;
   c.image = c.m_path ? pickFormat({ path: c.m_path, formats: c.m_formats }, 'large') : '';
   return c;
@@ -62,7 +71,7 @@ export async function seoFor(type, slug) {
     const category = await loadCategoryForSeo(slug);
     if (!category) return null;
     const products = await getPublishedProducts(sql`p.category_id = ${category.id}`, { limit: 60 });
-    return { seo: categorySeo(category, products, g), entity: category };
+    return { seo: categorySeo(category, products, g), entity: category, redirectedFrom: category.redirectedFrom || null };
   }
   if (type === 'post' && slug) {
     let [post] = await loadPosts(sql`p.slug = ${slug}`, 1);

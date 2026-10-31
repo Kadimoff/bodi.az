@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f614e">
+<meta name="robots" content="noindex, follow">
+<title>İstək siyahısı | Bodi.az</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.8.0">
+<script src="assets/js/tw-config.js?v=2.1.0"></script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
+
+<div id="site-header"></div>
+
+<main class="flex-grow w-full max-w-container-max mx-auto px-4 md:px-gutter py-md md:py-xl">
+  <nav aria-label="Breadcrumb" class="mb-lg">
+    <ol class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+      <li><a class="hover:text-primary transition-colors" href="index.html">Ana səhifə</a></li>
+      <li><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></li>
+      <li aria-current="page" class="text-primary font-medium">İstək siyahısı</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-lg gap-4">
+    <div>
+      <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">İstək siyahısı</h1>
+      <p id="wish-subtitle" class="font-body-md text-body-md text-on-surface-variant">Yüklənir…</p>
+    </div>
+    <div id="wish-actions" class="hidden flex flex-wrap gap-2">
+      <button type="button" id="wish-add-all" class="inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-5 py-3 rounded-xl hover:bg-primary-container transition-colors">
+        <span class="material-symbols-outlined" style="font-size:18px">add_shopping_cart</span> Hamısını səbətə at
+      </button>
+      <button type="button" id="wish-clear" class="inline-flex items-center gap-2 border border-outline-variant text-on-surface-variant font-label-md text-label-md px-5 py-3 rounded-xl hover:text-error hover:border-error transition-colors">
+        <span class="material-symbols-outlined" style="font-size:18px">delete</span> Siyahını təmizlə
+      </button>
+    </div>
+  </div>
+
+  <!-- EMPTY -->
+  <div id="wish-empty" class="hidden text-center py-xl bg-surface-container-low rounded-3xl">
+    <div class="w-20 h-20 mx-auto bg-surface rounded-full flex items-center justify-center text-secondary mb-md"><span class="material-symbols-outlined text-[40px]">favorite</span></div>
+    <h2 class="font-headline-md text-headline-md text-on-surface">İstək siyahınız boşdur</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-lg px-4">Bəyəndiyiniz məhsulun üzərindəki <span class="material-symbols-outlined align-middle text-secondary" style="font-size:18px">favorite</span> işarəsinə toxunun — burada saxlanacaq.</p>
+    <a href="category.html" class="inline-flex items-center bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-primary-container transition-colors">Məhsullara bax</a>
+  </div>
+
+  <!-- GRID -->
+  <div id="wish-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-gutter" aria-live="polite">
+    <div class="aspect-[3/4] rounded-2xl bg-surface-container-low animate-pulse"></div>
+    <div class="aspect-[3/4] rounded-2xl bg-surface-container-low animate-pulse"></div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<div id="mobile-nav"></div>
+
+<script src="assets/js/products.js?v=3.2.0"></script>
+<script src="assets/js/api.js?v=3.1.0"></script>
+<script src="assets/js/store.js?v=3.1.0"></script>
+<script src="assets/js/layout.js?v=2.6.0"></script>
+<script>
+(function () {
+  "use strict";
+  const grid = document.getElementById("wish-grid");
+  const empty = document.getElementById("wish-empty");
+  const subtitle = document.getElementById("wish-subtitle");
+  const actions = document.getElementById("wish-actions");
+  let catalogReady = false;
+
+  function render() {
+    const ids = STORE.getWish();
+    if (!ids.length) {
+      grid.innerHTML = "";
+      empty.classList.remove("hidden");
+      actions.classList.add("hidden");
+      subtitle.textContent = "Hələ heç nə əlavə etməmisiniz";
+      return;
+    }
+    if (!catalogReady) return; // keep the skeleton until the live catalog arrives
+    const items = ids.map(id => BODI.getById(id)).filter(Boolean);
+    const missing = ids.length - items.length;
+    empty.classList.toggle("hidden", items.length > 0);
+    actions.classList.toggle("hidden", items.length === 0);
+    subtitle.textContent = items.length
+      ? `${items.length} məhsul${missing ? ` · ${missing} məhsul artıq satışda deyil` : ""}`
+      : "Siyahıdakı məhsullar artıq satışda deyil";
+    grid.innerHTML = items.map(p => BODI.card(p, { wished: true })).join("");
+    grid.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
+    grid.querySelectorAll("[data-wish]").forEach(b => b.setAttribute("aria-label", "İstək siyahısından çıxar"));
+  }
+
+  window.addEventListener("bodi:products-updated", () => { catalogReady = true; render(); });
+  window.addEventListener("bodi:wishlist-changed", render);
+  // Backend unreachable: fall back to the bundled catalog after a short wait.
+  setTimeout(() => { if (!catalogReady) { catalogReady = true; render(); } }, 4000);
+
+  document.getElementById("wish-add-all").addEventListener("click", () => {
+    const items = STORE.getWish().map(id => BODI.getById(id)).filter(p => p && p.inStock !== false);
+    items.forEach(p => STORE.addToCart(p.id, 1));
+    STORE.toast(items.length ? `${items.length} məhsul səbətə əlavə edildi` : "Səbətə atılacaq məhsul yoxdur", "shopping_bag");
+  });
+  document.getElementById("wish-clear").addEventListener("click", () => {
+    if (!confirm("İstək siyahısı təmizlənsin?")) return;
+    localStorage.setItem("bodi_wish_v1", "[]");
+    STORE.badge();
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

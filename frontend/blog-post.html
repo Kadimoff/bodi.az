@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2.7.0">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.8.0">
 <script src="assets/js/tw-config.js?v=2.1.0"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
@@ -34,10 +34,10 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=3.1.0"></script>
-<script src="assets/js/api.js?v=3.0.1"></script>
-<script src="assets/js/store.js?v=3.0.0"></script>
-<script src="assets/js/layout.js?v=2.5.0"></script>
+<script src="assets/js/products.js?v=3.2.0"></script>
+<script src="assets/js/api.js?v=3.1.0"></script>
+<script src="assets/js/store.js?v=3.1.0"></script>
+<script src="assets/js/layout.js?v=2.6.0"></script>
 <script>
 (function () {
   const POSTS = {
@@ -69,8 +69,8 @@
       <span class="whitespace-nowrap">Bodi.az Redaksiya</span><span>•</span>
       <span class="whitespace-nowrap flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">schedule</span>${p.read} dəq oxu</span><span>•</span><span class="whitespace-nowrap">${p.date}</span>
     </div>
-    <img src="${BODI.ph(p.color, p.title)}" class="w-full aspect-[16/9] object-cover rounded-2xl mb-lg" alt="${p.title}">
-    <div class="prose font-body-lg text-body-lg text-on-surface-variant space-y-md leading-relaxed">
+    <img id="post-cover" src="${BODI.ph(p.color, p.title)}" class="w-full aspect-[16/9] object-cover rounded-2xl mb-lg bg-surface-container-low" alt="${p.title}" decoding="async">
+    <div class="prose post-content font-body-lg text-body-lg text-on-surface-variant space-y-md leading-relaxed">
       <p>Hər valideyn övladı üçün ən yaxşısını istəyir. Bu məqalədə sizin üçün ən aktual mövzunu sadə, anlaşıqlı və praktik şəkildə izah etməyə çalışırıq.</p>
       <p>Bodi.az olaraq inanırıq ki, məlumatlı valideyn daha rahat və arxayın olur. Buna görə də mütəxəssislərimizin tövsiyələrini və real həyat təcrübələrini bir araya gətirərək sizə təqdim edirik.</p>
       <h2 class="font-headline-md text-headline-md text-on-surface mt-lg">Əsas məqamlar</h2>
@@ -99,16 +99,23 @@
       if (match) {
         const root = document.getElementById("post-root");
         if (root) {
-          const prose = root.querySelector(".prose");
+          const prose = root.querySelector(".post-content");
           if (prose && match.content) {
             prose.innerHTML = match.content;
+            // Images placed in the admin editor: lazy, responsive, never overflowing the column.
+            prose.querySelectorAll("img").forEach(img => { img.loading = "lazy"; img.decoding = "async"; if (!img.alt) img.alt = match.title; });
           }
           const h1 = root.querySelector("h1");
           if (h1) h1.textContent = match.title;
           const chip = root.querySelector("span.inline-block");
           if (chip) chip.textContent = match.cat;
-          const cover = root.querySelector("img");
-          if (cover && match.imageLarge) { cover.src = match.imageLarge; cover.alt = match.imageAlt || match.title; }
+          // The cover is #post-cover (the first <img> in the block is the author avatar).
+          const cover = document.getElementById("post-cover");
+          const coverSrc = match.imageLarge || match.image;
+          if (cover) {
+            if (coverSrc) { cover.src = coverSrc; cover.alt = match.imageAlt || match.title; }
+            else cover.remove(); // no placeholder silhouette when a post simply has no cover
+          }
           const meta = root.querySelector(".mb-lg");
           if (meta) meta.lastElementChild.textContent = match.date;
           const crumb = document.querySelector('#crumbs [aria-current="page"]');

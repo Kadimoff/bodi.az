@@ -183,25 +183,25 @@
         : "";
     // Prices never break mid-amount; on narrow cards the old price drops below.
     const price = p.old
-      ? `<div class="flex flex-wrap items-baseline gap-x-1.5 min-w-0"><span class="whitespace-nowrap font-headline-sm text-[17px] leading-6 md:text-headline-sm text-error">${money(p.price)}</span><span class="whitespace-nowrap text-xs md:text-body-sm text-on-surface-variant line-through">${money(p.old)}</span></div>`
-      : `<div class="whitespace-nowrap font-headline-sm text-[17px] leading-6 md:text-headline-sm text-primary">${money(p.price)}</div>`;
+      ? `<div class="flex flex-wrap items-baseline gap-x-1.5 min-w-0"><span class="whitespace-nowrap font-bold text-[15px] leading-5 md:text-[17px] md:leading-6 text-error">${money(p.price)}</span><span class="whitespace-nowrap text-[11px] md:text-xs text-on-surface-variant line-through">${money(p.old)}</span></div>`
+      : `<div class="whitespace-nowrap font-bold text-[15px] leading-5 md:text-[17px] md:leading-6 text-primary">${money(p.price)}</div>`;
     return `
-    <div class="group relative bg-surface-container-lowest rounded-2xl p-3.5 md:p-4 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${opts.extraClass || ''}">
-      <a href="product.html?p=${p.slug}" draggable="false" class="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-container-low mb-3.5 md:mb-4 block select-none">
+    <div class="group relative bg-surface-container-lowest rounded-2xl p-2 md:p-2.5 card-ambient hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${opts.extraClass || ''}">
+      <a href="product.html?p=${p.slug}" draggable="false" class="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-container-low mb-2.5 md:mb-3 block select-none">
         <img src="${img}"${p.cardSrcset ? ` srcset="${p.cardSrcset}" sizes="(min-width: 1024px) 25vw, 50vw"` : ""} alt="${p.name}" width="480" height="600" draggable="false" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none" loading="lazy" decoding="async">
         <div class="absolute top-2.5 left-2.5 flex flex-col gap-1">${tag}</div>
       </a>
-      <button data-wish="${p.id}" aria-label="İstək siyahısına əlavə et" class="absolute top-5 right-5 w-8 h-8 bg-surface/85 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface transition-colors shadow-sm">
+      <button data-wish="${p.id}" aria-label="İstək siyahısına əlavə et" class="absolute top-3.5 right-3.5 md:top-4 md:right-4 w-8 h-8 bg-surface/85 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface transition-colors shadow-sm">
         <span class="material-symbols-outlined text-[18px] ${wished}">favorite</span>
       </button>
-      <div class="flex-grow flex flex-col">
-        <div class="text-[10px] md:text-xs font-label-sm text-tertiary mb-1 uppercase tracking-wider md:tracking-widest font-semibold truncate">${p.material}</div>
-        <a href="product.html?p=${p.slug}" draggable="false" class="font-body-md text-sm md:text-body-md text-on-surface font-bold mb-1.5 clamp-2 hover:text-primary transition-colors leading-snug">${p.name}</a>
-        <div class="flex items-center gap-1 text-primary mb-2.5">${stars(p.rating)}<span class="font-body-sm text-xs md:text-body-sm text-on-surface-variant ml-1 font-medium">(${p.reviews})</span></div>
-        <div class="mt-auto pt-2 flex items-center justify-between gap-1.5 border-t border-outline-variant/20">
+      <div class="flex-grow flex flex-col px-1 pb-0.5">
+        <div class="text-[9px] md:text-[10px] font-label-sm text-tertiary mb-0.5 uppercase tracking-wider font-semibold truncate">${p.material}</div>
+        <a href="product.html?p=${p.slug}" draggable="false" class="text-[13px] md:text-sm text-on-surface font-semibold mb-1 clamp-2 hover:text-primary transition-colors leading-snug">${p.name}</a>
+        <div class="flex items-center gap-0.5 text-primary mb-1.5 card-stars">${stars(p.rating)}<span class="text-[11px] text-on-surface-variant ml-1 font-medium">(${p.reviews})</span></div>
+        <div class="mt-auto pt-1.5 flex items-center justify-between gap-1.5 border-t border-outline-variant/20">
           ${price}
-          <button data-add="${p.id}" aria-label="Səbətə at"${soldOut ? ' disabled title="Stokda yoxdur" style="opacity:.4;pointer-events:none"' : ''} class="w-9 h-9 md:w-10 md:h-10 flex-shrink-0 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary shadow-xs">
-            <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+          <button data-add="${p.id}" aria-label="Səbətə at"${soldOut ? ' disabled title="Stokda yoxdur" style="opacity:.4;pointer-events:none"' : ''} class="w-8 h-8 md:w-9 md:h-9 flex-shrink-0 bg-surface-container hover:bg-primary hover:text-on-primary rounded-full flex items-center justify-center transition-colors text-primary shadow-xs">
+            <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
           </button>
         </div>
       </div>
@@ -266,6 +266,7 @@
         ${reviewStarsHTML(r.rating)}
         ${pname}
         <blockquote class="rv-quote">“${r.quote}”</blockquote>
+        ${global.BODI_REVIEW_PHOTOS ? global.BODI_REVIEW_PHOTOS.strip(r, "sm") : ""}
         <div class="rv-author"><strong>— ${r.author}</strong><span>${r.city || "Bakı"}</span></div>
       </div>
     </article>`;
@@ -285,6 +286,7 @@
         <div class="rv-tile-head"><strong>${r.author}</strong>${verified ? '<span class="rv-verified"><span class="material-symbols-outlined ms-fill">verified</span>Alıcı</span>' : ""}</div>
         ${reviewStarsHTML(r.rating)}
         <p class="rv-tile-quote">${r.quote}</p>
+        ${global.BODI_REVIEW_PHOTOS ? global.BODI_REVIEW_PHOTOS.strip(r, "sm") : ""}
         <span class="rv-tile-meta">${r.city || "Bakı"}${r.date ? " · " + r.date : ""}</span>
       </div>
       <a class="rv-tile-product" href="${link}"><span>${pName}</span><span class="material-symbols-outlined">chevron_right</span></a>

@@ -10,7 +10,10 @@ export default async function catalogRoutes(app) {
   app.get('/products', async (request, reply) => {
     const { category, q, ids, featured, limit } = request.query;
     const conds = [sql`TRUE`];
-    if (category) conds.push(sql`c.slug = ${String(category)}`);
+    if (category) {
+      const cat = String(category);
+      conds.push(sql`(c.slug = ${cat} OR c.id IN (SELECT entity_id FROM slug_redirects WHERE entity = 'category' AND old_slug = ${cat}))`);
+    }
     if (featured === '1' || featured === 'true') conds.push(sql`p.is_featured`);
     if (ids) {
       const list = String(ids).split(',').map(Number).filter(Number.isInteger);

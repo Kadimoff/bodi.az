@@ -599,3 +599,47 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
 /* Icon font safety: if Material Symbols is slow or blocked, the ligature name
    ("shopping_bag") must not render as wide text and push the layout. */
 .material-symbols-outlined { width: 1em; overflow: hidden; white-space: nowrap; flex-shrink: 0; }
+
+/* ---------- Product card: compact stars ---------- */
+.card-stars .material-symbols-outlined { font-size: 14px !important; }
+
+/* ---------- Customer review photos ---------- */
+.rp-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.rp-add, .rp-thumb { width: 76px; height: 76px; border-radius: 14px; flex: 0 0 auto; }
+.rp-add { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 1.5px dashed rgb(var(--rp-line, 170 168 160)); color: #4f614e; background: transparent; font-size: 10.5px; font-weight: 600; line-height: 1.2; text-align: center; padding: 4px; cursor: pointer; transition: background .2s, border-color .2s; }
+.rp-add:hover, .rp-add:focus-visible { background: rgba(79, 97, 78, .07); border-color: #4f614e; outline: none; }
+.rp-add .material-symbols-outlined { font-size: 22px; }
+.rp-add.hidden { display: none; }
+.rp-thumb { position: relative; overflow: hidden; background: #f1efe9; }
+.rp-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rp-thumb button { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 999px; border: 0; background: rgba(0,0,0,.6); color: #fff; display: grid; place-items: center; cursor: pointer; }
+.rp-thumb button .material-symbols-outlined { font-size: 16px; }
+.rp-hint { margin-top: 6px; font-size: 12px; line-height: 1.45; color: #6b6a64; }
+.rp-strip { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+.rp-strip-item { width: 64px; height: 64px; border-radius: 10px; overflow: hidden; padding: 0; border: 0; background: #f1efe9; cursor: zoom-in; flex: 0 0 auto; }
+.rp-strip-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s; }
+.rp-strip-item:hover img { transform: scale(1.06); }
+.rp-strip-sm .rp-strip-item { width: 48px; height: 48px; border-radius: 8px; }
+.rp-strip-sm { margin: 8px 0 4px; }
+.rp-lightbox { position: fixed; inset: 0; z-index: 90; background: rgba(15, 15, 13, .92); display: flex; align-items: center; justify-content: center; padding: 56px 12px; }
+.rp-lightbox.hidden { display: none; }
+.rp-lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+.rp-lb-close, .rp-lb-nav { position: absolute; width: 44px; height: 44px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; display: grid; place-items: center; cursor: pointer; }
+.rp-lb-close:hover, .rp-lb-nav:hover { background: rgba(255,255,255,.26); }
+.rp-lb-close { top: 12px; right: 12px; }
+.rp-lb-prev { left: 12px; top: 50%; transform: translateY(-50%); }
+.rp-lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
+.rp-lb-nav.hidden { display: none; }
+.rp-lb-count { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+@media (prefers-reduced-motion: reduce) { .rp-strip-item img { transition: none; } }
+
+/* ---------- Blog article body (HTML from the admin editor) ---------- */
+.post-content img { display: block; max-width: 100%; height: auto; border-radius: 16px; margin: 1.5rem auto; }
+.post-content figure { margin: 1.5rem 0; }
+.post-content figcaption { text-align: center; font-size: 13px; color: #6b6a64; margin-top: .5rem; }
+.post-content h2 { font-size: 1.5rem; line-height: 1.3; font-weight: 700; color: #1d1c19; margin-top: 2rem; }
+.post-content h3 { font-size: 1.2rem; line-height: 1.35; font-weight: 700; color: #1d1c19; margin-top: 1.5rem; }
+.post-content a { color: #4f614e; text-decoration: underline; text-underline-offset: 3px; }
+.post-content ul { list-style: disc; padding-left: 1.5rem; }
+.post-content ol { list-style: decimal; padding-left: 1.5rem; }
+.post-content blockquote { border-left: 4px solid #4f614e; padding-left: 1rem; font-style: italic; color: #31302d; }

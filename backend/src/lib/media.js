@@ -162,3 +162,42 @@ export function srcset(m) {
     .map((k) => `${mediaUrl(m.formats[k].path)} ${m.formats[k].width}w`)
     .join(', ');
 }
+
+// ---------------------------------------------------------------- review photos
+// Customer uploads: only still images, re-encoded to WebP (drops EXIF/GPS and any
+// embedded payload), the original is never kept. Max 8 MB / 40 MP per file.
+export const REVIEW_PHOTO_MAX_BYTES = 8 * 1024 * 1024;
+export const REVIEW_PHOTO_MAX = 4;
+const REVIEW_PHOTO_TYPES = new Set(['jpeg', 'png', 'webp', 'avif', 'heif']);
+
+export async function storeReviewImage(buffer) {
+  if (!buffer?.length) throw badRequest('Şəkil faylı boşdur.');
+  if (buffer.length > REVIEW_PHOTO_MAX_BYTES) throw badRequest('Hər şəkil ən çox 8 MB ola bilər.');
+  let meta;
+  try {
+    meta = await sharp(buffer, { limitInputPixels: 40_000_000 }).metadata();
+  } catch {
+    throw badRequest('Şəkil tanınmadı. JPG, PNG, WebP və ya HEIC yükləyin.');
+  }
+  if (!REVIEW_PHOTO_TYPES.has(meta.format)) throw badRequest('Yalnız JPG, PNG, WebP və ya HEIC şəkillər qəbul olunur.');
+  const dir = `reviews/${datedDir()}`;
+  const stem = crypto.randomBytes(8).toString('hex');
+  const base = () => sharp(buffer, { limitInputPixels: 40_000_000 }).rotate();
+  let full, thumb;
+  try {
+    full = await base().resize({ width: 1400, height: 1400, fit: 'inside', withoutEnlargement: true }).webp({ quality: 82 }).toBuffer({ resolveWithObject: true });
+    thumb = await base().resize({ width: 320, height: 320, fit: 'cover' }).webp({ quality: 72 }).toBuffer({ resolveWithObject: true });
+  } catch {
+    throw badRequest('Şəkil emal edilə bilmədi. Başqa şəkil seçin.');
+  }
+  const fullRel = `${dir}/${stem}.webp`;
+  const thumbRel = `${dir}/${stem}-thumb.webp`;
+  await writeFile(fullRel, full.data);
+  await writeFile(thumbRel, thumb.data);
+  return { full: fullRel, thumb: thumbRel, width: full.info.width, height: full.info.height };
+}
+
+export async function deleteReviewImageFiles(rows) {
+  const paths = rows.flatMap((r) => [r.full_path, r.thumb]).filter(Boolean);
+  await Promise.all(paths.map((p) => fs.rm(path.join(config.uploadsDir, p), { force: true })));
+}

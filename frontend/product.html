@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2.7.0">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.8.0">
 <script src="assets/js/tw-config.js?v=2.1.0"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
@@ -99,11 +99,12 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=3.1.0"></script>
-<script src="assets/js/api.js?v=3.0.1"></script>
+<script src="assets/js/products.js?v=3.2.0"></script>
+<script src="assets/js/api.js?v=3.1.0"></script>
 <script src="assets/js/seo.js?v=3.0.0"></script>
-<script src="assets/js/store.js?v=3.0.0"></script>
-<script src="assets/js/layout.js?v=2.5.0"></script>
+<script src="assets/js/store.js?v=3.1.0"></script>
+<script src="assets/js/review-photos.js?v=1.0.0"></script>
+<script src="assets/js/layout.js?v=2.6.0"></script>
 <script>
 (function () {
   const params = new URLSearchParams(location.search);
@@ -413,7 +414,8 @@
               <div class="flex items-center text-primary">${BODI.stars(r.rating)}</div>
               <span class="font-body-sm text-body-sm text-on-surface-variant">${r.date || "Bu yaxınlarda"}</span>
             </div>
-            <blockquote class="font-body-md text-body-md text-on-surface italic mb-4">“${r.quote}”</blockquote>
+            <blockquote class="font-body-md text-body-md text-on-surface italic mb-3">“${r.quote}”</blockquote>
+            ${window.BODI_REVIEW_PHOTOS ? BODI_REVIEW_PHOTOS.strip(r) : ""}
           </div>
           <div class="flex items-center justify-between border-t border-surface-variant/30 pt-3 text-xs text-on-surface-variant">
             <span class="font-medium text-on-surface">— ${r.author}</span>
@@ -458,6 +460,7 @@
   });
 
   // Submit Review Form
+  const reviewPhotos = window.BODI_REVIEW_PHOTOS ? BODI_REVIEW_PHOTOS.mount(document.getElementById("prod-review-form"), document.getElementById("prod-rev-submit")) : null;
   document.getElementById("prod-review-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = document.getElementById("prod-rev-submit");
@@ -485,7 +488,7 @@
       let res;
       const submitFn = window.BODI_API && (window.BODI_API.submitReview || (window.BODI_API.reviews && window.BODI_API.reviews.submit));
       if (typeof submitFn === "function") {
-        res = await submitFn(payload);
+        res = await submitFn(payload, reviewPhotos ? reviewPhotos.files() : []);
       } else {
         const r = await fetch(`/api/v1/reviews`, {
           method: "POST",
@@ -501,6 +504,7 @@
       STORE.toast(res.message || "Rəyiniz uğurla qeydə alındı!", "check_circle");
       modal.classList.add("hidden");
       document.getElementById("prod-review-form").reset();
+      if (reviewPhotos) reviewPhotos.reset();
 
       // Published reviews come back from the API; moderated ones appear after approval.
       if (res.review && !BODI.REVIEWS.some(r => r.id === res.review.id)) {

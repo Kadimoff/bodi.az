@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2.7.0">
+<link rel="stylesheet" href="assets/css/styles.css?v=2.8.0">
 <script src="assets/js/tw-config.js?v=2.1.0"></script>
 </head>
 <body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
@@ -126,11 +126,12 @@
 <div id="site-footer"></div>
 <div id="mobile-nav"></div>
 
-<script src="assets/js/products.js?v=3.1.0"></script>
-<script src="assets/js/api.js?v=3.0.1"></script>
+<script src="assets/js/products.js?v=3.2.0"></script>
+<script src="assets/js/api.js?v=3.1.0"></script>
 <script src="assets/js/seo.js?v=3.0.0"></script>
-<script src="assets/js/store.js?v=3.0.0"></script>
-<script src="assets/js/layout.js?v=2.5.0"></script>
+<script src="assets/js/store.js?v=3.1.0"></script>
+<script src="assets/js/review-photos.js?v=1.0.0"></script>
+<script src="assets/js/layout.js?v=2.6.0"></script>
 <script>
   (function () {
     if (typeof BODI === "undefined" || typeof BODI.reviewCard !== "function") return;
@@ -239,7 +240,8 @@
     });
 
     // Handle Review Form Submit
-    document.getElementById("new-review-form").addEventListener("submit", async (e) => {
+    const reviewPhotos = window.BODI_REVIEW_PHOTOS ? BODI_REVIEW_PHOTOS.mount(document.getElementById("new-review-form"), document.getElementById("rev-submit-btn")) : null;
+  document.getElementById("new-review-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const submitBtn = document.getElementById("rev-submit-btn");
       const prodSlug = document.getElementById("rev-product").value;
@@ -267,7 +269,7 @@
         let res;
         const submitFn = window.BODI_API && (window.BODI_API.submitReview || (window.BODI_API.reviews && window.BODI_API.reviews.submit));
         if (typeof submitFn === "function") {
-          res = await submitFn(payload);
+          res = await submitFn(payload, reviewPhotos ? reviewPhotos.files() : []);
         } else {
           const r = await fetch(`/api/v1/reviews`, {
             method: "POST",
@@ -283,6 +285,7 @@
         STORE.toast(res.message || "Rəyiniz uğurla əlavə edildi!", "check_circle");
         modal.classList.add("hidden");
         document.getElementById("new-review-form").reset();
+        if (reviewPhotos) reviewPhotos.reset();
 
         // Published reviews come back from the API; moderated ones appear after approval.
         if (res.review && !BODI.REVIEWS.some(r => r.id === res.review.id)) {

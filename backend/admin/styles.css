@@ -409,3 +409,12 @@ table.table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 @media (max-width: 520px) {
   .grid-4 { grid-template-columns: 1fr; }
 }
+
+/* customer review photos */
+.review-photos { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.review-photo { position: relative; width: 96px; height: 96px; border-radius: 10px; overflow: hidden; background: #f1efe9; }
+.review-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.review-photo-del { position: absolute; top: 4px; right: 4px; width: 28px; height: 28px; border-radius: 999px; border: 0; background: rgba(0,0,0,.6); color: #fff; display: grid; place-items: center; cursor: pointer; }
+.review-photo-del .material-symbols-outlined { font-size: 17px; }
+.review-photos-sm { margin-top: 6px; gap: 4px; }
+.review-photos-sm img { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; }

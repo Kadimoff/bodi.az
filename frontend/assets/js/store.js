@@ -81,14 +81,20 @@
     const w = getWish();
     const i = w.indexOf(id);
     if (i >= 0) { w.splice(i, 1); toast("İstək siyahısından çıxarıldı", "favorite"); }
-    else { w.push(id); toast("İstək siyahısına əlavə edildi", "favorite"); }
+    else { w.push(id); toast('İstək siyahısına əlavə edildi · <a href="wishlist.html" class="underline font-semibold">Bax</a>', "favorite"); }
     write(WISH_KEY, w);
+    const on = i < 0;
     document.querySelectorAll(`[data-wish="${id}"]`).forEach(btn => {
-      btn.querySelector("span").classList.toggle("ms-fill");
-      btn.querySelector("span").classList.toggle("text-secondary");
+      const icon = btn.querySelector("span");
+      if (icon) { icon.classList.toggle("ms-fill", on); icon.classList.toggle("text-secondary", on); }
+      btn.setAttribute("aria-pressed", String(on));
+      btn.setAttribute("aria-label", on ? "İstək siyahısından çıxar" : "İstək siyahısına əlavə et");
     });
-    return i < 0;
+    badge();
+    window.dispatchEvent(new CustomEvent("bodi:wishlist-changed", { detail: w.slice() }));
+    return on;
   }
+  function removeWish(id) { if (isWished(id)) toggleWish(id); }
 
   /* ---------- ORDERS ---------- */
   const ORDERS_KEY = "bodi_orders_v1";
@@ -107,6 +113,11 @@
       el.textContent = n;
       el.classList.toggle("hidden", n === 0);
     });
+    const wn = getWish().length;
+    document.querySelectorAll("[data-wish-count]").forEach(el => {
+      el.textContent = wn;
+      el.classList.toggle("hidden", wn === 0);
+    });
   }
 
   /* ---------- TOAST ---------- */
@@ -123,7 +134,7 @@
 
   global.STORE = {
     getCart, addToCart, updateQty, removeItem, clearCart, cartCount, cartDetailed, cartTotals,
-    getWish, isWished, toggleWish,
+    getWish, isWished, toggleWish, removeWish,
     getOrders, saveOrder,
     badge, toast
   };

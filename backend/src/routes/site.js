@@ -103,6 +103,7 @@ export default async function siteRoutes(app) {
       if (q.cat) {
         found = await seoFor('category', String(q.cat));
         if (!found) return notFoundPage(reply);
+        if (found.redirectedFrom) redirect = `/category.html?cat=${encodeURIComponent(found.entity.slug)}`;
       } else {
         found = await seoFor('home');
         const title = q.filter === 'sale' ? 'Endirimli məhsullar' : q.filter === 'new' ? 'Yeni kolleksiya' : q.q ? `Axtarış: ${String(q.q).slice(0, 60)}` : 'Bütün məhsullar';

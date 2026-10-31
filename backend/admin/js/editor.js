@@ -55,16 +55,30 @@ export function RichText({ value, onChange, placeholder = 'Mətni buraya yazın�
 
   function insertImage(m) {
     setPicking(false);
-    ref.current.focus();
-    if (savedRange.current) {
+    if (!m) return;
+    const el = ref.current;
+    if (!el) return;
+    const alt = String(m.alt || '').replace(/"/g, '&quot;');
+    const src = bestUrl(m, 'large');
+    if (!src) { toast.error('Şəklin ünvanı tapılmadı.'); return; }
+    if (!m.alt) toast.info('Şəklin alt mətni yoxdur — SEO üçün media kitabxanasında əlavə edin.');
+    const markup = `<p><img src="${src}" alt="${alt}" loading="lazy"></p>`;
+    // The picker steals focus; if the cursor wasn't inside the article (or the source view is open),
+    // execCommand silently does nothing — so fall back to appending the image at the end.
+    const saved = savedRange.current;
+    const inside = saved && el.contains(saved.commonAncestorContainer);
+    let done = false;
+    if (!source) {
+      el.focus();
       const sel = window.getSelection();
       sel.removeAllRanges();
-      sel.addRange(savedRange.current);
+      if (inside) sel.addRange(saved);
+      else { const r = document.createRange(); r.selectNodeContents(el); r.collapse(false); sel.addRange(r); }
+      done = document.execCommand('insertHTML', false, markup);
     }
-    if (!m.alt) toast.info('Şəklin alt mətni yoxdur — SEO üçün media kitabxanasında əlavə edin.');
-    const alt = String(m.alt || '').replace(/"/g, '&quot;');
-    document.execCommand('insertHTML', false, `<img src="${bestUrl(m, 'large')}" alt="${alt}" loading="lazy">`);
+    if (!done) el.innerHTML = (el.innerHTML || '').replace(/<br>$/, '') + markup;
     emit();
+    toast.success('Şəkil əlavə edildi');
   }
 
   return html`<div class="rte">

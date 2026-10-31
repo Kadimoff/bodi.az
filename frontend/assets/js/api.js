@@ -138,8 +138,17 @@
       return (!productId && global.BODI) ? global.BODI.REVIEWS : [];
     },
 
-    async submitReview(payload) {
-      const data = await request("/reviews", { method: "POST", body: JSON.stringify(payload) });
+    // `photos` (optional): array of Blob/File — sent as multipart to /reviews/upload.
+    async submitReview(payload, photos) {
+      let data;
+      if (photos && photos.length) {
+        const fd = new FormData();
+        Object.keys(payload || {}).forEach(k => { if (payload[k] != null) fd.append(k, String(payload[k])); });
+        photos.forEach((f, i) => fd.append("photos", f, f.name || ("photo-" + (i + 1) + ".jpg")));
+        data = await request("/reviews/upload", { method: "POST", body: fd, headers: { "Accept": "application/json" } });
+      } else {
+        data = await request("/reviews", { method: "POST", body: JSON.stringify(payload) });
+      }
       if (data.review && global.BODI && Array.isArray(global.BODI.REVIEWS)) {
         const exists = global.BODI.REVIEWS.some(r => r.id === data.review.id);
         if (!exists) {
@@ -323,7 +332,7 @@
 
     reviews: {
       list: (productId) => BodiAdapter.fetchReviews(productId),
-      submit: (payload) => BodiAdapter.submitReview(payload)
+      submit: (payload, photos) => BodiAdapter.submitReview(payload, photos)
     },
 
     orders: {
@@ -361,7 +370,7 @@
     fetchProducts: () => BodiAdapter.fetchProducts(),
     fetchCategories: () => BodiAdapter.fetchCategories(),
     fetchReviews: (productId) => BodiAdapter.fetchReviews(productId),
-    submitReview: (payload) => BodiAdapter.submitReview(payload),
+    submitReview: (payload, photos) => BodiAdapter.submitReview(payload, photos),
     submitCheckout: (payload) => BodiAdapter.submitCheckout(payload),
     trackOrder: (orderId, phone) => BodiAdapter.trackOrder(orderId, phone),
     validateCoupon: (code, subtotal) => BodiAdapter.validateCoupon(code, subtotal),

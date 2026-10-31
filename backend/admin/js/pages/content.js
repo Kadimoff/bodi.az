@@ -114,9 +114,23 @@ export function PostEdit({ params }) {
 }
 
 // ----------------------------------------------------------------- reviews
+function ReviewPhotos({ images, onRemove }) {
+  if (!images || !images.length) return null;
+  return html`<div class="review-photos">${images.map((img) => html`<div class="review-photo">
+    <a href=${img.full} target="_blank" rel="noopener" title="Böyük ölçüdə aç"><img src=${img.thumb} alt="Müştəri şəkli" loading="lazy" /></a>
+    ${onRemove && html`<button type="button" class="review-photo-del" title="Şəkli sil" onClick=${() => onRemove(img)}><span class="material-symbols-outlined">delete</span></button>`}
+  </div>`)}</div>`;
+}
+
 function ReviewModal({ item, onClose, onSaved }) {
   const [f, setF] = useState({ ...item });
   const set = (k, v) => setF((x) => ({ ...x, [k]: v }));
+  async function removePhoto(img) {
+    if (!(await confirmDialog({ title: 'Şəkli silmək', message: 'Bu müştəri şəkli birdəfəlik silinsin? Rəy qalacaq.', confirmText: 'Sil', danger: true }))) return;
+    await attempt(() => api.del(`/reviews/${item.id}/images/${img.id}`), 'Şəkil silindi');
+    set('images', (f.images || []).filter((x) => x.id !== img.id));
+    onSaved({ keepOpen: true });
+  }
   async function save() {
     await attempt(() => api.put(`/reviews/${item.id}`, f), 'Rəy yeniləndi');
     onSaved();
@@ -131,6 +145,7 @@ function ReviewModal({ item, onClose, onSaved }) {
         <${Field} label="Status"><${Select} value=${f.status} onChange=${(v) => set('status', v)} options=${[{ value: 'approved', label: 'Təsdiqlənib (saytda görünür)' }, { value: 'pending', label: 'Gözləyir' }, { value: 'rejected', label: 'Rədd edilib' }]} /></${Field}>
       </div>
       <${Field} label="Rəy"><${Textarea} rows="4" value=${f.content} onInput=${(v) => set('content', v)} /></${Field}>
+      ${(f.images || []).length > 0 && html`<${Field} label=${`Müştəri şəkilləri (${f.images.length})`} help="Təsdiqlənən rəylə birlikdə saytda görünür. Uyğun olmayan şəkli silə bilərsiniz."><${ReviewPhotos} images=${f.images} onRemove=${removePhoto} /></${Field}>`}
       <${Field} label="Mağazanın cavabı" help="Gələcəkdə məhsul səhifəsində göstərilə bilər."><${Textarea} rows="3" value=${f.reply} onInput=${(v) => set('reply', v)} /></${Field}>
       <${Switch} checked=${f.is_verified} onChange=${(v) => set('is_verified', v)} label="Təsdiqlənmiş alıcı" />
     </div>
@@ -172,7 +187,7 @@ export function Reviews({ query }) {
           <thead><tr><th style="width:36px"></th><th>Rəy</th><th>Məhsul</th><th>Reytinq</th><th>Status</th><th>Tarix</th><th></th></tr></thead>
           <tbody>${data.items.map((r) => html`<tr>
             <td><input type="checkbox" checked=${sel.includes(r.id)} onChange=${() => setSel(sel.includes(r.id) ? sel.filter((x) => x !== r.id) : [...sel, r.id])} /></td>
-            <td style="max-width:420px"><div class="name">${r.author} <span class="sub">· ${r.city}</span>${r.is_verified && html` <${Badge} color="green">alıcı</${Badge}>`}</div><div class="small">${r.content}</div>
+            <td style="max-width:420px"><div class="name">${r.author} <span class="sub">· ${r.city}</span>${r.is_verified && html` <${Badge} color="green">alıcı</${Badge}>`}</div><div class="small">${r.content}</div>${(r.images || []).length > 0 && html`<div class="review-photos review-photos-sm">${r.images.slice(0, 4).map((img) => html`<img src=${img.thumb} alt="" loading="lazy" />`)}<span class="sub">${r.images.length} şəkil</span></div>`}
               ${r.reply && html`<div class="small muted" style="margin-top:4px">↳ ${r.reply}</div>`}</td>
             <td class="small"><a href=${`#/products/${r.product_id}`}>${r.product_name}</a></td>
             <td><${Stars} n=${r.rating} /></td>
@@ -187,7 +202,7 @@ export function Reviews({ query }) {
         </table></div>
         <${Pager} page=${page} perPage=${data.per_page} total=${data.total} />`}
     </div>
-    ${edit && html`<${ReviewModal} item=${edit} onClose=${() => setEdit(null)} onSaved=${() => { setEdit(null); reload(); emit('badges'); }} />`}
+    ${edit && html`<${ReviewModal} item=${edit} onClose=${() => setEdit(null)} onSaved=${(o) => { if (!o || !o.keepOpen) setEdit(null); reload(); emit('badges'); }} />`}
   </div>`;
 }
 

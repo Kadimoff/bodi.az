@@ -5,11 +5,14 @@
   const path = location.pathname.split("/").pop() || "index.html";
   const currentFull = path + location.search;
 
-  const NAV = [
+  // Category entries are replaced by the live catalog (Admin → Kateqoriyalar) once it loads,
+  // so a new category (e.g. "Dəstlər") shows up in the menu as soon as it has products.
+  const NAV_CATS = [
     { href: "category.html?cat=bodi", label: "Bodilər" },
     { href: "category.html?cat=tulum", label: "Tulumlar" },
-    { href: "category.html?cat=dest", label: "Dəstlər" },
-    { href: "category.html?filter=new", label: "Yeni kolleksiya" },
+    { href: "category.html?cat=dest", label: "Çaplı Bodilər" }
+  ];
+  const NAV = [
     { href: "category.html?filter=sale", label: "Endirim" },
     { href: "reviews.html", label: "Rəylər" },
     { href: "blog.html", label: "Bloq" }
@@ -39,10 +42,15 @@
         </a>
       </div>
       <nav class="hidden md:flex items-center gap-md">
+        <span data-nav-cats class="contents">${NAV_CATS.map(navLink).join("")}</span>
         ${NAV.map(navLink).join("")}
       </nav>
       <div class="flex items-center gap-1 md:gap-sm flex-shrink-0">
-        <a href="category.html" aria-label="Axtarış" class="hidden md:inline-flex p-2 text-primary hover:bg-surface-container-low transition-all rounded-full"><span class="material-symbols-outlined">search</span></a>
+        <a href="category.html?focus=search" aria-label="Axtarış" class="hidden md:inline-flex p-2 text-primary hover:bg-surface-container-low transition-all rounded-full"><span class="material-symbols-outlined">search</span></a>
+        <a href="wishlist.html" aria-label="İstək siyahısı" class="p-2 text-primary hover:bg-surface-container-low transition-all rounded-full relative">
+          <span class="material-symbols-outlined${path === "wishlist.html" ? " ms-fill" : ""}">favorite</span>
+          <span data-wish-count class="absolute top-1 right-1 bg-secondary text-on-secondary font-label-sm text-[10px] rounded-full min-w-4 h-4 px-1 flex items-center justify-center hidden">0</span>
+        </a>
         <a href="cart.html" aria-label="Səbət" class="p-2 text-primary hover:bg-surface-container-low transition-all rounded-full relative">
           <span class="material-symbols-outlined">shopping_cart</span>
           <span data-cart-count class="absolute top-1 right-1 bg-error text-on-error font-label-sm text-[10px] rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
@@ -112,7 +120,7 @@
     ${[
       { i: "home", l: "Ana səhifə", href: "index.html", a: active === "home" },
       { i: "category", l: "Kolleksiya", href: "category.html", a: active === "category" },
-      { i: "search", l: "Axtarış", href: "category.html", a: false },
+      { i: "search", l: "Axtarış", href: "category.html?focus=search", a: false },
       { i: "shopping_bag", l: "Səbət", href: "cart.html", a: active === "cart", badge: true }
     ].map(t => `
       <a class="flex-1 min-w-0 flex flex-col items-center justify-center py-1 mx-0.5 rounded-2xl ${t.a ? "text-primary bg-primary-fixed/30" : "text-on-surface-variant"} transition-colors relative" href="${t.href}" ${t.external ? 'target="_blank" rel="noopener"' : ''}>
@@ -126,7 +134,7 @@
   const STATIC_CATS = [
     { slug: "bodi", name: "Bodilər" },
     { slug: "tulum", name: "Tulumlar" },
-    { slug: "dest", name: "Dəstlər" }
+    { slug: "dest", name: "Çaplı Bodilər" }
   ];
 
   function isCurrent(href) {
@@ -172,14 +180,14 @@
         </div>
         <div>
           <p class="px-3 mb-1 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Kolleksiyalar</p>
-          ${drawerLink("category.html?filter=new", "Yeni kolleksiya", "new_releases")}
           ${drawerLink("category.html?filter=sale", "Endirim", "sell")}
+          ${drawerLink("wishlist.html", "İstək siyahısı", "favorite", '<span data-wish-count class="font-label-sm text-label-sm text-on-secondary bg-secondary px-2 py-0.5 rounded-full hidden">0</span>')}
         </div>
         <div>
           <p class="px-3 mb-1 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Bodi.az</p>
           ${drawerLink("reviews.html", "Müştəri rəyləri", "reviews")}
           ${drawerLink("blog.html", "Bloq", "article")}
-          ${drawerLink("about.html", "Haqqımızda", "favorite")}
+          ${drawerLink("about.html", "Haqqımızda", "info")}
           ${drawerLink("faq.html", "Tez-tez verilən suallar", "help")}
           ${drawerLink("track-order.html", "Sifarişi izlə", "local_shipping")}
           ${drawerLink("contact.html", "Əlaqə", "call")}
@@ -232,6 +240,8 @@
       const cats = (list || []).filter(c => c.count > 0 || STATIC_CATS.some(s => s.slug === c.slug));
       const box = root.querySelector("[data-drawer-cats]");
       if (box && cats.length) box.innerHTML = categoryLinks(cats);
+      const nav = document.querySelector("[data-nav-cats]");
+      if (nav && cats.length) nav.innerHTML = cats.map(c => navLink({ href: "category.html?cat=" + encodeURIComponent(c.slug), label: c.name })).join("");
     }
     renderCats(window.BODI_API && window.BODI_API.adapter && window.BODI_API.adapter.categories);
     window.addEventListener("bodi:categories-updated", (e) => renderCats(e.detail));

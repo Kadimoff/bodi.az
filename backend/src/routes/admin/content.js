@@ -2,7 +2,7 @@ import { sql } from '../../db.js';
 import { requirePerm, audit } from '../../lib/auth.js';
 import { cleanHtml } from '../../lib/html.js';
 import { slugify, readingMinutes } from '../../lib/text.js';
-import { presentMedia } from '../../lib/media.js';
+import { presentMedia, mediaUrl, deleteReviewImageFiles } from '../../lib/media.js';
 import { refreshProductRating, recordSlugChange } from '../../lib/catalog.js';
 import { badRequest, notFound } from '../../lib/errors.js';
 import {
@@ -28,8 +28,12 @@ export default async function contentAdminRoutes(app) {
       const where = conds.reduce((a, c) => sql`${a} AND ${c}`);
       const [{ total }] = await sql`SELECT COUNT(*)::int AS total FROM reviews r JOIN products p ON p.id = r.product_id WHERE ${where}`;
       const items = await sql`
-        SELECT r.*, p.name AS product_name, p.slug AS product_slug FROM reviews r JOIN products p ON p.id = r.product_id
+        SELECT r.*, p.name AS product_name, p.slug AS product_slug,
+          COALESCE((SELECT json_agg(json_build_object('id', ri.id, 'thumb', ri.thumb, 'full', ri.full_path) ORDER BY ri.position, ri.id)
+                    FROM review_images ri WHERE ri.review_id = r.id), '[]'::json) AS images
+        FROM reviews r JOIN products p ON p.id = r.product_id
         WHERE ${where} ORDER BY r.created_at DESC LIMIT ${perPage} OFFSET ${offset}`;
+      for (const it of items) it.images = (it.images || []).map((i) => ({ id: i.id, thumb: mediaUrl(i.thumb), full: mediaUrl(i.full) }));
       const counts = await sql`SELECT status, COUNT(*)::int AS n FROM reviews GROUP BY status`;
       return { total, page, per_page: perPage, items, counts: Object.fromEntries(counts.map((c) => [c.status, c.n])) };
     });
@@ -58,7 +62,11 @@ export default async function contentAdminRoutes(app) {
       const action = request.body?.action;
       if (!ids.length) throw badRequest('Heç bir rəy seçilməyib.');
       let rows;
-      if (action === 'delete') rows = await sql`DELETE FROM reviews WHERE id IN ${sql(ids)} RETURNING product_id`;
+      if (action === 'delete') {
+        const files = await sql`SELECT thumb, full_path FROM review_images WHERE review_id IN ${sql(ids)}`;
+        rows = await sql`DELETE FROM reviews WHERE id IN ${sql(ids)} RETURNING product_id`;
+        await deleteReviewImageFiles(files);
+      }
       else if (['approved', 'rejected', 'pending'].includes(action)) {
         rows = await sql`UPDATE reviews SET status = ${action}, updated_at = now() WHERE id IN ${sql(ids)} RETURNING product_id`;
       } else throw badRequest('Naməlum əməliyyat.');
@@ -68,10 +76,21 @@ export default async function contentAdminRoutes(app) {
     });
 
     r.delete('/reviews/:id', async (request) => {
+      const files = await sql`SELECT thumb, full_path FROM review_images WHERE review_id = ${int(request.params.id)}`;
       const [row] = await sql`DELETE FROM reviews WHERE id = ${int(request.params.id)} RETURNING *`;
       if (!row) throw notFound('Rəy tapılmadı.');
+      await deleteReviewImageFiles(files);
       await refreshProductRating(row.product_id);
       await audit(request, 'delete', 'review', row.id, row.author);
+      return { success: true };
+    });
+
+    // Remove one customer photo (e.g. inappropriate) while keeping the review.
+    r.delete('/reviews/:id/images/:imageId', async (request) => {
+      const [img] = await sql`DELETE FROM review_images WHERE id = ${int(request.params.imageId)} AND review_id = ${int(request.params.id)} RETURNING thumb, full_path`;
+      if (!img) throw notFound('Şəkil tapılmadı.');
+      await deleteReviewImageFiles([img]);
+      await audit(request, 'delete', 'review_image', request.params.imageId, `rəy #${request.params.id}`);
       return { success: true };
     });
   });
